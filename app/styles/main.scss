@@ -1,0 +1,46 @@
+$icon-font-path: '../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/';
+@import "bootstrap-custom";
+
+// bower:scss
+// endbower
+
+.browsehappy {
+  background: #ccc;
+  color: #000;
+  margin: 0.2em 0;
+  padding: 0.2em 0;
+}
+
+/* Main marketing message and sign up button */
+.app {
+  border-bottom: 4px solid #ccc;
+  padding: 6rem 0;
+  text-align: center;
+
+  h1 {
+    font-size: 64px;
+    margin-bottom: ($grid-gutter-width);
+    margin-top: 0;
+  }
+}
+
+#color-chooser {
+  position: relative;
+
+  &:before {
+    color: #999;
+    content: '#';
+    font-size: 30px;
+    left: 25px;
+    position: absolute;
+    top: 2px;
+    z-index: 10;
+  }
+
+  .form-control {
+    font-size: 24px;
+    padding-left: 30px;
+  }
+}
+
+
