@@ -1,0 +1,35 @@
+@mixin media-query($media-query) {
+
+  @if $media-query == sm-only {
+    @media (max-width: $screen-sm - 1) { @content; }
+  }
+
+  @if $media-query == sm {
+    @media (min-width: $screen-xs) { @content; }
+  }
+
+  @if $media-query == md {
+    @media (min-width: $screen-sm) { @content; }
+  }
+
+  @if $media-query == lg {
+    @media (min-width: $screen-md) { @content; }
+  }
+
+  @if $media-query == xl {
+    @media (min-width: $screen-lg) { @content; }
+  }
+  @if $media-query == retina {
+    @media (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) { @content; }
+  }
+}
+
+// Just mqs helpers...
+@mixin xs-only { @include media-query(xs-only) { @content }; }
+@mixin sm { @include media-query(sm) { @content }; }
+@mixin sm-only { @include media-query(sm-only) { @content }; }
+@mixin md { @include media-query(md) { @content }; }
+@mixin md-only { @include media-query(md-only) { @content }; }
+@mixin lg { @include media-query(lg) { @content }; }
+@mixin xl { @include media-query(xl) { @content }; }
+@mixin retina { @include media-query(retina) { @content }; }

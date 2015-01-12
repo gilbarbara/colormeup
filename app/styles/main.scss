@@ -1,37 +1,83 @@
+@import url('//fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600,400italic,600italic');
+
 $icon-font-path: '../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/';
+$font-family-sans-serif:  'Source Sans Pro', Helvetica, Arial, sans-serif !default;
+$headings-font-weight: 600;
+$screen-sm: 800px !default;
+$screen-md: 1024px !default;
+$screen-lg: 1280px !default;
+$grid-float-breakpoint: 801px !default;
+
 @import "bootstrap-custom";
+@import "utils";
 
 // bower:scss
 // endbower
 
 .browsehappy {
   background: #ccc;
-  color: #000;
+  color: $headings-font-family;
   margin: 0.2em 0;
   padding: 0.2em 0;
 }
 
+body {
+}
+
 /* Main marketing message and sign up button */
 .app {
-  border-bottom: 4px solid #ccc;
-  padding: 6rem 0;
-  text-align: center;
-
   h1 {
-    font-size: 64px;
+    font-size: 56px;
     margin-bottom: ($grid-gutter-width);
     margin-top: 0;
+
+    @include sm {
+      font-size: 64px;
+    }
   }
 }
 
-#color-chooser {
+.app__message {
+  color: #fff;
+  font-size: 2rem;
+  height: 4.5rem;
+  margin-top: 1.5rem;
+  text-shadow: 1px 1px 2px #666;
+}
+
+.app__chooser {
+  background-color: #dcdcdc;
+  border-bottom: 4px solid #ccc;
+  padding-top: 6rem;
+  text-align: center;
+  margin: 0 auto;
+
+
+  .container {
+    width: 100%;
+
+    @include sm {
+      width: 80%;
+    }
+
+    @include md {
+      width: 50%;
+    }
+
+    @include lg {
+      width: 40%;
+    }
+  }
+}
+
+.app__input {
   position: relative;
 
   &:before {
     color: #999;
     content: '#';
     font-size: 30px;
-    left: 25px;
+    left: 10px;
     position: absolute;
     top: 2px;
     z-index: 10;
@@ -43,4 +89,51 @@ $icon-font-path: '../../bower_components/bootstrap-sass-official/assets/fonts/bo
   }
 }
 
+.app__colors {
+  font-size: 0;
+  margin-top: ($grid-gutter-width / 2);
 
+  a {
+    border: 1px solid #BBB;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+
+    + a {
+      margin-left: 4px;
+    }
+  }
+}
+
+.app__boxes {
+  font-size: 0;
+  position: relative;
+
+  > div {
+    background-color: #f7f7f7;
+    display: inline-block;
+    height: 0;
+    padding-bottom: 33.3333%;
+    position: relative;
+    width: 33.3333%;
+
+    @include sm {
+      padding-bottom: 25%;
+      width: 25%;
+    }
+
+    @include md {
+      padding-bottom: 12.5%;
+      width: 12.5%;
+    }
+  }
+}
+
+.box__hex {
+  bottom: 8px;
+  font-size: 20px;
+  font-weight: 200;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
