@@ -124,6 +124,12 @@ gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
+gulp.task('deploy', ['build'], function () {
+    return gulp.src('./dist/**/*')
+    	.pipe($.filelog())
+        .pipe($.ghPages());
+});
+
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
