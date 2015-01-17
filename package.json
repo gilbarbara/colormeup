@@ -1,8 +1,10 @@
 {
-  "private": true,
-  "engines": {
-    "node": ">=0.10.0"
+  "name": "colormeup",
+  "version": "0.1.5",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Gil Barbara <gilbarbara@gmail.com>",
   "devDependencies": {
     "apache-server-configs": "^2.7.1",
     "connect": "^3.0.1",
@@ -34,5 +36,8 @@
     "serve-index": "^1.1.4",
     "serve-static": "^1.4.0",
     "wiredep": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }

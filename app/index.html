@@ -25,15 +25,24 @@
   <![endif]-->
 
   <div class="app">
+    <div class="app__message">Mensagem de erro</div>
     <div class="app__chooser">
       <div class="container">
         <h1>colormeup</h1>
         <div class="app__input"><input type="text" class="form-control input-lg" /></div>
-        <div class="app__colors"></div>
-        <div class="app__message"></div>
+        <div class="app__palette"></div>
+        <div class="app__type">
+          <div class="btn-group" role="group" aria-label="">
+            <a href="#" class="btn btn-default" data-type="h">Hue</a>
+            <a href="#" class="btn btn-default" data-type="s">Saturation</a>
+            <a href="#" class="btn btn-default" data-type="l">Lightness</a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="app__boxes"></div>
+
+    <div class="app__footer"><a href="http://kollectiv.org/" target="_blank"><img src="http://kollectiv.org/media/kollectiv.png"></a> <a href="https://github.com/gilbarbara/colormeup" target="_blank"><img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png"></a></div>
   </div>
 
 
@@ -78,6 +87,7 @@
   <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
   <script src="scripts/vendor/Colors.js"></script>
   <script src="scripts/vendor/Transforms.js"></script>
+  <script src="../bower_components/jquery-deparam/jquery-deparam.js"></script>
   <!-- endbuild -->
 
   <!-- build:js scripts/main.js -->

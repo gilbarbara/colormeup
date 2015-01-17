@@ -1,7 +1,7 @@
 @import url('//fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600,400italic,600italic');
 
 $icon-font-path: '../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/';
-$font-family-sans-serif:  'Source Sans Pro', Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif: 'Source Sans Pro', Helvetica, Arial, sans-serif !default;
 $headings-font-weight: 600;
 $screen-sm: 800px !default;
 $screen-md: 1024px !default;
@@ -15,10 +15,10 @@ $grid-float-breakpoint: 801px !default;
 // endbower
 
 .browsehappy {
-  background: #ccc;
-  color: $headings-font-family;
-  margin: 0.2em 0;
-  padding: 0.2em 0;
+	background: #ccc;
+	color: $headings-font-family;
+	margin: 0.2em 0;
+	padding: 0.2em 0;
 }
 
 body {
@@ -26,114 +26,151 @@ body {
 
 /* Main marketing message and sign up button */
 .app {
-  h1 {
-    font-size: 56px;
-    margin-bottom: ($grid-gutter-width);
-    margin-top: 0;
+	position: relative;
 
-    @include sm {
-      font-size: 64px;
-    }
-  }
+	h1 {
+		font-size: 56px;
+		margin-bottom: ($grid-gutter-width);
+		margin-top: 0;
+
+		@include sm {
+			font-size: 64px;
+		}
+	}
 }
 
 .app__message {
-  color: #fff;
-  font-size: 2rem;
-  height: 4.5rem;
-  margin-top: 1.5rem;
-  text-shadow: 1px 1px 2px #666;
+	background-color: rgba(#FFF, 0.8);
+	border-radius: 0 0 6px 6px;
+	color: #353535;
+	display: none;
+	font-size: 2rem;
+	text-transform: lowercase;
+	font-weight: 200;
+	left: 30%;
+	line-height: 1;
+	padding: ($grid-gutter-width / 4) 0;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 40%;
 }
 
 .app__chooser {
-  background-color: #dcdcdc;
-  border-bottom: 4px solid #ccc;
-  padding-top: 6rem;
-  text-align: center;
-  margin: 0 auto;
+	background-color: #dcdcdc;
+	border-bottom: 4px solid #ccc;
+	padding: 4rem 0;
+	text-align: center;
+	margin: 0 auto;
 
+	.container {
+		width: 100%;
 
-  .container {
-    width: 100%;
+		@include sm {
+			width: 90%;
+		}
 
-    @include sm {
-      width: 80%;
-    }
+		@include md {
+			width: 50%;
+		}
 
-    @include md {
-      width: 50%;
-    }
-
-    @include lg {
-      width: 40%;
-    }
-  }
+		@include lg {
+			width: 40%;
+		}
+	}
 }
 
 .app__input {
-  position: relative;
+	position: relative;
 
-  &:before {
-    color: #999;
-    content: '#';
-    font-size: 30px;
-    left: 10px;
-    position: absolute;
-    top: 2px;
-    z-index: 10;
-  }
+	&:before {
+		color: #999;
+		content: '#';
+		font-size: 30px;
+		left: 10px;
+		position: absolute;
+		top: 2px;
+		z-index: 10;
+	}
 
-  .form-control {
-    font-size: 24px;
-    padding-left: 30px;
-  }
+	.form-control {
+		font-size: 24px;
+		padding-left: 30px;
+	}
 }
 
-.app__colors {
-  font-size: 0;
-  margin-top: ($grid-gutter-width / 2);
+.app__palette {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 0;
+	justify-content: space-between;
+	margin-top: ($grid-gutter-width / 2);
+	min-height: 32px;
 
-  a {
-    border: 1px solid #BBB;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
+	a {
+		border: 1px solid #BBB;
+		display: inline-block;
+		flex: 0 17%;
+		height: 32px;
+		margin-bottom: ($grid-gutter-width / 3);
+		width: 32px;
 
-    + a {
-      margin-left: 4px;
-    }
-  }
+		@include sm {
+			height: 32px;
+			flex: 0 32px;
+		}
+
+		+ a {
+			//margin-left: 4px;
+		}
+	}
+}
+
+.app__type {
+	margin-top: ($grid-gutter-width / 2);
+}
+
+.app__footer {
+	padding: ($grid-gutter-width / 2) $grid-gutter-width;
+
+	a:nth-of-type(1) img {
+		width: 90px;
+	}
+	a:nth-of-type(2) img {
+		margin-left: $grid-gutter-width;
+		width: 50px;
+	}
 }
 
 .app__boxes {
-  font-size: 0;
-  position: relative;
+	font-size: 0;
+	position: relative;
 
-  > div {
-    background-color: #f7f7f7;
-    display: inline-block;
-    height: 0;
-    padding-bottom: 33.3333%;
-    position: relative;
-    width: 33.3333%;
+	> div {
+		background-color: #f7f7f7;
+		display: inline-block;
+		height: 0;
+		padding-bottom: 33.3333%;
+		position: relative;
+		width: 33.3333%;
 
-    @include sm {
-      padding-bottom: 25%;
-      width: 25%;
-    }
+		@include sm {
+			padding-bottom: 25%;
+			width: 25%;
+		}
 
-    @include md {
-      padding-bottom: 12.5%;
-      width: 12.5%;
-    }
-  }
+		@include md {
+			padding-bottom: 12.5%;
+			width: 12.5%;
+		}
+	}
 }
 
 .box__hex {
-  bottom: 8px;
-  font-size: 20px;
-  font-weight: 200;
-  position: absolute;
-  text-align: center;
-  width: 100%;
+	bottom: 8px;
+	font-size: 20px;
+	font-weight: 200;
+	position: absolute;
+	text-align: center;
+	width: 100%;
 }

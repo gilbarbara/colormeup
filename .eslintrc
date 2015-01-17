@@ -7,9 +7,9 @@
   "globals": {
     "$": true,
     "jQuery": false,
-    "wp": false,
-    "tinymce": false,
-    "accounting": false,
+    "Color": false,
+    "Transforms": false,
+    "deparam": false,
     "_": false,
     "module": false
   },
