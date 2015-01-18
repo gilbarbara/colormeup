@@ -5,6 +5,7 @@
     "node": true
   },
   "globals": {
+    "cmu": true,
     "$": true,
     "jQuery": false,
     "Color": false,
@@ -26,7 +27,7 @@
     "eqeqeq": 1,
     "guard-for-in": 1,
     "key-spacing": 1,
-    "new-cap": 2,
+    "new-cap": [2, { "capIsNewExceptions": ["$"] }],
     "new-parens": 2,
     "no-caller": 1,
     "no-comma-dangle": 2,

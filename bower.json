@@ -6,6 +6,7 @@
     "modernizr": "~2.8.1",
     "spectrum": "~1.6.0",
     "lodash": "~2.4.1",
-    "jquery-deparam": "~0.2.0"
+    "jquery-deparam": "~0.2.0",
+    "bourbon": "~4.0"
   }
 }

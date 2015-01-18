@@ -1,16 +1,18 @@
-//todo double click change order
-//todo show input for steps
+//--todo double click on type change order
 
 //todo add selected color to the list
-//todo double click on a color, lock it and add to the list
 //todo save list on localStorage,
+
+//todo load list and maybe merge with default if not enough? 10?
+//todo double click on a color, lock it and add to the list
 //todo show list
 //todo hashchange
 
 var cmu = {
+	name: 'colormeup',
 	colorObj: null,
 	color: null,
-	colors: [
+	defaultColors: [
 		'#27bdbe',
 		'#2bd2a3',
 		'#5c4561',
@@ -19,52 +21,104 @@ var cmu = {
 		'#4F86C6',
 		'#E8871E',
 		'#4C2719',
-		'#F8FA90',
+		'#f0f415',
 		'#ff0044'
 	],
-	types: ['h', 's', 'l'],
+	readyUI: new $.Deferred(),
+	debug: function () {
+		return (location.hostname === 'localhost');
+	},
+	hash: {},
+	types: ['h', 's', 'l', 'r', 'g', 'b'],
 	orders: ['asc', 'desc'],
+	steps: 4,
+
+	$app: $('.app'),
+	$chooser: $('.app__header'),
+
+	log: function () {
+		if (this.debug()) {
+			console.log(arguments);
+		}
+	},
 
 	init: function () {
+		this.log('init');
 
-		this.setOptions();
+		this.renderUI();
+		this.readyUI.done(function () {
+			this.getHash();
+			this.getData();
 
-		this.$app = $('.app');
-		this.$chooser = $('.app__chooser');
-		this.$input = this.$chooser.find('input');
+			this.setEvents();
+			this.setOptions();
+			this.setStates();
+			this.setColor();
+			this.buildPalette();
 
-		this.setEvents();
-
-		this.setStates();
-
-		this.setColor();
-
-		this.buildColors();
+			if ('rgb'.indexOf(this.type) > -1) {
+				this.buildRGBBoxes();
+			}
+			else if ('hsl'.indexOf(this.type) > -1) {
+				this.buildHSLBoxes();
+			}
+		}.bind(this));
 	},
 
 	setOptions: function () {
 		var settings = _.extend({
 			type: 'h',
 			order: 'desc',
-			color: ''
+			color: '',
+			steps: this.steps
 		}, this.hash);
 
-		this.color = (settings.color && this.validHex(settings.color) ? '#' + settings.color : this.colors[Math.floor(Math.random() * this.colors.length)]);
+		this.color = (settings.color && this.validHex(settings.color) ? '#' + settings.color : this.getColors(1));
 		this.type = this.types.indexOf(settings.type) > -1 ? settings.type : 'h';
 		this.order = this.orders.indexOf(settings.order) > -1 ? settings.order : 'desc';
+		this.steps = settings.steps > 1 ? settings.steps : 4;
+
+		this.log('setOptions', this);
 	},
 
 	setStates: function () {
-		this.$input.val(this.color.replace('#', ''));
+		this.log('setStates');
+
+		this.$chooser.find('.input-color').val(this.color.replace('#', ''));
+		this.$chooser.find('.input-steps').val(this.steps);
 		this.$app.find('.app__type [data-type=' + this.type + ']').addClass('active');
 	},
 
+	setValue: function (options) {
+		this.log('setValue', options);
+		if (options.color) {
+			this.color = options.color;
+			this.setColor();
+		}
+		if (options.type) {
+			this.type = options.type;
+		}
+		if (options.steps) {
+			this.steps = options.steps;
+		}
+
+		this.setStates();
+		this.setHash();
+
+		if ('rgb'.indexOf(this.type) > -1) {
+			this.buildRGBBoxes();
+		}
+		else if ('hsl'.indexOf(this.type) > -1) {
+			this.buildHSLBoxes();
+		}
+	},
+
 	setColor: function () {
-		console.log('setColor', this.color);
+		this.log('setColor', this.color);
 		this.colorObj = new Color(this.color);
 
 		if (!this.isInt(this.colorObj.rgb.r) || !this.isInt(this.colorObj.rgb.g) || !this.isInt(this.colorObj.rgb.b)) {
-			this.$app.find('.app__message').html('Not a valid color');
+			this.showAlert('Not a valid color');
 			return false;
 		}
 
@@ -73,88 +127,93 @@ var cmu = {
 			borderColor: this.darken(15)
 		});
 
-		this.$chooser.find('h1').css({
-			color: (this.colorObj.lightness() <= 50 ? this.changeLightness(70) : this.changeLightness(20))
-		});
-
-		this.$chooser.find('input').css({
-			backgroundColor: this.lighten((90 - (+this.colorObj.lightness()))),
-			borderColor: this.darken(15)
-		});
-
-		this.buildBoxes();
-	},
-
-	buildColors: function () {
-		var colors = [];
-		_.each(this.colors, function (d) {
-			colors.push('<a href="#" data-color="' + d.replace('#', '') + '" style="background-color: ' + d + '"></a>');
-		});
-
-		this.$app.find('.app__palette').html(colors.join(''));
-	},
-
-	buildBoxes: function (options) {
-		var settings = _.extend({
-			max: (this.type === 'h' ? 356 : 96),
-			factor: 4,
-			h: 'changeHue',
-			s: 'changeSaturation',
-			l: 'changeLightness'
-		}, options);
-
-		var max = (this.type === 'h' ? cmu.colorObj.hue() : (this.order === 'desc' ? settings.max : 0)),
-			boxes = [],
-			color,
-			textColor;
-
-		while (this.order === 'desc' ? max > 0 : max <= settings.max) {
-			color = this[settings[this.type]](max);
-
-			textColor = new Color(color);
-			console.log(textColor.hex, textColor.hsl.l);
-			textColor = textColor.hsl2hex({ h: textColor.hsl.h, s: 0, l: (+textColor.hsl.l + 40 > 100 ? Math.abs(40 - +textColor.hsl.l) : +textColor.hsl.l + 40) });
-
-			boxes.push('<div style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></div>');
-
-			max = (this.order === 'desc' ? max - settings.factor : max + settings.factor);
+		if ($('html').hasClass('inlinesvg')) {
+			$(this.$app.find('.logo svg'))
+				.find('#color').css({
+					fill: (this.colorObj.hsl.s > 10 ? (
+						this.colorObj.hsl2hex({
+							h: Math.abs(+this.colorObj.hsl.h + 90),
+							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+						})
+					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
+					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.6 : 1)
+				}).end()
+				.find('#me').css({
+					fill: (this.colorObj.hsl.s > 10 ? (
+						this.colorObj.hsl2hex({
+							h: Math.abs(+this.colorObj.hsl.h + 180),
+							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+						})
+					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
+					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.4 : 1)
+				}).end()
+				.find('#up').css({
+					fill: (this.colorObj.hsl.s > 10 ? (
+						this.colorObj.hsl2hex({
+							h: Math.abs(+this.colorObj.hsl.h + 270),
+							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+						})
+					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
+					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.2 : 1)
+				}).end();
 		}
-		console.log('buildBoxes:afterloop', this.order, max, cmu.colorObj.hue());
-		if (this.type === 'h') {
-			max = (this.order === 'asc' ? 0 : 360);
 
-			while (this.order === 'desc' ? max > cmu.colorObj.hue() : max <= cmu.colorObj.hue()) {
-				color = this[settings[this.type]](max);
-				textColor = new Color(color);
-				textColor = textColor.hsl2hex({ h: textColor.hsl.h, s: 0, l: (+textColor.hsl.l + 40 > 100 ? Math.abs(40 - +textColor.hsl.l) : +textColor.hsl.l + 40) });
-				boxes.push('<div style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></div>');
+	},
 
-				max = (this.order === 'desc' ? max - settings.factor : max + settings.factor);
+	getColors: function (max) {
+		this.log('getColors', max);
+		var colors = this.data.colors.length ? this.data.colors : this.defaultColors,
+			single = colors[Math.floor(Math.random() * colors.length)],
+			range = colors.splice(0, max);
+
+		return (!max ? colors : (max === 1 ? single : range));
+	},
+
+	addToList: function (color) {
+		this.log('addToList', color);
+		if (!this.validHex(color) || this.validHex(color).length !== 6) {
+			this.showAlert('Not a valid color');
+			return false;
+		}
+
+		if (this.data.colors.indexOf(color) === -1) {
+
+			if (this.data.colors.length > 25) {
+				this.data.colors = this.data.colors.splice(1, 25);
 			}
-			console.log('buildBoxes hue loop again', cmu.colorObj.hue(), max);
+
+			this.data.colors.push(color);
+
+			if (this.data.colors.length === 1) {
+				this.buildPalette();
+			}
+			else {
+				this.appendToPalette(color);
+			}
+
+			this.setData();
+		}
+	},
+
+	getData: function () {
+		this.log('getData');
+		this.data = JSON.parse(localStorage.getItem(this.name));
+		if (!this.data) {
+			this.data = {
+				colors: []
+			};
 		}
 
-		this.$app.find('.app__boxes').html('').append(boxes);
+		localStorage.setItem(this.name, JSON.stringify(this.data));
 	},
 
-	changeLightness: function (val) {
-		return this.colorObj.hsl2hex({h: this.colorObj.hsl.h, s: this.colorObj.hsl.s, l: val});
-	},
-
-	changeSaturation: function (val) {
-		return this.colorObj.hsl2hex({h: this.colorObj.hsl.h, s: val, l: this.colorObj.hsl.l});
-	},
-
-	changeHue: function (val) {
-		return this.colorObj.hsl2hex({h: val, s: this.colorObj.hsl.s, l: this.colorObj.hsl.l});
-	},
-
-	lighten: function (val) {
-		return Transforms.lighten(this.colorObj, val);
-	},
-
-	darken: function (val) {
-		return Transforms.darken(this.colorObj, val);
+	setData: function () {
+		this.log('setData');
+		this.data.lastVisit = +new Date();
+		localStorage.setItem(this.name, JSON.stringify(this.data));
 	},
 
 	isInt: function (value) {
@@ -167,16 +226,12 @@ var cmu = {
 	},
 
 	getHash: function () {
-		console.log('getHash', this.hash, this.color);
+		this.log('getHash', this.hash);
 		this.hash = _.extend(this.hash, deparam(location.hash.replace('#', '')));
-
-		this.setOptions();
-		this.setStates();
-		this.buildBoxes();
-
 	},
 
 	setHash: function () {
+		this.log('setHash');
 		var options = {
 			color: this.color.replace('#', ''),
 			type: this.type
@@ -185,61 +240,116 @@ var cmu = {
 		if (this.order !== 'desc') {
 			options.order = this.order;
 		}
+		if (this.steps !== 4) {
+			options.steps = this.steps;
+		}
 		this.hash = _.extend(this.hash, options);
 		location.hash = $.param(this.hash);
 	},
 
 	setEvents: function () {
-
+		this.log('setEvents');
 		$(document)
 			.on('click', '.app__palette a', function (e) {
 				e.preventDefault();
 				var $this = $(e.currentTarget);
 
-				this.$input.val($this.data('color'));
+				this.$chooser.find('.input-color').val($this.data('color'));
 
-				this.color = '#' + $this.data('color');
-				this.setHash();
-				this.setColor();
+				this.setValue({ color: '#' + $this.data('color') });
 			}.bind(this))
 
 			.on('click', '.app__type a', function (e) {
 				e.preventDefault();
 				var $this = $(e.currentTarget);
 
-				console.log('.app__type a:click', $this);
+				this.log('.app__type a:click', $this);
 
-				this.type = $this.data('type');
+				this.$app.find('.app__type a').removeClass('active');
+				$this.addClass('active');
 
-				$this.addClass('active').siblings().removeClass('active');
-				this.setHash();
-				this.buildBoxes();
+				this.setValue({ type: $this.data('type') });
 			}.bind(this))
 
-			.on('keyup change', '.app__chooser input', function (e) {
+			.on('click', '.color-picker', function (e) {
+				e.preventDefault();
+				this.$app.find('.color-picker').spectrum('option', 'color', this.color);
+			})
+
+			.on('click', '.save-color', function (e) {
+				e.preventDefault();
+				this.addToList(this.color);
+			}.bind(this))
+
+			.on('keyup change', '.app__header .input-color', function (e) {
 				var $this = $(e.target);
-				console.log(e.keyCode, e.metaKey);
 				if ([91, 37, 39].indexOf(e.keyCode) > -1) {
 					return false;
 				}
 
+				if (e.keyCode === 13 && $this.val().length === 3) {
+					//todo validate hex and duplicate if 3
+				}
+
 				var value = this.validHex($this.val().replace('#', '').substring(0, 6));
-				console.log('on:keyup', value);
+
 				var color = (value) ? value.join('') : '';
 
 				$this.val(color);
 
 				if (color.length === 6) {
-					this.color = '#' + color;
-					this.setHash();
-					this.setColor();
+					this.setValue({ color: '#' + color });
+				}
+			}.bind(this))
+
+			.on('keyup change', '.app__header .input-steps', function (e) {
+				var $this = $(e.target);
+
+				if ($this.val().trim()) {
+					var steps = parseInt($this.val(), 10);
+					steps = steps > 0 ? steps : 1;
+
+					$this.val(steps);
+					this.setValue({ steps: steps });
 				}
 
+			}.bind(this))
+
+			.on('move.spectrum', function (e, color) {
+				this.setValue({ color: color.toHexString() });
+			}.bind(this))
+
+			.on('beforeShow.spectrum', function () {
+				this.log('beforeShow');
+				var colors = this.getColors(),
+					palette = [],
+					line = [],
+					start = 0;
+
+				while (start < colors.length) {
+					if (start > 0 && start % 4 === 0) {
+						palette.push(line);
+						line = [];
+					}
+					line.push(colors[start]);
+					start++;
+
+					if ((Math.ceil(colors.length / 4) !== palette.length) && start === colors.length) {
+						palette.push(line);
+					}
+				}
+
+				this.$app.find('.color-picker').spectrum('set', this.color);
+				this.$app.find('.color-picker').spectrum('option', 'palette', palette);
+			}.bind(this))
+
+			.on('dragstop.spectrum', function (e, color) {
+				this.addToList(color.toHexString());
+				//this.$app.find('.color-picker').spectrum('hide');
 			}.bind(this));
 	}
 };
 
 $(function () {
-	cmu.hash = deparam(location.hash.replace('#', ''));
 	cmu.init();
 });

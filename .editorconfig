@@ -4,7 +4,6 @@
 
 root = true
 
-
 [*]
 
 # change these settings to your own preference
@@ -19,6 +18,10 @@ insert_final_newline = true
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.{scss,sass}]
+indent_style = space
+indent_size = 2
 
 [{package,bower}.json]
 indent_style = space

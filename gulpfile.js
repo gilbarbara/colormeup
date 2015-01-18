@@ -1,8 +1,10 @@
 /* jshint node:true */
 'use strict';
 // generated on 2015-01-10 using generator-gulp-webapp 0.2.0
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
+var gulp = require('gulp'),
+	$ = require('gulp-load-plugins')(),
+	del = require('del'),
+	runSequence = require('run-sequence');
 
 gulp.task('styles', function () {
 	return gulp.src('app/styles/main.scss')
@@ -31,11 +33,12 @@ gulp.task('lint', function () {
 		.pipe($.eslint.failOnError());
 });
 
-gulp.task('html', ['styles'], function () {
+gulp.task('html', [ 'styles'], function () {
+
 	var lazypipe = require('lazypipe');
 	var cssChannel = lazypipe()
-		.pipe($.csso)
-		.pipe($.replace, 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap', 'fonts');
+		.pipe($.cssmin)
+		.pipe($.replace, '../bower_components/bootstrap-sass-official/assets/fonts/bootstrap', 'fonts');
 	var assets = $.useref.assets({
 		searchPath: '{.tmp,app}'
 	});
@@ -53,13 +56,13 @@ gulp.task('html', ['styles'], function () {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('images', function () {
-	return gulp.src('app/images/**/*')
+gulp.task('media', function () {
+	return gulp.src('app/media/**/*')
 		.pipe($.cache($.imagemin({
 			progressive: true,
 			interlaced: true
 		})))
-		.pipe(gulp.dest('dist/images'));
+		.pipe(gulp.dest('dist/media'));
 });
 
 gulp.task('fonts', function () {
@@ -79,6 +82,10 @@ gulp.task('extras', function () {
 	}).pipe(gulp.dest('dist'));
 });
 
+gulp.task('assets', ['clean'], function (cb) {
+	runSequence(['html', 'media', 'fonts', 'extras'], cb);
+});
+
 // inject bower components
 gulp.task('wiredep', function () {
 	var wiredep = require('wiredep').stream;
@@ -96,7 +103,9 @@ gulp.task('wiredep', function () {
 		.pipe(gulp.dest('app'));
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+gulp.task('clean', function (cb) {
+	del(['.tmp', 'dist'], cb);
+});
 
 gulp.task('connect', ['styles'], function () {
 	var serveStatic = require('serve-static');
@@ -127,10 +136,14 @@ gulp.task('watch', ['connect'], function () {
 		'app/*.html',
 		'.tmp/styles/**/*.css',
 		'app/scripts/**/*.js',
-		'app/images/**/*'
+		'app/media/**/*'
 	]).on('change', $.livereload.changed);
 
-	gulp.watch('app/styles/**/*.scss', ['styles']);
+	gulp.watch('app/styles/**/*.scss', function (e) {
+		if (e.type === 'changed') {
+			gulp.start('styles');
+		}
+	});
 	gulp.watch('bower.json', ['wiredep']);
 });
 
@@ -138,7 +151,7 @@ gulp.task('serve', ['connect', 'watch'], function () {
 	require('opn')('http://localhost:9000');
 });
 
-gulp.task('build', ['lint', 'html', 'fonts', 'extras'], function () {
+gulp.task('build', ['assets'], function () {
 	return gulp.src('dist/**/*').pipe($.size({
 		title: 'build',
 		gzip: true
@@ -146,7 +159,7 @@ gulp.task('build', ['lint', 'html', 'fonts', 'extras'], function () {
 });
 
 gulp.task('deploy', ['build'], function () {
-	return gulp.src('./dist/**/*')
+	return gulp.src('dist/**/*')
 		.pipe($.filelog())
 		.pipe($.ghPages());
 });
