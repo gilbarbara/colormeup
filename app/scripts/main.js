@@ -1,12 +1,8 @@
 //--todo double click on type change order
-
-//todo add selected color to the list
-//todo save list on localStorage,
-
-//todo load list and maybe merge with default if not enough? 10?
 //todo double click on a color, lock it and add to the list
-//todo show list
-//todo hashchange
+//todo color box with more info (HSL, RGB)
+//todo click on color box, copy hex
+
 
 var cmu = {
 	name: 'colormeup',
@@ -269,6 +265,19 @@ var cmu = {
 				$this.addClass('active');
 
 				this.setValue({ type: $this.data('type') });
+			}.bind(this))
+
+			.on('click', '.app__boxes a', function (e) {
+				e.preventDefault();
+				var $this = $(e.currentTarget);
+
+				this.$chooser.find('.input-color').val($this.data('color'));
+
+				this.setValue({ color: '#' + $this.data('color') });
+
+				$("html, body").animate({ scrollTop: 0 }, '500', 'swing');
+
+				//copy to clipboard
 			}.bind(this))
 
 			.on('click', '.color-picker', function (e) {

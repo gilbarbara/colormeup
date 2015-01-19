@@ -165,6 +165,7 @@ gulp.task('build', ['assets'], function () {
 });
 
 gulp.task('deploy', ['build'], function () {
+	// git subtree push --prefix dist origin gh-pages
 	return gulp.src('dist/**/*')
 		.pipe($.filelog())
 		.pipe($.ghPages());

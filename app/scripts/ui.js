@@ -63,7 +63,7 @@ cmu = _.extend(cmu, {
 			color = this.changeHSLValue(max, (this.type === 's' && +this.colorObj.hsl.s === 0 ? 'l' : this.type));
 			textColor = this.textLightness(color);
 
-			boxes.push('<div style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></div>');
+			boxes.push('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>');
 
 			max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
@@ -75,7 +75,7 @@ cmu = _.extend(cmu, {
 				color = this.changeHSLValue(max, (this.type === 's' && +this.colorObj.hsl.s === 0 ? 'l' : this.type));
 				textColor = this.textLightness(color, this.type);
 
-				boxes.push('<div style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></div>');
+				boxes.push('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>');
 
 				max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 			}
@@ -102,7 +102,7 @@ cmu = _.extend(cmu, {
 			color = this.changeRGBValue(max, this.type);
 			textColor = this.textLightness(color);
 
-			boxes.push('<div style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></div>');
+			boxes.push('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>');
 
 			max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
