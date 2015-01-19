@@ -4,7 +4,8 @@
 var gulp = require('gulp'),
 	$ = require('gulp-load-plugins')(),
 	del = require('del'),
-	runSequence = require('run-sequence');
+	runSequence = require('run-sequence'),
+	merge = require('merge-stream');
 
 gulp.task('styles', function () {
 	return gulp.src('app/styles/main.scss')
@@ -56,8 +57,8 @@ gulp.task('html', [ 'styles'], function () {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('media', function () {
-	return gulp.src('app/media/**/*')
+gulp.task('images', function () {
+	return gulp.src('app/media/**/*.{jpg,png,gif}')
 		.pipe($.cache($.imagemin({
 			progressive: true,
 			interlaced: true
@@ -73,17 +74,22 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('extras', function () {
-	return gulp.src([
+	var files = gulp.src([
 		'app/*.*',
 		'!app/*.html',
 		'node_modules/apache-server-configs/dist/.htaccess'
 	], {
 		dot: true
 	}).pipe(gulp.dest('dist'));
+
+	var svg = gulp.src(['app/media/**/*.svg'])
+		.pipe(gulp.dest('dist/media'));
+
+	return merge(files, svg);
 });
 
 gulp.task('assets', ['clean'], function (cb) {
-	runSequence(['html', 'media', 'fonts', 'extras'], cb);
+	runSequence(['html', 'images', 'fonts', 'extras'], cb);
 });
 
 // inject bower components

@@ -40,6 +40,7 @@
     "gulp-useref": "^1.1.1",
     "lazypipe": "^0.2.2",
     "main-bower-files": "^2.5.0",
+    "merge-stream": "^0.1.7",
     "opn": "^1.0.1",
     "run-sequence": "^1.0.2",
     "serve-index": "^1.6.0",
