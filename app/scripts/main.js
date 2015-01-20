@@ -1,8 +1,9 @@
 //--todo double click on type change order
+
 //todo double click on a color, lock it and add to the list
 //todo color box with more info (HSL, RGB)
 //todo click on color box, copy hex
-
+//todo hashchange on back/forward
 
 var cmu = {
 	name: 'colormeup',

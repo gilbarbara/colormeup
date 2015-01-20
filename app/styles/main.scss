@@ -3,7 +3,7 @@
 @import '../../bower_components/bourbon/dist/_bourbon.scss';
 // endbower
 
-$icon-font-path: '../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/';
+$icon-font-path: '../fonts/';
 $font-family-sans-serif: 'Source Sans Pro', Helvetica, Arial, sans-serif !default;
 $headings-font-weight: 600;
 $screen-sm: 800px !default;
@@ -219,6 +219,10 @@ body {
       padding-bottom: 12.5%;
       width: 12.5%;
     }
+  }
+
+  .glyphicon {
+    font-size: 20px;
   }
 }
 

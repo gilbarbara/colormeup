@@ -5,49 +5,41 @@ var gulp = require('gulp'),
 	$ = require('gulp-load-plugins')(),
 	del = require('del'),
 	runSequence = require('run-sequence'),
-	merge = require('merge-stream');
+	merge = require('merge-stream'),
+	browserSync = require('browser-sync'),
+	reload = browserSync.reload;
 
 gulp.task('styles', function () {
 	return gulp.src('app/styles/main.scss')
-		.pipe($.plumber({
-			errorHandler: function (err) {
-				console.log(err);
-				this.emit('end');
-			}
-		}))
 		.pipe($.sass({
+			outputStyle: 'nested',
 			precision: 4,
-			includePaths: ['bower_components'],
-			outputStyle: 'nested'
+			includePaths: ['.'],
+			onError: console.error.bind(console, 'Sass error:')
 		}))
 		.pipe($.autoprefixer({
 			browsers: ['last 1 version']
 		}))
-		.pipe(gulp.dest('.tmp/styles'));
+		.pipe(gulp.dest('.tmp/styles'))
+		.pipe(reload({ stream: true, once: true }));
 });
 
 // Lint and Code Styling
 gulp.task('lint', function () {
 	return gulp.src(['scripts/**', '!scripts/**/*.min.js', '!scripts/vendor/*.js'])
+		.pipe(reload({ stream: true, once: true }))
 		.pipe($.eslint())
 		.pipe($.eslint.format())
-		.pipe($.eslint.failOnError());
+		.pipe($.if(!browserSync.active, $.eslint.failOnError()));
 });
 
-gulp.task('html', [ 'styles'], function () {
-
-	var lazypipe = require('lazypipe');
-	var cssChannel = lazypipe()
-		.pipe($.cssmin)
-		.pipe($.replace, '../bower_components/bootstrap-sass-official/assets/fonts/bootstrap', 'fonts');
-	var assets = $.useref.assets({
-		searchPath: '{.tmp,app}'
-	});
+gulp.task('html', ['styles'], function () {
+	var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
 
 	return gulp.src('app/*.html')
 		.pipe(assets)
 		.pipe($.if('*.js', $.uglify()))
-		.pipe($.if('*.css', cssChannel()))
+		.pipe($.if('*.css', $.cssmin()))
 		.pipe(assets.restore())
 		.pipe($.useref())
 		.pipe($.if('*.html', $.minifyHtml({
@@ -68,8 +60,9 @@ gulp.task('images', function () {
 
 gulp.task('fonts', function () {
 	return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
-		.pipe($.filter('**/*.{eot,svg,ttf,woff}'))
+		.pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
 		.pipe($.flatten())
+		.pipe(gulp.dest('.tmp/fonts'))
 		.pipe(gulp.dest('dist/fonts'));
 });
 
@@ -98,13 +91,13 @@ gulp.task('wiredep', function () {
 
 	gulp.src('app/styles/*.scss')
 		.pipe(wiredep({
-			exclude: ['bootstrap-sass-official']
+			exclude: ['bootstrap-sass']
 		}))
 		.pipe(gulp.dest('app/styles'));
 
 	gulp.src('app/*.html')
 		.pipe(wiredep({
-			exclude: ['bootstrap-sass-official']
+			exclude: ['bootstrap-sass']
 		}))
 		.pipe(gulp.dest('app'));
 });
@@ -113,29 +106,18 @@ gulp.task('clean', function (cb) {
 	del(['.tmp', 'dist'], cb);
 });
 
-gulp.task('connect', ['styles'], function () {
-	var serveStatic = require('serve-static');
-	var serveIndex = require('serve-index');
-	var app = require('connect')()
-		.use(require('connect-livereload')({
-			port: 35729
-		}))
-		.use(serveStatic('.tmp'))
-		.use(serveStatic('app'))
-		// paths to bower_components should be relative to the current file
-		// e.g. in app/index.html you should use ../bower_components
-		.use('/bower_components', serveStatic('bower_components'))
-		.use(serveIndex('app'));
-
-	require('http').createServer(app)
-		.listen(9000)
-		.on('listening', function () {
-			console.log('Started connect web server on http://localhost:9000');
-		});
-});
-
-gulp.task('watch', ['connect'], function () {
-	$.livereload.listen();
+gulp.task('watch', ['styles'], function () {
+	browserSync({
+		notify: true,
+		logPrefix: 'colormeup',
+		port: 3000,
+		server: {
+			baseDir: ['.tmp', 'app'],
+			routes: {
+				'/bower_components': 'bower_components'
+			}
+		}
+	});
 
 	// watch for changes
 	gulp.watch([
@@ -143,25 +125,27 @@ gulp.task('watch', ['connect'], function () {
 		'.tmp/styles/**/*.css',
 		'app/scripts/**/*.js',
 		'app/media/**/*'
-	]).on('change', $.livereload.changed);
+	]).on('change', reload);
 
 	gulp.watch('app/styles/**/*.scss', function (e) {
 		if (e.type === 'changed') {
-			gulp.start('styles');
+			return gulp.start('styles');
 		}
 	});
-	gulp.watch('bower.json', ['wiredep']);
+	gulp.watch('bower.json', ['wiredep', 'fonts', reload]);
 });
 
-gulp.task('serve', ['connect', 'watch'], function () {
-	require('opn')('http://localhost:9000');
-});
+gulp.task('serve', ['assets', 'watch']);
 
 gulp.task('build', ['assets'], function () {
 	return gulp.src('dist/**/*').pipe($.size({
 		title: 'build',
 		gzip: true
 	}));
+});
+
+gulp.task('preview', function () {
+	require('opn')('http://localhost/colormeup/dist/');
 });
 
 gulp.task('deploy', ['build'], function () {

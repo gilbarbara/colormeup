@@ -55,15 +55,10 @@ cmu = _.extend(cmu, {
 		this.log('buildHSLBoxes', 'type:', this.type, this.color, this.colorObj.hsl);
 
 		var max = (this.type === 'h' ? cmu.colorObj.hue() : (this.order === 'desc' ? settings.max : 0)),
-			boxes = [],
-			color,
-			textColor;
+			boxes = [];
 
 		while (this.order === 'desc' ? max > 0 : max <= settings.max) {
-			color = this.changeHSLValue(max, (this.type === 's' && +this.colorObj.hsl.s === 0 ? 'l' : this.type));
-			textColor = this.textLightness(color);
-
-			boxes.push('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>');
+			boxes.push(this.buildBox(this.changeHSLValue(max, (this.type === 's' && +this.colorObj.hsl.s === 0 ? 'l' : this.type))));
 
 			max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
@@ -72,10 +67,7 @@ cmu = _.extend(cmu, {
 			max = (this.order === 'desc' ? 360 : 0);
 
 			while (this.order === 'desc' ? max > cmu.colorObj.hue() : max <= cmu.colorObj.hue()) {
-				color = this.changeHSLValue(max, (this.type === 's' && +this.colorObj.hsl.s === 0 ? 'l' : this.type));
-				textColor = this.textLightness(color, this.type);
-
-				boxes.push('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>');
+				boxes.push(this.buildBox(this.changeHSLValue(max, (this.type === 's' && +this.colorObj.hsl.s === 0 ? 'l' : this.type))));
 
 				max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 			}
@@ -94,20 +86,21 @@ cmu = _.extend(cmu, {
 		this.log('buildRGBBoxes', 'type:', this.type, this.color, this.colorObj.rgb);
 
 		var max = (this.order === 'desc' ? settings.max : 0),
-			boxes = [],
-			color,
-			textColor;
+			boxes = [];
 
 		while (this.order === 'desc' ? max > 0 : max <= settings.max) {
-			color = this.changeRGBValue(max, this.type);
-			textColor = this.textLightness(color);
-
-			boxes.push('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>');
+			boxes.push(this.buildBox(this.changeRGBValue(max, this.type)));
 
 			max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
 
 		this.$app.find('.app__boxes').html('').append(boxes);
+	},
+
+	buildBox: function (color) {
+		var textColor = this.textLightness(color);
+		return '<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>';
+		//todo add <span class="glyphicon glyphicon-copy"></span>
 	},
 
 	textLightness: function (color) {
