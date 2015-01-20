@@ -3,11 +3,13 @@
 // generated on 2015-01-10 using generator-gulp-webapp 0.2.0
 var gulp = require('gulp'),
 	$ = require('gulp-load-plugins')(),
-	del = require('del'),
-	runSequence = require('run-sequence'),
-	merge = require('merge-stream'),
 	browserSync = require('browser-sync'),
-	reload = browserSync.reload;
+	del = require('del'),
+	eslint = require('eslint/lib/cli'),
+	globby = require('globby'),
+	merge = require('merge-stream'),
+	reload = browserSync.reload,
+	runSequence = require('run-sequence');
 
 gulp.task('styles', function () {
 	return gulp.src('app/styles/main.scss')
@@ -25,16 +27,29 @@ gulp.task('styles', function () {
 });
 
 // Lint and Code Styling
-gulp.task('lint', function () {
-	return gulp.src(['scripts/**', '!scripts/**/*.min.js', '!scripts/vendor/*.js'])
-		.pipe(reload({ stream: true, once: true }))
-		.pipe($.eslint())
-		.pipe($.eslint.format())
-		.pipe($.if(!browserSync.active, $.eslint.failOnError()));
+gulp.task('lint', function (cb) {
+	var patterns = ['app/scripts/*.js'];
+
+	return globby(patterns, function(err, paths) {
+		if (err) {
+			// unexpected failure, include stack
+			cb(err);
+			return;
+		}
+		console.log(paths);
+		// additional CLI options can be added here
+		var code = eslint.execute(paths.join(' '));
+		if (code) {
+			// eslint output already written, wrap up with a short message
+			cb(new $.util.PluginError('lint', new Error('ESLint error')));
+			return;
+		}
+		cb();
+	});
 });
 
 gulp.task('html', ['styles'], function () {
-	var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
+	var assets = $.useref.assets({ searchPath: ['.tmp', 'app', '.'] });
 
 	return gulp.src('app/*.html')
 		.pipe(assets)
@@ -138,10 +153,11 @@ gulp.task('watch', ['styles'], function () {
 gulp.task('serve', ['assets', 'watch']);
 
 gulp.task('build', ['assets'], function () {
-	return gulp.src('dist/**/*').pipe($.size({
-		title: 'build',
-		gzip: true
-	}));
+	return gulp.src('dist/**/*')
+		.pipe($.size({
+			title: 'build',
+			gzip: true
+		}));
 });
 
 gulp.task('preview', function () {
@@ -149,10 +165,8 @@ gulp.task('preview', function () {
 });
 
 gulp.task('deploy', ['build'], function () {
-	// git subtree push --prefix dist origin gh-pages
-	return gulp.src('dist/**/*')
-		.pipe($.filelog())
-		.pipe($.ghPages());
+	return gulp.src('dist')
+		.pipe($.subtree());
 });
 
 gulp.task('default', ['clean'], function () {

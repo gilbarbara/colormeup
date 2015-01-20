@@ -216,6 +216,16 @@ body {
     }
 
     @include md {
+      padding-bottom: 20%;
+      width: 20%;
+    }
+
+    @include lg {
+      padding-bottom: 16.666666667%;
+      width: 16.666666667%;
+    }
+
+    @include xl {
       padding-bottom: 12.5%;
       width: 12.5%;
     }

@@ -127,7 +127,7 @@ var cmu = {
 		if ($('html').hasClass('inlinesvg')) {
 			$(this.$app.find('.logo svg'))
 				.find('#color').css({
-					fill: (this.colorObj.hsl.s > 10 ? (
+					fill: (this.colorObj.hsl.s > 2 ? (
 						this.colorObj.hsl2hex({
 							h: Math.abs(+this.colorObj.hsl.h + 90),
 							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -137,7 +137,7 @@ var cmu = {
 					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.6 : 1)
 				}).end()
 				.find('#me').css({
-					fill: (this.colorObj.hsl.s > 10 ? (
+					fill: (this.colorObj.hsl.s > 2 ? (
 						this.colorObj.hsl2hex({
 							h: Math.abs(+this.colorObj.hsl.h + 180),
 							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -147,7 +147,7 @@ var cmu = {
 					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.4 : 1)
 				}).end()
 				.find('#up').css({
-					fill: (this.colorObj.hsl.s > 10 ? (
+					fill: (this.colorObj.hsl.s > 2 ? (
 						this.colorObj.hsl2hex({
 							h: Math.abs(+this.colorObj.hsl.h + 270),
 							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -276,7 +276,7 @@ var cmu = {
 
 				this.setValue({ color: '#' + $this.data('color') });
 
-				$("html, body").animate({ scrollTop: 0 }, '500', 'swing');
+				$('html, body').animate({ scrollTop: 0 }, 700, 'swing');
 
 				//copy to clipboard
 			}.bind(this))
@@ -297,9 +297,10 @@ var cmu = {
 					return false;
 				}
 
-				if (e.keyCode === 13 && $this.val().length === 3) {
+				//if (e.keyCode === 13 && $this.val().length === 3) {
+
 					//todo validate hex and duplicate if 3
-				}
+				//}
 
 				var value = this.validHex($this.val().replace('#', '').substring(0, 6));
 
