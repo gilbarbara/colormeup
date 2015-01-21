@@ -51,7 +51,8 @@ var cmu = {
 			this.setOptions();
 			this.setStates();
 			this.setColor();
-			this.buildPalette();
+			this.buildDefaultPalette();
+			this.buildFavoritePalette();
 
 			if ('rgb'.indexOf(this.type) > -1) {
 				this.buildRGBBoxes();
@@ -127,7 +128,7 @@ var cmu = {
 		if ($('html').hasClass('inlinesvg')) {
 			$(this.$app.find('.logo svg'))
 				.find('#color').css({
-					fill: (this.colorObj.hsl.s > 10 ? (
+					fill: (this.colorObj.hsl.s > 8 ? (
 						this.colorObj.hsl2hex({
 							h: Math.abs(+this.colorObj.hsl.h + 90),
 							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -137,7 +138,7 @@ var cmu = {
 					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.6 : 1)
 				}).end()
 				.find('#me').css({
-					fill: (this.colorObj.hsl.s > 10 ? (
+					fill: (this.colorObj.hsl.s > 8 ? (
 						this.colorObj.hsl2hex({
 							h: Math.abs(+this.colorObj.hsl.h + 180),
 							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -147,7 +148,7 @@ var cmu = {
 					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.4 : 1)
 				}).end()
 				.find('#up').css({
-					fill: (this.colorObj.hsl.s > 10 ? (
+					fill: (this.colorObj.hsl.s > 8 ? (
 						this.colorObj.hsl2hex({
 							h: Math.abs(+this.colorObj.hsl.h + 270),
 							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -157,6 +158,15 @@ var cmu = {
 					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.2 : 1)
 				}).end();
 		}
+		console.log(this.colorObj);
+
+		this.$app.find('.app__color-info')
+			.find('.color-h').html(this.truncateDecimals(this.colorObj.hue(), 2)).end()
+			.find('.color-s').html(this.truncateDecimals(this.colorObj.saturation(), 2)).end()
+			.find('.color-l').html(this.truncateDecimals(this.colorObj.lightness(), 2)).end()
+			.find('.color-r').html(this.truncateDecimals(this.colorObj.red(), 2)).end()
+			.find('.color-g').html(this.truncateDecimals(this.colorObj.green(), 2)).end()
+			.find('.color-b').html(this.truncateDecimals(this.colorObj.blue(), 2));
 
 	},
 
@@ -177,15 +187,10 @@ var cmu = {
 		}
 
 		if (this.data.colors.indexOf(color) === -1) {
-
-			if (this.data.colors.length > 25) {
-				this.data.colors = this.data.colors.splice(1, 25);
-			}
-
 			this.data.colors.push(color);
 
 			if (this.data.colors.length === 1) {
-				this.buildPalette();
+				this.buildFavoritePalette();
 			}
 			else {
 				this.appendToPalette(color);
@@ -222,6 +227,14 @@ var cmu = {
 		return hex.match(new RegExp('[0-9A-Fa-f]', 'g'));
 	},
 
+	truncateDecimals: function (number, digits) {
+		var multiplier = Math.pow(10, digits),
+			adjustedNum = number * multiplier,
+			truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
+
+		return truncatedNum / multiplier;
+	},
+
 	getHash: function () {
 		this.log('getHash', this.hash);
 		this.hash = _.extend(this.hash, deparam(location.hash.replace('#', '')));
@@ -247,7 +260,7 @@ var cmu = {
 	setEvents: function () {
 		this.log('setEvents');
 		$(document)
-			.on('click', '.app__palette a', function (e) {
+			.on('click', '.app__menu__list .items a', function (e) {
 				e.preventDefault();
 				var $this = $(e.currentTarget);
 
@@ -276,7 +289,7 @@ var cmu = {
 
 				this.setValue({ color: '#' + $this.data('color') });
 
-				$("html, body").animate({ scrollTop: 0 }, '500', 'swing');
+				$('html, body').animate({ scrollTop: 0 }, 700, 'swing');
 
 				//copy to clipboard
 			}.bind(this))
@@ -291,15 +304,21 @@ var cmu = {
 				this.addToList(this.color);
 			}.bind(this))
 
+			.on('click', '.app__menu .close', function (e) {
+				e.preventDefault();
+				this.$app.find('.app__menu').animate({ right: -220 });
+			}.bind(this))
+
 			.on('keyup change', '.app__header .input-color', function (e) {
 				var $this = $(e.target);
 				if ([91, 37, 39].indexOf(e.keyCode) > -1) {
 					return false;
 				}
 
-				if (e.keyCode === 13 && $this.val().length === 3) {
-					//todo validate hex and duplicate if 3
-				}
+				//if (e.keyCode === 13 && $this.val().length === 3) {
+
+				//todo validate hex and duplicate if 3
+				//}
 
 				var value = this.validHex($this.val().replace('#', '').substring(0, 6));
 
@@ -354,7 +373,7 @@ var cmu = {
 			}.bind(this))
 
 			.on('dragstop.spectrum', function (e, color) {
-				this.addToList(color.toHexString());
+				//this.addToHistory(color.toHexString());
 				//this.$app.find('.color-picker').spectrum('hide');
 			}.bind(this));
 	}

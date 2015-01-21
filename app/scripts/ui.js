@@ -30,20 +30,28 @@ cmu = _.extend(cmu, {
 		}.bind(this), 2500);
 	},
 
-	buildPalette: function () {
-		var colors = [];
-		_.each(this.getColors(), function (d) {
-			colors.push('<a href="#" data-color="' + d.replace('#', '') + '" style="background-color: ' + d + '"></a>');
+	buildDefaultPalette: function () {
+		var defaultColors = [];
+		_.each(this.defaultColors, function (d) {
+			defaultColors.push('<a href="#" data-color="' + d.replace('#', '') + '" style="background-color: ' + d + '"></a>');
 		});
+		this.$app.find('.app__menu__list.default .items').html(defaultColors.join(''));
 
-		this.$app.find('.app__palette').html(colors.join(''));
+	},
+
+	buildFavoritePalette: function () {
+		var colors = [];
+		if (this.data.colors) {
+			_.each(this.getColors(), function (d) {
+				colors.push('<a href="#" data-color="' + d.replace('#', '') + '" style="background-color: ' + d + '"></a>');
+			});
+		}
+
+		this.$app.find('.app__menu__list.favorites').show().find('.items').html(colors.join(''));
 	},
 
 	appendToPalette: function (color) {
-		if (this.$app.find('.app__palette').children().size() > 25) {
-			this.$app.find('.app__palette').children(':eq(0)').remove();
-		}
-		this.$app.find('.app__palette').append('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"></a>');
+		this.$app.find('.app__menu__list.favorites .items').append('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"></a>');
 	},
 
 	buildHSLBoxes: function (options) {
