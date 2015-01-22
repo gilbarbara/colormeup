@@ -13,6 +13,9 @@ var gulp = require('gulp'),
 
 gulp.task('styles', function () {
 	return gulp.src('app/styles/main.scss')
+		.pipe($.cssjoin({
+			paths: ['app/styles', 'bower_components']
+		}))
 		.pipe($.sass({
 			outputStyle: 'nested',
 			precision: 4,
@@ -112,7 +115,7 @@ gulp.task('wiredep', function () {
 
 	gulp.src('app/*.html')
 		.pipe(wiredep({
-			exclude: ['bootstrap-sass']
+			exclude: ['bootstrap-sass', 'bower_components/spectrum/spectrum.css']
 		}))
 		.pipe(gulp.dest('app'));
 });

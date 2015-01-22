@@ -1,4 +1,4 @@
-@import url('//fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
+@import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
 // bower:scss
 @import '../../bower_components/bourbon/dist/_bourbon.scss';
 // endbower
@@ -434,6 +434,8 @@ body {
 }*/
 
 // spectrum theming
+
+@import 'spectrum/spectrum.css';
 
 .sp-container {
   background-color: rgba(#fff, 0.95);
