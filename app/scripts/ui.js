@@ -1,9 +1,12 @@
 cmu = _.extend(cmu, {
-	renderUI: function () {
+	setUI: function () {
 		this.log('renderUI');
 
-		this.$app.find('.color-picker').spectrum({
-			showPalette: true
+		window.pickers = this.$app.find('.app__picker').spectrum({
+			flat: true,
+			showButtons: false,
+			showPalette: true,
+			hideAfterPaletteSelect: true
 		});
 
 		if ($('html').hasClass('inlinesvg')) {
@@ -18,6 +21,98 @@ cmu = _.extend(cmu, {
 		else {
 			this.readyUI.resolve();
 		}
+	},
+
+	updateUI: function () {
+
+		this.log('updateUI', this.color);
+		this.$chooser.css({
+			backgroundColor: this.color,
+			borderColor: this.darken(15)
+		});
+
+		if ($('html').hasClass('inlinesvg')) {
+			$(this.$app.find('.logo svg'))
+				.find('#color').css({
+					fill: (this.colorObj.hsl.s > 8 ? (
+						this.colorObj.hsl2hex({
+							h: Math.abs(+this.colorObj.hsl.h + 90),
+							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+						})
+					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
+					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.6 : 1)
+				}).end()
+				.find('#me').css({
+					fill: (this.colorObj.hsl.s > 8 ? (
+						this.colorObj.hsl2hex({
+							h: Math.abs(+this.colorObj.hsl.h + 180),
+							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+						})
+					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
+					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.4 : 1)
+				}).end()
+				.find('#up').css({
+					fill: (this.colorObj.hsl.s > 8 ? (
+						this.colorObj.hsl2hex({
+							h: Math.abs(+this.colorObj.hsl.h + 270),
+							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+						})
+					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
+					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.2 : 1)
+				}).end();
+		}
+
+		this.$app.find('.app__toggle .icon-bar').css({
+			backgroundColor: (this.colorObj.hsl.s > 8 ? (
+				this.colorObj.hsl2hex({
+					h: Math.abs(+this.colorObj.hsl.h + 90),
+					s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+					l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+				})
+			) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333'))
+		});
+
+		this.$app.find('.app__info')
+			.find('.color-h').html(this.truncateDecimals(this.colorObj.hue(), 2)).end()
+			.find('.color-s').html(this.truncateDecimals(this.colorObj.saturation(), 2)).end()
+			.find('.color-l').html(this.truncateDecimals(this.colorObj.lightness(), 2)).end()
+			.find('.color-r').html(this.truncateDecimals(this.colorObj.red(), 2)).end()
+			.find('.color-g').html(this.truncateDecimals(this.colorObj.green(), 2)).end()
+			.find('.color-b').html(this.truncateDecimals(this.colorObj.blue(), 2));
+
+		this.buildBoxes();
+	},
+
+	setPickerOptions: function () {
+
+		var colors = this.getColors(),
+			palette = [],
+			line = [],
+			start = 0;
+
+		this.log('setPickerOptions', colors);
+
+		/*		while (start < colors.length) {
+		 if (start > 0 && start % 4 === 0) {
+		 palette.push(line);
+		 line = [];
+		 }
+		 line.push(colors[start]);
+		 start++;
+
+		 if ((Math.ceil(colors.length / 4) !== palette.length) && start === colors.length) {
+		 palette.push(line);
+		 }
+		 }*/
+
+		this.$app.find('.app__picker').spectrum('option', 'palette', colors);
+		this.$app.find('.app__picker').spectrum('option', 'color', this.color);
+		this.$app.find('.app__picker').spectrum('set', this.color);
+
+		this.$app.find('.app__picker').spectrum('reflow');
 	},
 
 	showAlert: function (msg) {
@@ -35,7 +130,7 @@ cmu = _.extend(cmu, {
 		_.each(this.defaultColors, function (d) {
 			defaultColors.push('<a href="#" data-color="' + d.replace('#', '') + '" style="background-color: ' + d + '"></a>');
 		});
-		this.$app.find('.app__menu__list.default .items').html(defaultColors.join(''));
+		this.$app.find('.app__sidebar__list.default .items').html(defaultColors.join(''));
 
 	},
 
@@ -47,11 +142,26 @@ cmu = _.extend(cmu, {
 			});
 		}
 
-		this.$app.find('.app__menu__list.favorites').show().find('.items').html(colors.join(''));
+		this.$app.find('.app__sidebar__list.favorites').show().find('.items').html(colors.join(''));
 	},
 
 	appendToPalette: function (color) {
-		this.$app.find('.app__menu__list.favorites .items').append('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"></a>');
+		this.$app.find('.app__sidebar__list.favorites .items').append('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"></a>');
+	},
+
+	buildBoxes: function () {
+		if ('rgb'.indexOf(this.type) > -1) {
+			this.buildRGBBoxes();
+		}
+		else if ('hsl'.indexOf(this.type) > -1) {
+			this.buildHSLBoxes();
+		}
+	},
+
+	buildBox: function (color) {
+		var textColor = this.textLightness(color);
+		return '<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>';
+		//todo add <span class="glyphicon glyphicon-copy"></span>
 	},
 
 	buildHSLBoxes: function (options) {
@@ -103,12 +213,6 @@ cmu = _.extend(cmu, {
 		}
 
 		this.$app.find('.app__boxes').html('').append(boxes);
-	},
-
-	buildBox: function (color) {
-		var textColor = this.textLightness(color);
-		return '<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>';
-		//todo add <span class="glyphicon glyphicon-copy"></span>
 	},
 
 	textLightness: function (color) {

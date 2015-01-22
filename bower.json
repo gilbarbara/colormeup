@@ -7,6 +7,7 @@
     "spectrum": "~1.6",
     "lodash": "~2.4",
     "jquery-deparam": "~0.2",
-    "bourbon": "~4.0"
+    "bourbon": "~4.0",
+    "jquery-bbq": "https://github.com/gilbarbara/jquery-bbq.git#~1.2.2"
   }
 }

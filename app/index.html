@@ -29,24 +29,29 @@
 	<![endif]-->
 
 	<div class="app">
-		<div class="app__menu">
-			<a href="#" class="close"><i class="glyphicon glyphicon-remove"></i> </a>
-
-			<div class="app__menu__list default">
+		<a href="#" class="app__toggle">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</a>
+		<div class="app__picker"></div>
+		<div class="app__sidebar">
+			<div class="app__sidebar__list default">
 				<div class="items"></div>
 			</div>
 
-			<div class="app__menu__list favorites">
+			<div class="app__sidebar__list favorites">
 				<a href="#">your favorites</a>
 				<div class="items"></div>
 			</div>
 
-			<div class="app__menu__list history">
+			<div class="app__sidebar__list history">
 				<a href="#">history</a>
 				<div class="items"></div>
 			</div>
 
-			<div class="app__menu__list export">
+			<div class="app__sidebar__list export">
 				<a href="#">export</a>
 				<div class="clipboard"></div>
 			</div>
@@ -73,7 +78,7 @@
 				</div>
 			</div>
 
-			<div class="app__color-info">
+			<div class="app__info">
 				<div class="hsl">
 					<div class="color-value"><div class="color-h"></div>hue</div>
 					<div class="color-value"><div class="color-s"></div>saturation</div>
@@ -116,7 +121,7 @@
 		</div>
 	</div>
 
-	<div class="app__overlay"></div>
+	<div class="app-overlay"></div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 	<script>
@@ -144,7 +149,7 @@
 	<!-- endbower -->
 	<script src="scripts/vendor/Colors.js"></script>
 	<script src="scripts/vendor/Transforms.js"></script>
-	<script src="../bower_components/jquery-deparam/jquery-deparam.js"></script>
+	<script src="../bower_components/jquery-bbq/jquery.ba-bbq.js"></script>
 
 	<script src="scripts/main.js"></script>
 	<script src="scripts/ui.js"></script>
