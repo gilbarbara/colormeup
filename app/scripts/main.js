@@ -109,50 +109,7 @@ var cmu = {
 			this.showAlert('Not a valid color');
 			return false;
 		}
-
-<<<<<<< HEAD
 		return true;
-=======
-		this.$chooser.css({
-			backgroundColor: this.color,
-			borderColor: this.darken(15)
-		});
-
-		if ($('html').hasClass('inlinesvg')) {
-			$(this.$app.find('.logo svg'))
-				.find('#color').css({
-					fill: (this.colorObj.hsl.s > 2 ? (
-						this.colorObj.hsl2hex({
-							h: Math.abs(+this.colorObj.hsl.h + 90),
-							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
-							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
-						})
-					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
-					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.6 : 1)
-				}).end()
-				.find('#me').css({
-					fill: (this.colorObj.hsl.s > 2 ? (
-						this.colorObj.hsl2hex({
-							h: Math.abs(+this.colorObj.hsl.h + 180),
-							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
-							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
-						})
-					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
-					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.4 : 1)
-				}).end()
-				.find('#up').css({
-					fill: (this.colorObj.hsl.s > 2 ? (
-						this.colorObj.hsl2hex({
-							h: Math.abs(+this.colorObj.hsl.h + 270),
-							s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
-							l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
-						})
-					) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333')),
-					fillOpacity: (this.colorObj.hsl.s < 10 ? 0.2 : 1)
-				}).end();
-		}
-
->>>>>>> 603a3b420f61ade810e6bb72577480960005978e
 	},
 
 	getColors: function (max) {
@@ -324,12 +281,7 @@ var cmu = {
 				}
 
 				//if (e.keyCode === 13 && $this.val().length === 3) {
-
-<<<<<<< HEAD
 				//todo validate hex and duplicate if 3
-=======
-					//todo validate hex and duplicate if 3
->>>>>>> 603a3b420f61ade810e6bb72577480960005978e
 				//}
 
 				var value = this.validHex($this.val().replace('#', '').substring(0, 6));

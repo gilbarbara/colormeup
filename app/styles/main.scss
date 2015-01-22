@@ -387,27 +387,10 @@ body {
       }
     }
 
-<<<<<<< HEAD
     .glyphicon {
       font-size: 20px;
-=======
-    @include md {
-      padding-bottom: 20%;
-      width: 20%;
-    }
-
-    @include lg {
-      padding-bottom: 16.666666667%;
-      width: 16.666666667%;
-    }
-
-    @include xl {
-      padding-bottom: 12.5%;
-      width: 12.5%;
->>>>>>> 603a3b420f61ade810e6bb72577480960005978e
     }
   }
-
 
 
   .box__hex {
