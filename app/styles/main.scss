@@ -1,6 +1,7 @@
 @import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
 // bower:scss
 @import '../../bower_components/bourbon/dist/_bourbon.scss';
+
 // endbower
 
 $icon-font-path: '../fonts/';
@@ -56,13 +57,94 @@ body {
   }
 
   &__toggle {
-    color: #f04;
     position: absolute;
     right: ($grid-gutter-width / 2);
     top: ($grid-gutter-width / 2);
     z-index: 15;
 
-    .icon-bar {
+    /* Scss with Bourbon */
+    .navigation-checkbox {
+      display: none;
+    }
+
+    .navigation-toggle {
+      cursor: pointer;
+      display: block;
+      height: 40px;
+      position: relative;
+      width: 35px;
+    }
+
+    .navigation-toggle-label {
+      bottom: -20px;
+      color: #000;
+      display: block;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .navigation-toggle-icon {
+      @include transition-delay(0.125s);
+      border-bottom: 5px solid currentColor;
+      display: block;
+      padding-top: 10px;
+
+      &:before,
+      &:after {
+        @include transition-delay(0s);
+        @include transform-origin(center);
+        border-top: 5px solid currentColor;
+        content: '';
+        left: 0;
+        position: absolute;
+        right: 0;
+      }
+
+      &::before {
+        top: 0;
+      }
+
+      &:after {
+        bottom: 14px;
+      }
+    }
+
+    .navigation-toggle-icon,
+    .navigation-toggle-icon:before,
+    .navigation-toggle-icon:after {
+      @include transition-property(transform, border-color);
+      @include transition-duration(0.25s);
+      @include transition-timing-function(cubic-bezier(0.5, -0.5, 0.5, 1.5));
+    }
+
+    .navigation-checkbox:checked + .navigation-toggle {
+      .navigation-toggle-icon {
+        @include transition-delay(0s);
+      }
+
+      .navigation-toggle-icon:before,
+      .navigation-toggle-icon:after {
+        @include transition-delay(0.125s);
+      }
+
+      .navigation-toggle-icon:before {
+        @include transform(translateY(8px) rotate(135deg));
+      }
+
+      .navigation-toggle-icon {
+        border-color: transparent;
+      }
+
+      .navigation-toggle-icon:after {
+        @include transform(translateY(-13px) rotate(-135deg));
+      }
+    }
+
+    /*.icon-bar {
       @include transition(color 0.3s, margin 0.3s ease-in-out, transform 0.3s, width 0.2s);
       background-color: #000;
       display: block;
@@ -108,9 +190,7 @@ body {
           margin-top: -12px;
         }
       }
-    }
-
-
+    }*/
   }
 
   &__sidebar {
@@ -128,7 +208,6 @@ body {
     &.visible {
       opacity: 1;
       right: 0;
-
     }
 
     &__list {
@@ -156,7 +235,6 @@ body {
 
         a {
           $size: (100% - (4 * 3)) / 5;
-
           border: 1px solid #bbb;
           display: inline-block;
           height: 0;
@@ -313,7 +391,6 @@ body {
         min-height: 22px;
       }
 
-
       &:nth-child(1n+4) {
         margin-top: 12px;
 
@@ -401,7 +478,6 @@ body {
       font-size: 20px;
     }
   }
-
 
   .box__hex {
     bottom: 8px;

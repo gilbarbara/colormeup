@@ -28,12 +28,15 @@
 	<![endif]-->
 
 	<div class="app">
-		<a href="#" class="app__toggle">
-			<span class="sr-only">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</a>
+		<div class="app__toggle">
+			<!-- Start of navigation toggle -->
+			<input id="navigation-checkbox" class="navigation-checkbox" type="checkbox">
+			<label class="navigation-toggle" for="navigation-checkbox">
+				<!--<span class="navigation-toggle-label">Menu</span>-->
+				<span class="navigation-toggle-icon"></span>
+			</label>
+			<!-- End of navigation toggle -->
+		</div>
 		<div class="app__picker"></div>
 		<div class="app__sidebar">
 			<div class="app__sidebar__list default">

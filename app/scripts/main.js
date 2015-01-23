@@ -266,10 +266,10 @@ var cmu = {
 				this.setPickerOptions();
 			}.bind(this))
 
-			.on('click', '.app__toggle', function (e) {
+			.on('change', '.navigation-checkbox', function (e) {
 				e.preventDefault();
 				var $this = $(e.currentTarget);
-				$this.toggleClass('collapsed');
+		console.log($this);
 				this.$app.find('.app__sidebar').toggleClass('visible');
 
 			}.bind(this))

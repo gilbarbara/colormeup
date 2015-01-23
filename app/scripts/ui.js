@@ -65,8 +65,8 @@ cmu = _.extend(cmu, {
 				}).end();
 		}
 
-		this.$app.find('.app__toggle .icon-bar').css({
-			backgroundColor: (this.colorObj.hsl.s > 8 ? (
+		this.$app.find('.app__toggle .navigation-toggle-icon').css({
+			color: (this.colorObj.hsl.s > 8 ? (
 				this.colorObj.hsl2hex({
 					h: Math.abs(+this.colorObj.hsl.h + 90),
 					s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
@@ -74,6 +74,7 @@ cmu = _.extend(cmu, {
 				})
 			) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333'))
 		});
+		console.log('before: ', this.$app.find('.app__toggle .navigation-toggle-icon:before'));
 
 		this.$app.find('.app__info')
 			.find('.color-h').html(this.truncateDecimals(this.colorObj.hue(), 2)).end()
