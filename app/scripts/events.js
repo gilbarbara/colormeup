@@ -155,4 +155,15 @@ cmu.setEvents = function () {
 		this.updateUI();
 
 	}.bind(this));
+
+	var clipboard = new ZeroClipboard( document.getElementsByClassName("copy-button") );
+
+	clipboard.on( "ready", function( readyEvent ) {
+
+		clipboard.on( "aftercopy", function( event ) {
+			console.log(event.data["text/plain"]);
+			// `this` === `client`
+			// `event.target` === the element that was clicked
+		} );
+	} );
 };

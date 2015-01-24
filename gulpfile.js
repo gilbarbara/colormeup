@@ -72,7 +72,9 @@ gulp.task('images', function () {
 		.pipe($.cache($.imagemin({
 			progressive: true,
 			interlaced: true
-		})))
+		})), {
+			verbose: true
+		})
 		.pipe(gulp.dest('dist/media'));
 });
 
@@ -126,7 +128,7 @@ gulp.task('clean', function (cb) {
 
 gulp.task('watch', ['styles'], function () {
 	browserSync({
-		notify: true,
+		notify: false,
 		logPrefix: 'colormeup',
 		server: {
 			baseDir: ['.tmp', 'app'],

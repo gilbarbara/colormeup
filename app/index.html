@@ -58,9 +58,11 @@
 
 			<div class="app__sidebar__list export">
 				<h3>values</h3>
-				<code>
-
-				</code>
+				<div class="code">
+					<div class="hex-copy clearfix"><span></span><a href="#" data-clipboard-text="copy-me" class="copy-button"><i class="glyphicon glyphicon-copy"></i></a></div>
+					<div class="rgb-copy clearfix"><span></span><a href="#" data-clipboard-text="copy-me" class="copy-button"><i class="glyphicon glyphicon-copy"></i></a></div>
+					<div class="hsl-copy clearfix"><span></span><a href="#" data-clipboard-text="copy-me" class="copy-button"><i class="glyphicon glyphicon-copy"></i></a></div>
+				</div>
 			</div>
 
 
@@ -122,11 +124,10 @@
 		<div class="app__boxes"></div>
 
 		<div class="app__footer">
-			<a href="http://kollectiv.org/" target="_blank"><img src="media/kollectiv.svg"></a>
-			<a href="https://github.com/gilbarbara/colormeup" target="_blank"><img src="media/github.svg"></a>
+			<a href="http://kollectiv.org/" target="_blank"><img src="media/kollectiv.svg" width="120"></a>
+			<a href="https://github.com/gilbarbara/colormeup" target="_blank"><img src="media/github.svg" width="50"></a>
 		</div>
 	</div>
-
 	<div class="app-overlay"></div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -152,6 +153,7 @@
 	<script src="../bower_components/jquery/dist/jquery.js"></script>
 	<script src="../bower_components/spectrum/spectrum.js"></script>
 	<script src="../bower_components/lodash/dist/lodash.compat.js"></script>
+	<script src="../bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
 	<!-- endbower -->
 	<script src="scripts/vendor/Colors.js"></script>
 	<script src="scripts/vendor/Transforms.js"></script>

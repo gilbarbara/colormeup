@@ -24,7 +24,11 @@ cmu = _.extend(cmu, {
 	},
 
 	updateUI: function () {
-		var exports = [];
+		var exports = {
+			hex: this.colorObj.hex,
+			hsl: 'hsl(' + parseInt(this.colorObj.hsl.h, 10) + ', ' + parseInt(this.colorObj.hsl.s, 10) + '%' + ', ' + parseInt(this.colorObj.hsl.l, 10) + '%' + ')',
+			rgb: 'rgb(' + this.colorObj.rgb.r + ', ' + this.colorObj.rgb.g + ', ' + this.colorObj.rgb.b + ')'
+		};
 
 		this.log('updateUI', this.color);
 		this.$chooser.css({
@@ -77,23 +81,29 @@ cmu = _.extend(cmu, {
 		});
 
 		this.$app.find('.app__info')
-			.find('.color-h').html(this.truncateDecimals(this.colorObj.hue(), 2)).end()
-			.find('.color-s').html(this.truncateDecimals(this.colorObj.saturation(), 2)).end()
-			.find('.color-l').html(this.truncateDecimals(this.colorObj.lightness(), 2)).end()
-			.find('.color-r').html(this.truncateDecimals(this.colorObj.red(), 2)).end()
-			.find('.color-g').html(this.truncateDecimals(this.colorObj.green(), 2)).end()
-			.find('.color-b').html(this.truncateDecimals(this.colorObj.blue(), 2));
+			.find('.color-h').html(parseInt(this.colorObj.hue(), 10)).end()
+			.find('.color-s').html(parseInt(this.colorObj.saturation(), 10) + '%').end()
+			.find('.color-l').html(parseInt(this.colorObj.lightness(), 10) + '%').end()
+			.find('.color-r').html(this.colorObj.red()).end()
+			.find('.color-g').html(this.colorObj.green()).end()
+			.find('.color-b').html(this.colorObj.blue());
 
 		this.buildBoxes();
 
 		$('.app-overlay').css({ backgroundColor: this.transparentize(0.3) });
 
-		exports.push('<div>' + this.colorObj.hex + '</div>');
-		exports.push('<div>rgb(' + this.colorObj.rgb.r + ', ' + this.colorObj.rgb.g + ', ' + this.colorObj.rgb.b + ')</div>');
-		exports.push('<div>hsl(' + this.colorObj.hsl.h + ', ' + this.colorObj.hsl.s + ', ' + this.colorObj.hsl.l + ')</div>');
+		this.$app.find('.app__sidebar__list.export')
+			.find('.hex-copy')
+			.find('span').text(exports.hex).end()
+			.find('a').attr('data-clipboard-text', exports.hex).end().end()
 
-		this.$app.find('.app__sidebar__list.export').show()
-			.find('code').html(exports.join(''));
+			.find('.rgb-copy')
+			.find('span').text(exports.rgb).end()
+			.find('a').attr('data-clipboard-text', exports.rgb).end().end()
+
+			.find('.hsl-copy')
+			.find('span').text(exports.hsl).end()
+			.find('a').attr('data-clipboard-text', exports.hsl)
 	},
 
 	setPickerOptions: function () {
@@ -104,19 +114,6 @@ cmu = _.extend(cmu, {
 			start = 0;
 
 		this.log('setPickerOptions', colors);
-
-		/*		while (start < colors.length) {
-		 if (start > 0 && start % 4 === 0) {
-		 palette.push(line);
-		 line = [];
-		 }
-		 line.push(colors[start]);
-		 start++;
-
-		 if ((Math.ceil(colors.length / 4) !== palette.length) && start === colors.length) {
-		 palette.push(line);
-		 }
-		 }*/
 
 		this.$app.find('.app__picker').spectrum('option', 'palette', colors);
 		this.$app.find('.app__picker').spectrum('option', 'color', this.color);
@@ -269,8 +266,6 @@ cmu = _.extend(cmu, {
 			s: this.colorObj.hsl.s,
 			l: this.colorObj.hsl.l
 		}));
-
-		console.log(color);
 
 		return 'rgba(' + color.red() + ', ' + color.green() + ', ' + color.blue() + ', ' + amount + ')';
 	}

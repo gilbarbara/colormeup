@@ -1,5 +1,4 @@
 @import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
-
 // bower:scss
 // endbower
 
@@ -187,15 +186,14 @@ body {
         }
       }
 
-      &.favorites,
-      &.history,
-      &.export {
+      &.favorites {
         display: none;
       }
 
       &.export {
-        code {
-          background-color: #ccc;
+        .code {
+          background-color: #ddd;
+          border-radius: 4px;
           color: #666;
           display: block;
           font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
@@ -203,7 +201,22 @@ body {
           padding: ($grid-gutter-width / 3);
 
           div {
-            margin-bottom: ($grid-gutter-width/6);
+            color: #666;
+            font-size: 12px;
+
+            span {
+              float: left;
+            }
+
+            a {
+              color: #666;
+              float: right;
+              text-align: right;
+            }
+
+            & + div {
+              margin-top: ($grid-gutter-width / 4);
+            }
           }
         }
       }
@@ -479,14 +492,6 @@ body {
     display: flex;
     justify-content: space-between;
     padding: ($grid-gutter-width / 2) $grid-gutter-width;
-
-    a:nth-of-type(1) img {
-      width: 120px;
-    }
-
-    a:nth-of-type(2) img {
-      width: 50px;
-    }
   }
 }
 
