@@ -23,7 +23,7 @@ gulp.task('styles', function () {
 			onError: console.error.bind(console, 'Sass error:')
 		}))
 		.pipe($.autoprefixer({
-			browsers: ['last 1 version']
+			browsers: ['last 2 versions']
 		}))
 		.pipe(gulp.dest('.tmp/styles'))
 		.pipe(reload({ stream: true }));

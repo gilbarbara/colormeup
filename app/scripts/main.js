@@ -3,7 +3,6 @@
 //todo double click on a color, lock it and add to the list
 //todo color box with more info (HSL, RGB)
 //todo click on color box, copy hex
-//todo hashchange on back/forward
 
 var cmu = {
 	name: 'colormeup',
@@ -22,9 +21,6 @@ var cmu = {
 		'#ff0044'
 	],
 	readyUI: new $.Deferred(),
-	debug: function () {
-		return (location.hostname === 'localhost');
-	},
 	hash: {},
 	types: ['h', 's', 'l', 'r', 'g', 'b'],
 	orders: ['asc', 'desc'],
@@ -34,7 +30,7 @@ var cmu = {
 	$chooser: $('.app__header'),
 
 	log: function () {
-		if (this.debug()) {
+		if (location.hostname === 'localhost') {
 			console.log(arguments);
 		}
 	},
@@ -114,7 +110,7 @@ var cmu = {
 
 	getColors: function (max) {
 		this.log('getColors', max);
-		var colors = this.data.colors.length ? this.data.colors : this.defaultColors,
+		var colors = this.data.colors.length ? this.data.colors : [],
 			single = colors[Math.floor(Math.random() * colors.length)],
 			range = colors.splice(0, max);
 
@@ -165,6 +161,15 @@ var cmu = {
 		return er.test(value);
 	},
 
+	rgb2hex: function (rgb) {
+		rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		function hex(x) {
+			return ('0' + parseInt(x, 10).toString(16)).slice(-2);
+		}
+
+		return '#' + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+	},
+
 	validHex: function (hex) {
 		return hex.match(new RegExp('[0-9A-Fa-f]', 'g'));
 	},
@@ -197,139 +202,6 @@ var cmu = {
 		}
 		this.hash = _.extend(this.hash, options);
 		location.hash = $.param(this.hash);
-	},
-
-	setEvents: function () {
-		this.log('setEvents');
-		$(document)
-			.on('click', '.app__sidebar__list .items a', function (e) {
-				e.preventDefault();
-				var $this = $(e.currentTarget);
-
-				this.$chooser.find('.input-color').val($this.data('color'));
-
-				this.setValue({ color: '#' + $this.data('color') });
-				this.setHash();
-				this.setPickerOptions();
-
-				this.$app.find('.app__toggle').trigger('click');
-			}.bind(this))
-
-			.on('click', '.app__type a', function (e) {
-				e.preventDefault();
-				var $this = $(e.currentTarget);
-
-				this.log('.app__type a:click', $this);
-
-				this.$app.find('.app__type a').removeClass('active');
-				$this.addClass('active');
-
-				this.setValue({ type: $this.data('type') });
-				this.setHash();
-			}.bind(this))
-
-			.on('click', '.app__boxes a', function (e) {
-				e.preventDefault();
-				var $this = $(e.currentTarget);
-
-				this.$chooser.find('.input-color').val($this.data('color'));
-
-				this.setValue({ color: '#' + $this.data('color') });
-				this.setPickerOptions();
-				this.setHash();
-
-				$('html, body').animate({ scrollTop: 0 }, 700, 'swing');
-
-				//todo copy to clipboard
-			}.bind(this))
-
-			.on('click', '.color-picker', function (e) {
-				e.preventDefault();
-				var $this = $(e.currentTarget),
-					$picker = this.$app.find('.sp-container');
-
-				console.log($this.offset(), $picker.width(), $picker.height());
-
-				$picker.css({
-					top: ($this.offset().left + 20 > $picker.width() ? $this.offset().top : $this.offset().top + 200),
-					left: ($this.offset().left + 20 > $picker.width() ? ($this.offset().left - $picker.width()) - 10 : $this.offset().left)
-				}).fadeToggle();
-
-				$picker.show();
-				this.setPickerOptions();
-
-			}.bind(this))
-
-			.on('click', '.save-color', function (e) {
-				e.preventDefault();
-				this.addToList(this.color);
-				this.setPickerOptions();
-			}.bind(this))
-
-			.on('change', '.navigation-checkbox', function (e) {
-				e.preventDefault();
-				var $this = $(e.currentTarget);
-		console.log($this);
-				this.$app.find('.app__sidebar').toggleClass('visible');
-
-			}.bind(this))
-
-			.on('keyup change', '.app__header .input-color', function (e) {
-				var $this = $(e.target);
-				if ([91, 37, 39].indexOf(e.keyCode) > -1) {
-					return false;
-				}
-
-				//if (e.keyCode === 13 && $this.val().length === 3) {
-				//todo validate hex and duplicate if 3
-				//}
-
-				var value = this.validHex($this.val().replace('#', '').substring(0, 6));
-
-				var color = (value) ? value.join('') : '';
-
-				$this.val(color);
-
-				if (color.length === 6) {
-					this.setValue({ color: '#' + color });
-					this.setHash();
-				}
-			}.bind(this))
-
-			.on('keyup change', '.app__header .input-steps', function (e) {
-				var $this = $(e.target);
-
-				if ($this.val().trim()) {
-					var steps = parseInt($this.val(), 10);
-					steps = steps > 0 ? steps : 1;
-
-					$this.val(steps);
-					this.setValue({ steps: steps });
-					this.setHash();
-				}
-
-			}.bind(this))
-
-			.on('move.spectrum', function (e, color) {
-				this.setValue({ color: color.toHexString() });
-				this.setHash();
-			}.bind(this))
-
-			.on('dragstop.spectrum', function (e, color) {
-				//this.addToHistory(color.toHexString());
-				//this.$app.find('.app__picker').spectrum('hide');
-			}.bind(this));
-
-		$(window).hashchange(function () {
-			this.getHash();
-
-			this.setValue(this.hash);
-			this.updateUI();
-
-			console.log(location.hash);
-		}.bind(this));
-
-		// Trigger the event (useful on page load).
 	}
 };
 

@@ -9,7 +9,16 @@
 	<meta property="og:description" content="Know every variation of your favorite color's spectrum" />
 	<meta property="og:image" content="http://gilbarbara.github.io/colormeup/media/og-image.png" />
 	<title>colormeup</title>
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="apple-touch-icon" href="media/icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="media/icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="media/icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="media/icon-57x57@2x.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="media/icon-60x60@2x.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="media/icon-72x72@2x.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="media/icon-76x76@2x.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="media/icon-60x60@3x.png">
+	<link rel="apple-touch-icon" sizes="228x228" href="media/icon-57x57@4x.png">
+	<link rel="icon" sizes="192x192" href="media/icon-192x192.png">
 
 	<!-- build:css styles/main.css -->
 	<!-- bower:css -->
@@ -22,40 +31,36 @@
 	<!-- endbuild -->
 </head>
 <body>
-	<!--[if lt IE 11]>
+	<!--[if lt IE 10]>
 	<div class="browsehappy">You are using an <strong>outdated</strong> browser. Please
 		<a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
 	<![endif]-->
 
 	<div class="app">
 		<div class="app__toggle">
-			<!-- Start of navigation toggle -->
 			<input id="navigation-checkbox" class="navigation-checkbox" type="checkbox">
 			<label class="navigation-toggle" for="navigation-checkbox">
 				<!--<span class="navigation-toggle-label">Menu</span>-->
 				<span class="navigation-toggle-icon"></span>
 			</label>
-			<!-- End of navigation toggle -->
 		</div>
 		<div class="app__picker"></div>
 		<div class="app__sidebar">
 			<div class="app__sidebar__list default">
+				<h3>starter kit<a href="#" title="Remove these forever!"><span class="glyphicon glyphicon-remove"></span></a></h3>
 				<div class="items"></div>
 			</div>
 
 			<div class="app__sidebar__list favorites">
-				<a href="#">your favorites</a>
-				<div class="items"></div>
-			</div>
-
-			<div class="app__sidebar__list history">
-				<a href="#">history</a>
+				<h3>your favorites<a href="#" title="Erase your favorites"><span class="glyphicon glyphicon-refresh"></span></a></h3>
 				<div class="items"></div>
 			</div>
 
 			<div class="app__sidebar__list export">
-				<a href="#">export</a>
-				<div class="clipboard"></div>
+				<h3>values</h3>
+				<code>
+
+				</code>
 			</div>
 
 
@@ -117,9 +122,8 @@
 		<div class="app__boxes"></div>
 
 		<div class="app__footer">
-			<a href="http://kollectiv.org/" target="_blank"><img src="http://kollectiv.org/media/kollectiv.png"></a>
-			<a href="https://github.com/gilbarbara/colormeup" target="_blank"><img
-				src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png"></a>
+			<a href="http://kollectiv.org/" target="_blank"><img src="media/kollectiv.svg"></a>
+			<a href="https://github.com/gilbarbara/colormeup" target="_blank"><img src="media/github.svg"></a>
 		</div>
 	</div>
 
@@ -156,6 +160,7 @@
 
 	<script src="scripts/main.js"></script>
 	<script src="scripts/ui.js"></script>
+	<script src="scripts/events.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

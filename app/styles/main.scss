@@ -1,7 +1,6 @@
 @import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
-// bower:scss
-@import '../../bower_components/bourbon/dist/_bourbon.scss';
 
+// bower:scss
 // endbower
 
 $icon-font-path: '../fonts/';
@@ -62,7 +61,6 @@ body {
     top: ($grid-gutter-width / 2);
     z-index: 15;
 
-    /* Scss with Bourbon */
     .navigation-checkbox {
       display: none;
     }
@@ -88,15 +86,15 @@ body {
     }
 
     .navigation-toggle-icon {
-      @include transition-delay(0.125s);
       border-bottom: 5px solid currentColor;
       display: block;
       padding-top: 10px;
+      transition-delay: 0.125s;
 
       &:before,
       &:after {
-        @include transition-delay(0s);
-        @include transform-origin(center);
+        transition-delay: 0s;
+        transform-origin: center;
         border-top: 5px solid currentColor;
         content: '';
         left: 0;
@@ -116,81 +114,31 @@ body {
     .navigation-toggle-icon,
     .navigation-toggle-icon:before,
     .navigation-toggle-icon:after {
-      @include transition-property(transform, border-color);
-      @include transition-duration(0.25s);
-      @include transition-timing-function(cubic-bezier(0.5, -0.5, 0.5, 1.5));
+      transition-property: transform, border-color;
+      transition-duration: 0.25s;
+      transition-timing-function: cubic-bezier(0.5, -0.5, 0.5, 1.5);
     }
 
     .navigation-checkbox:checked + .navigation-toggle {
       .navigation-toggle-icon {
-        @include transition-delay(0s);
-      }
-
-      .navigation-toggle-icon:before,
-      .navigation-toggle-icon:after {
-        @include transition-delay(0.125s);
-      }
-
-      .navigation-toggle-icon:before {
-        @include transform(translateY(8px) rotate(135deg));
-      }
-
-      .navigation-toggle-icon {
         border-color: transparent;
-      }
+        transition-delay: 0s;
 
-      .navigation-toggle-icon:after {
-        @include transform(translateY(-13px) rotate(-135deg));
-      }
-    }
+        &:before,
+        &:after {
+          border-color: #999 !important;
+          transition-delay: 0.125s;
+        }
 
-    /*.icon-bar {
-      @include transition(color 0.3s, margin 0.3s ease-in-out, transform 0.3s, width 0.2s);
-      background-color: #000;
-      display: block;
-      height: 3px;
-      width: 24px;
+        &:before {
+          transform: translateY(8px) rotate(135deg);
+        }
 
-      @include sm {
-        width: 32px;
-      }
-
-      + .icon-bar {
-        margin-top: 4px;
-
-        @include sm {
-          margin-top: 6px;
+        &:after {
+          transform: translateY(-13px) rotate(-135deg);
         }
       }
     }
-
-    &.collapsed {
-      .icon-bar {
-        background-color: #000 !important;
-      }
-
-      .icon-bar:nth-of-type(2) {
-        @include transform(rotate(45deg));
-        margin-top: 5px;
-      }
-
-      .icon-bar:nth-of-type(3) {
-        visibility: hidden;
-      }
-
-      .icon-bar:nth-of-type(4) {
-        @include transform(rotate(-45deg));
-        margin-top: -10px;
-
-        @include sm {
-          margin-top: -7px;
-        }
-
-        @include md {
-          margin-top: -12px;
-        }
-      }
-    }*/
   }
 
   &__sidebar {
@@ -211,19 +159,49 @@ body {
     }
 
     &__list {
-      > a {
+      h3 {
+        color: #999;
         display: block;
         font-family: Montserrat, sans-serif;
-        font-size: 17px;
+        font-size: 14px;
         font-weight: 700;
         margin-bottom: ($grid-gutter-width / 3);
         text-transform: uppercase;
+
+        @include md {
+          &:hover {
+            a {
+              display: inline-block;
+              font-size: 12px;
+            }
+          }
+        }
+
+        a {
+          color: #f00;
+          margin-left: 4px;
+
+          @include md {
+            display: none;
+          }
+        }
       }
 
       &.favorites,
       &.history,
       &.export {
         display: none;
+      }
+
+      &.export {
+        code {
+          background-color: #f7f7f7;
+          color: #666;
+          display: block;
+          font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+          margin-top: 15px;
+          padding: ($grid-gutter-width / 3);
+        }
       }
 
       + div {
@@ -264,18 +242,16 @@ body {
     background-color: #dcdcdc;
     border-bottom: 4px solid #ccc;
     margin: 0 auto;
-    padding: 3rem 5%;
+    padding: 1rem 15px;
     text-align: center;
     width: 100%;
 
-    @include media-query-size(550px) {
-      padding-left: 5%;
-      padding-right: 5%;
+    @include sm {
+      padding: 1rem 5%;
     }
 
     @include md {
-      padding-left: 20%;
-      padding-right: 20%;
+      padding: 3rem 20%;
     }
 
     @include lg {
@@ -285,9 +261,16 @@ body {
 
     .logo {
       height: 0;
-      margin: 0 auto;
       padding-bottom: calc(80% / 5);
       width: 80%;
+
+      @include sm {
+        margin: 0 auto;
+      }
+
+      svg g {
+        cursor: pointer;
+      }
     }
   }
 
@@ -494,7 +477,7 @@ body {
     padding: ($grid-gutter-width / 2) $grid-gutter-width;
 
     a:nth-of-type(1) img {
-      width: 90px;
+      width: 120px;
     }
 
     a:nth-of-type(2) img {
@@ -504,20 +487,27 @@ body {
 }
 
 .inlinesvg {
-  .app__header .logo img {
-    display: none;
+  .app__header {
+    .logo img {
+      display: none;
+    }
   }
 }
 
-/*.app-overlay {
+.app-overlay {
   background-color: rgba(#000, 0.2);
   bottom: 0;
+  display: none;
   left: 0;
   position: absolute;
   right: 0;
   top: 0;
   z-index: 5;
-}*/
+
+  &.visible {
+    display: block;
+  }
+}
 
 // spectrum theming
 
@@ -530,7 +520,7 @@ body {
   position: absolute !important;
 
   .sp-palette {
-    max-width: 90px;
+    width: 75px;
   }
 
   .sp-picker-container {
@@ -547,4 +537,3 @@ body {
     margin-top: 8px;
   }
 }
-

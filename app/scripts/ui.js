@@ -24,6 +24,7 @@ cmu = _.extend(cmu, {
 	},
 
 	updateUI: function () {
+		var exports = [];
 
 		this.log('updateUI', this.color);
 		this.$chooser.css({
@@ -65,7 +66,7 @@ cmu = _.extend(cmu, {
 				}).end();
 		}
 
-		this.$app.find('.app__toggle .navigation-toggle-icon').css({
+		this.$app.find('.app__toggle .navigation-toggle-icon, .app__sidebar__list > a').css({
 			color: (this.colorObj.hsl.s > 8 ? (
 				this.colorObj.hsl2hex({
 					h: Math.abs(+this.colorObj.hsl.h + 90),
@@ -74,7 +75,6 @@ cmu = _.extend(cmu, {
 				})
 			) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333'))
 		});
-		console.log('before: ', this.$app.find('.app__toggle .navigation-toggle-icon:before'));
 
 		this.$app.find('.app__info')
 			.find('.color-h').html(this.truncateDecimals(this.colorObj.hue(), 2)).end()
@@ -85,6 +85,16 @@ cmu = _.extend(cmu, {
 			.find('.color-b').html(this.truncateDecimals(this.colorObj.blue(), 2));
 
 		this.buildBoxes();
+
+		$('.app-overlay').css({ backgroundColor: this.transparentize(0.3) });
+
+		exports.push(this.colorObj.hex);
+		exports.push('rgb(' + this.colorObj.rgb.r + ', ' + this.colorObj.rgb.g + ', ' + this.colorObj.rgb.b + ')');
+
+		exports.push('hsl(' + this.colorObj.hsl.h + ', ' + this.colorObj.hsl.s + ', ' + this.colorObj.hsl.l + ')');
+
+		this.$app.find('.app__sidebar__list.export').show()
+			.find('code').html(exports.join('<br>'));
 	},
 
 	setPickerOptions: function () {
@@ -143,11 +153,13 @@ cmu = _.extend(cmu, {
 			});
 		}
 
-		this.$app.find('.app__sidebar__list.favorites').show().find('.items').html(colors.join(''));
+		if (colors.length) {
+			this.$app.find('.app__sidebar__list.favorites').show().find('.items').html(colors.join(''));
+		}
 	},
 
 	appendToPalette: function (color) {
-		this.$app.find('.app__sidebar__list.favorites .items').append('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"></a>');
+		this.$app.find('.app__sidebar__list.favorites .items').show().append('<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"></a>');
 	},
 
 	buildBoxes: function () {
@@ -250,5 +262,17 @@ cmu = _.extend(cmu, {
 
 	darken: function (val) {
 		return Transforms.darken(this.colorObj, val);
+	},
+
+	transparentize: function (amount, degree) {
+		var color = new Color(this.colorObj.hsl2hex({
+			h: Math.abs(+this.colorObj.hsl.h + (degree ? degree : 90)),
+			s: this.colorObj.hsl.s,
+			l: this.colorObj.hsl.l
+		}));
+
+		console.log(color);
+
+		return 'rgba(' + color.red() + ', ' + color.green() + ', ' + color.blue() + ', ' + amount + ')';
 	}
 });
