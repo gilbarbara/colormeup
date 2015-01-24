@@ -88,13 +88,12 @@ cmu = _.extend(cmu, {
 
 		$('.app-overlay').css({ backgroundColor: this.transparentize(0.3) });
 
-		exports.push(this.colorObj.hex);
-		exports.push('rgb(' + this.colorObj.rgb.r + ', ' + this.colorObj.rgb.g + ', ' + this.colorObj.rgb.b + ')');
-
-		exports.push('hsl(' + this.colorObj.hsl.h + ', ' + this.colorObj.hsl.s + ', ' + this.colorObj.hsl.l + ')');
+		exports.push('<div>' + this.colorObj.hex + '</div>');
+		exports.push('<div>rgb(' + this.colorObj.rgb.r + ', ' + this.colorObj.rgb.g + ', ' + this.colorObj.rgb.b + ')</div>');
+		exports.push('<div>hsl(' + this.colorObj.hsl.h + ', ' + this.colorObj.hsl.s + ', ' + this.colorObj.hsl.l + ')</div>');
 
 		this.$app.find('.app__sidebar__list.export').show()
-			.find('code').html(exports.join('<br>'));
+			.find('code').html(exports.join(''));
 	},
 
 	setPickerOptions: function () {

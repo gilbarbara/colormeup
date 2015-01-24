@@ -9,15 +9,15 @@ var cmu = {
 	colorObj: null,
 	color: null,
 	defaultColors: [
-		'#27bdbe',
-		'#2bd2a3',
-		'#5c4561',
-		'#d5408b',
+		'#30d22b',
 		'#f05350',
-		'#4F86C6',
-		'#E8871E',
+		'#443348',
+		'#ff154c',
+		'#fe7724',
+		'#1e4d84',
+		'#9bd615',
 		'#4C2719',
-		'#f0f415',
+		'#ffd200',
 		'#ff0044'
 	],
 	readyUI: new $.Deferred(),
@@ -65,7 +65,7 @@ var cmu = {
 			steps: this.steps
 		}, this.hash);
 
-		this.color = (settings.color && this.validHex(settings.color) ? '#' + settings.color : this.getColors(1));
+		this.color = settings.color && this.validHex(settings.color) ? '#' + settings.color : (this.data.color ?this.getColors(1) : this.defaultColors[Math.floor(Math.random() * 6) + 1]);
 		this.type = this.types.indexOf(settings.type) > -1 ? settings.type : 'h';
 		this.order = this.orders.indexOf(settings.order) > -1 ? settings.order : 'desc';
 		this.steps = settings.steps > 1 ? settings.steps : 4;

@@ -96,6 +96,10 @@ cmu.setEvents = function () {
 			this.$app.find('.app__toggle  .navigation-checkbox').trigger('click');
 		}.bind(this))
 
+		.on('click', '.app__sidebar__list code a', function () {
+			this.$app.find('.app__toggle  .navigation-checkbox').trigger('click');
+		}.bind(this))
+
 		.on('keyup change', '.app__header .input-color', function (e) {
 			var $this = $(e.target);
 			if ([91, 37, 39].indexOf(e.keyCode) > -1) {
