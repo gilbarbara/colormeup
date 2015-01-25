@@ -88,7 +88,6 @@ gulp.task('fonts', function () {
 gulp.task('extras', function () {
 	var files = gulp.src([
 		'app/*.*',
-		'app/CNAME',
 		'!app/*.html',
 		'node_modules/apache-server-configs/dist/.htaccess'
 	], {
@@ -172,9 +171,21 @@ gulp.task('preview', function () {
 	require('opn')('http://localhost/colormeup/dist/');
 });
 
-gulp.task('deploy', ['build'], function () {
-	return gulp.src('dist')
-		.pipe($.subtree());
+gulp.task('deploy', ['build'], function() {
+	return gulp.src('dist/**', {
+			dot: true
+		})
+		.pipe($.rsync({
+			incremental: true,
+			exclude: ['.DS_Store'],
+			progress: true,
+			root: 'dist',
+			username: 'colormeup',
+			hostname: 'colormeup.co',
+			destination: '/home/colormeup/public_html'
+		}));
+
+	//rsync -rvpa --progress --delete --exclude=.DS_Store -e "ssh -q -t" dist/* colormeup@colormeup.co:/home/colormeup/public_html
 });
 
 gulp.task('default', function () {

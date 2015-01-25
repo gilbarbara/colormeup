@@ -1,5 +1,8 @@
 Color Me Up
 =================
-Gimmicks with hue, saturation and lightness  
 
-See it live: <a href="http://gilbarbara.github.io/colormeup/" target="_blank">http://gilbarbara.github.io/colormeup/</a>
+##### Know thy color!
+
+colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).  
+
+See it live: <a href="http://colormeup.co" target="_blank">http://colormeup.co</a>
