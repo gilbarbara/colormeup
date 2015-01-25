@@ -165,7 +165,7 @@ var cmu = {
 			else {
 				this.appendToPalette(color);
 			}
-
+			this.setHash();
 			this.setData();
 		}
 	},

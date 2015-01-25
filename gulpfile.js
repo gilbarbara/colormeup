@@ -88,6 +88,7 @@ gulp.task('fonts', function () {
 gulp.task('extras', function () {
 	var files = gulp.src([
 		'app/*.*',
+		'app/CNAME',
 		'!app/*.html',
 		'node_modules/apache-server-configs/dist/.htaccess'
 	], {

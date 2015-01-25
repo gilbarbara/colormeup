@@ -29,45 +29,65 @@ cmu = _.extend(cmu, {
 
 			}.bind(this))
 
+			.on('click', '.app__sidebar__list .hide-starter', function (e) {
+				e.preventDefault();
+				this.log('Click: .app__sidebar__list.default hide');
+
+				this.$app.find('.app__sidebar__list.default').slideUp();
+				this.$app.find('.app__sidebar__list .restore-starter').slideDown();
+
+				this.data.starter = false;
+				this.setData();
+
+			}.bind(this))
+
 			.on('click', '.app__sidebar__list .erase-favorites', function (e) {
 				e.preventDefault();
 				var $this = $(e.currentTarget);
 
 				this.log('Click: .app__sidebar__list.favorites reset');
 
-				$this.parents('.app__sidebar__list.favorites').slideUp(function () {
-					$(this).find('.items').html('');
-				});
-				this.data.colors = [];
-				this.setData();
+				if ($this.find('.glyphicon').hasClass('glyphicon-ok-sign')) {
+					$this.parents('.app__sidebar__list.favorites').slideUp(function () {
+						$(this).find('.items').html('');
+					});
+					this.data.colors = [];
+					this.setData();
+				}
+				else {
+					$this.find('.glyphicon').removeClass('glyphicon-trash').addClass('glyphicon-ok-sign');
+					setTimeout(function () {
+						$this.find('.glyphicon-ok-sign').removeClass('glyphicon-ok-sign').addClass('glyphicon-trash');
+					}, 2000);
+				}
 
 			}.bind(this))
 
-			.on('click', '.app__sidebar__list .help-toggle', function (e) {
+			.on('click', '.app__sidebar__list .toggle', function (e) {
 				e.preventDefault();
-				this.log('Click: .app__sidebar__list.help toggle');
 
-				this.$app.find('.app__sidebar__list.help .text').slideToggle();
-				this.data.help = !this.data.help;
-				this.setData();
+				var $this = $(e.currentTarget);
+
+				this.log('Click: .app__sidebar__list .toggle');
+
+				$this.parents('.app__sidebar__list').find('> div').slideToggle();
+				if ($this.parents('.app__sidebar__list').hasClass('help')) {
+					this.data.help = !this.data.help;
+					this.setData();
+				}
 
 			}.bind(this))
 
-			.on('click', '.app__sidebar__list .hide-starter', function (e) {
+			.on('click', '.app__sidebar__list .restore-starter a', function (e) {
 				e.preventDefault();
-				this.log('Click: .app__sidebar__list.default hide');
 
-				this.$app.find('.app__sidebar__list.default').slideUp();
-				this.data.starter = false;
-				this.setData();
+				var $this = $(e.currentTarget);
 
-			}.bind(this))
-
-			.on('click', '.app__sidebar__list .restore-starter', function (e) {
-				e.preventDefault();
 				this.log('Click: .app__sidebar__list.default restore');
 
 				this.$app.find('.app__sidebar__list.default').slideDown();
+				$this.parent().slideUp();
+
 				this.data.starter = true;
 				this.setData();
 
@@ -81,7 +101,7 @@ cmu = _.extend(cmu, {
 
 				this.$app.find('.app__type a').removeClass('active');
 				$this.addClass('active');
-				
+
 				this.setValue({
 					type: $this.data('type'),
 					steps: (+this.steps > this.typeSteps[$this.data('type')].max ? this.typeSteps[$this.data('type')].optimal : (+this.steps === this.typeSteps[this.type].optimal ? this.typeSteps[$this.data('type')].optimal : +this.steps))

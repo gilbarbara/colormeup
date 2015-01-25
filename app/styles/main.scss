@@ -172,19 +172,19 @@ body {
 
         @include md {
           &:hover {
-            .toggle {
+            .reset {
               display: inline-block;
               font-size: 12px;
             }
           }
         }
 
-        .help-toggle {
+        .toggle {
           color: #999;
           text-decoration: none;
         }
 
-        .toggle {
+        .reset {
           color: #dc143c;
           margin-left: 4px;
 
@@ -259,6 +259,10 @@ body {
 
           &:nth-of-type(1) {
             font-size: 14px;
+          }
+
+          &.restore-starter {
+            display: none;
           }
         }
 
@@ -531,7 +535,7 @@ body {
     }
   }
 
-  .box__hex {
+  &__box {
     bottom: 8px;
     font-size: 20px;
     font-weight: 200;

@@ -13,6 +13,9 @@ cmu = _.extend(cmu, {
 		if (this.data.starter) {
 			this.$app.find('.app__sidebar__list.default').show();
 		}
+		else {
+			this.$app.find('.app__sidebar__list .restore-starter').show();
+		}
 
 		if (this.data.help) {
 			this.$app.find('.app__sidebar__list.help .text').show();
@@ -178,7 +181,7 @@ cmu = _.extend(cmu, {
 
 	buildBox: function (color) {
 		var textColor = this.textLightness(color);
-		return '<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="box__hex" style="color: ' + textColor + ';">' + color + '</div></a>';
+		return '<a href="#" data-color="' + color.replace('#', '') + '" style="background-color: ' + color + '"><div class="app__box" style="color: ' + textColor + ';">' + color + '</div></a>';
 		//todo add <span class="glyphicon glyphicon-copy"></span>
 	},
 
