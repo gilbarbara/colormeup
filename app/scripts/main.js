@@ -1,18 +1,18 @@
 //--todo double click on type change order
 
-//todo double click on a color, lock it and add to the list
-//todo color box with more info (HSL, RGB)
+//--todo double click on a color, lock it and add to the list
 //todo click on color box, copy hex
 
 var cmu = {
 	name: 'colormeup',
+	version: 1.0,
 	colorObj: null,
 	color: null,
 	defaultColors: [
 		'#30d22b',
 		'#f05350',
 		'#443348',
-		'#ff154c',
+		'#1da6d6',
 		'#fe7724',
 		'#1e4d84',
 		'#9bd615',
@@ -25,6 +25,37 @@ var cmu = {
 	types: ['h', 's', 'l', 'r', 'g', 'b'],
 	orders: ['asc', 'desc'],
 	steps: 4,
+	typeSteps: {
+		h: {
+			optimal: 4,
+			max: 360
+		},
+		s: {
+			optimal: 4,
+			max: 100
+		},
+		l: {
+			optimal: 4,
+			max: 100
+		},
+		r: {
+			optimal: 5,
+			max: 255
+		},
+		g: {
+			optimal: 5,
+			max: 255
+		},
+		b: {
+			optimal: 5,
+			max: 255
+		}
+	},
+	/*	maxSteps: function (type) {
+	 type = type ? type : this.type;
+
+	 return (type === 'h' ? 360 : (type === 's' || type === 'l' ? 100 : 255));
+	 },*/
 
 	$app: $('.app'),
 	$chooser: $('.app__header'),
@@ -38,10 +69,11 @@ var cmu = {
 	init: function () {
 		this.log('init');
 
+		this.getData();
+		this.getHash();
 		this.setUI();
+
 		this.readyUI.done(function () {
-			this.getData();
-			this.getHash();
 			this.setEvents();
 			this.setOptions();
 			this.setStates();
@@ -50,7 +82,6 @@ var cmu = {
 			this.updateUI();
 			this.buildBoxes();
 
-			this.buildDefaultPalette();
 			this.buildFavoritePalette();
 
 			this.setPickerOptions();
@@ -62,13 +93,13 @@ var cmu = {
 			type: 'h',
 			order: 'desc',
 			color: '',
-			steps: this.steps
+			steps: 4
 		}, this.hash);
 
-		this.color = settings.color && this.validHex(settings.color) ? '#' + settings.color : (this.data.color ?this.getColors(1) : this.defaultColors[Math.floor(Math.random() * 6) + 1]);
+		this.color = settings.color && this.validHex(settings.color) ? '#' + settings.color : (this.data.color ? this.getColors(1) : this.defaultColors[Math.floor(Math.random() * 6) + 1]);
 		this.type = this.types.indexOf(settings.type) > -1 ? settings.type : 'h';
 		this.order = this.orders.indexOf(settings.order) > -1 ? settings.order : 'desc';
-		this.steps = settings.steps > 1 ? settings.steps : 4;
+		this.steps = settings.steps > 1 ? settings.steps : this.typeSteps[this.types.indexOf(settings.type) > -1 ? settings.type : 'h'].optimal;
 
 		this.log('setOptions', this);
 	},
@@ -129,6 +160,7 @@ var cmu = {
 
 			if (this.data.colors.length === 1) {
 				this.buildFavoritePalette();
+				this.$app.find('.app__toggle  .navigation-checkbox').trigger('click');
 			}
 			else {
 				this.appendToPalette(color);
@@ -143,43 +175,23 @@ var cmu = {
 		this.data = JSON.parse(localStorage.getItem(this.name));
 		if (!this.data) {
 			this.data = {
+				version: this.version,
+				created: Math.floor(Date.now() / 1000),
+				updated: null,
+				starter: true,
+				help: true,
 				colors: []
 			};
+			localStorage.setItem(this.name, JSON.stringify(this.data));
 		}
-
-		localStorage.setItem(this.name, JSON.stringify(this.data));
 	},
 
 	setData: function () {
 		this.log('setData');
-		this.data.lastVisit = +new Date();
+
+		this.data.version = this.version;
+		this.data.updated = Math.floor(Date.now() / 1000);
 		localStorage.setItem(this.name, JSON.stringify(this.data));
-	},
-
-	isInt: function (value) {
-		var er = /^-?[0-9]+$/;
-		return er.test(value);
-	},
-
-	rgb2hex: function (rgb) {
-		rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-		function hex(x) {
-			return ('0' + parseInt(x, 10).toString(16)).slice(-2);
-		}
-
-		return '#' + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-	},
-
-	validHex: function (hex) {
-		return hex.match(new RegExp('[0-9A-Fa-f]', 'g'));
-	},
-
-	truncateDecimals: function (number, digits) {
-		var multiplier = Math.pow(10, digits),
-			adjustedNum = number * multiplier,
-			truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
-
-		return truncatedNum / multiplier;
 	},
 
 	getHash: function () {
@@ -197,9 +209,11 @@ var cmu = {
 		if (this.order !== 'desc') {
 			options.order = this.order;
 		}
-		if (this.steps !== 4) {
+
+		if (+this.steps !== 4) {
 			options.steps = this.steps;
 		}
+
 		this.hash = _.extend(this.hash, options);
 		location.hash = $.param(this.hash);
 	}

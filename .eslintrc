@@ -7,11 +7,10 @@
   "globals": {
     "cmu": true,
     "$": true,
-    "jQuery": false,
+    "_": false,
     "Color": false,
     "Transforms": false,
-    "deparam": false,
-    "_": false,
+    "ZeroClipboard": false,
     "module": false
   },
   "rules": {

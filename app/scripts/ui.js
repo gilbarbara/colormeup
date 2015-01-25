@@ -9,6 +9,15 @@ cmu = _.extend(cmu, {
 			hideAfterPaletteSelect: true
 		});
 
+		this.buildDefaultPalette();
+		if (this.data.starter) {
+			this.$app.find('.app__sidebar__list.default').show();
+		}
+
+		if (this.data.help) {
+			this.$app.find('.app__sidebar__list.help .text').show();
+		}
+
 		if ($('html').hasClass('inlinesvg')) {
 			return $.get('media/colormeup.svg',
 				function (svgDoc) {
@@ -103,15 +112,14 @@ cmu = _.extend(cmu, {
 
 			.find('.hsl-copy')
 			.find('span').text(exports.hsl).end()
-			.find('a').attr('data-clipboard-text', exports.hsl)
+			.find('a').attr('data-clipboard-text', exports.hsl);
+
+		this.$app.find('.app__sidebar__list.help h5').css('color', (this.colorObj.lightness() < 20 ? '#fff' : this.color));
 	},
 
 	setPickerOptions: function () {
 
-		var colors = this.getColors(),
-			palette = [],
-			line = [],
-			start = 0;
+		var colors = this.getColors();
 
 		this.log('setPickerOptions', colors);
 
@@ -137,7 +145,8 @@ cmu = _.extend(cmu, {
 		_.each(this.defaultColors, function (d) {
 			defaultColors.push('<a href="#" data-color="' + d.replace('#', '') + '" style="background-color: ' + d + '"></a>');
 		});
-		this.$app.find('.app__sidebar__list.default .items').html(defaultColors.join(''));
+		this.$app.find('.app__sidebar__list.default')
+			.find('.items').html(defaultColors.join(''));
 
 	},
 
