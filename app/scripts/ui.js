@@ -1,6 +1,6 @@
 cmu = _.extend(cmu, {
 	setUI: function () {
-		this.log('renderUI');
+		this.log('setUI');
 
 		window.pickers = this.$app.find('.app__picker').spectrum({
 			flat: true,

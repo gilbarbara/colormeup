@@ -81,7 +81,7 @@ cmu = _.extend(cmu, {
 
 				this.$app.find('.app__type a').removeClass('active');
 				$this.addClass('active');
-				console.log(+this.steps === this.typeSteps[this.type].optimal);
+				
 				this.setValue({
 					type: $this.data('type'),
 					steps: (+this.steps > this.typeSteps[$this.data('type')].max ? this.typeSteps[$this.data('type')].optimal : (+this.steps === this.typeSteps[this.type].optimal ? this.typeSteps[$this.data('type')].optimal : +this.steps))

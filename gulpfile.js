@@ -82,8 +82,7 @@ gulp.task('fonts', function () {
 	return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
 		.pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
 		.pipe($.flatten())
-		.pipe(gulp.dest('.tmp/fonts'))
-		.pipe(gulp.dest('dist/fonts'));
+		.pipe(gulp.dest('.tmp/fonts'));
 });
 
 gulp.task('extras', function () {
@@ -98,11 +97,18 @@ gulp.task('extras', function () {
 	var svg = gulp.src(['app/media/**/*.svg'])
 		.pipe(gulp.dest('dist/media'));
 
-	return merge(files, svg);
+	var fonts = gulp.src(['.tmp/fonts/*'])
+		.pipe(gulp.dest('dist/fonts'));
+
+	var scripts = gulp.src(['bower_components/zeroclipboard/dist/ZeroClipboard.swf'])
+		.pipe(gulp.dest('dist/scripts'));
+
+
+	return merge(files, svg, fonts);
 });
 
 gulp.task('assets', ['clean'], function (cb) {
-	runSequence(['html', 'images', 'fonts', 'extras'], cb);
+	runSequence('fonts', ['html', 'images', 'fonts', 'extras'], cb);
 });
 
 // inject bower components
@@ -123,10 +129,10 @@ gulp.task('wiredep', function () {
 });
 
 gulp.task('clean', function (cb) {
-	del(['.tmp', 'dist'], cb);
+	del(['dist'], cb);
 });
 
-gulp.task('watch', ['styles'], function () {
+gulp.task('serve', ['fonts'], function () {
 	browserSync({
 		notify: false,
 		logPrefix: 'colormeup',
@@ -138,7 +144,6 @@ gulp.task('watch', ['styles'], function () {
 		}
 	});
 
-	// watch for changes
 	gulp.watch([
 		'app/*.html',
 		'app/scripts/**/*.js',
@@ -150,10 +155,9 @@ gulp.task('watch', ['styles'], function () {
 			return gulp.start('styles');
 		}
 	});
+
 	gulp.watch('bower.json', ['wiredep', 'fonts', reload]);
 });
-
-gulp.task('serve', ['assets', 'watch']);
 
 gulp.task('build', ['assets'], function () {
 	return gulp.src('dist/**/*')
@@ -172,6 +176,6 @@ gulp.task('deploy', ['build'], function () {
 		.pipe($.subtree());
 });
 
-gulp.task('default', ['clean'], function () {
+gulp.task('default', function () {
 	gulp.start('serve');
 });
