@@ -2,6 +2,8 @@
 
 //--todo double click on a color, lock it and add to the list
 //todo click on color box, copy hex
+//todo fix SVG bug on mobile safari
+//todo fix app__toggle bar on mobile safari (currentColor), maybe append a style tag?
 
 var cmu = {
 	name: 'colormeup',

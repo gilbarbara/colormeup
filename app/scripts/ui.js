@@ -40,7 +40,14 @@ cmu = _.extend(cmu, {
 			hex: this.colorObj.hex,
 			hsl: 'hsl(' + parseInt(this.colorObj.hsl.h, 10) + ', ' + parseInt(this.colorObj.hsl.s, 10) + '%' + ', ' + parseInt(this.colorObj.hsl.l, 10) + '%' + ')',
 			rgb: 'rgb(' + this.colorObj.rgb.r + ', ' + this.colorObj.rgb.g + ', ' + this.colorObj.rgb.b + ')'
-		};
+			},
+			currentColor = (this.colorObj.hsl.s > 8 ? (
+				this.colorObj.hsl2hex({
+					h: Math.abs(+this.colorObj.hsl.h + 90),
+					s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
+					l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
+				})
+			) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333'));
 
 		this.log('updateUI', this.color);
 		this.$chooser.css({
@@ -83,14 +90,8 @@ cmu = _.extend(cmu, {
 		}
 
 		this.$app.find('.app__toggle .navigation-toggle-icon, .app__sidebar__list > a').css({
-			color: (this.colorObj.hsl.s > 8 ? (
-				this.colorObj.hsl2hex({
-					h: Math.abs(+this.colorObj.hsl.h + 90),
-					s: (+this.colorObj.hsl.s < 30 ? Math.abs(+this.colorObj.hsl.s + 30) : +this.colorObj.hsl.s),
-					l: (+this.colorObj.hsl.l < 35 ? +this.colorObj.hsl.l + 20 : +this.colorObj.hsl.l)
-				})
-			) : (+this.colorObj.hsl.l < 30 ? '#FFF' : '#333'))
-		});
+			color: currentColor
+		}).attr('data-color', currentColor);
 
 		this.$app.find('.app__info')
 			.find('.color-h').html(parseInt(this.colorObj.hue(), 10)).end()

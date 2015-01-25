@@ -93,13 +93,13 @@ body {
 
       &:before,
       &:after {
-        transition-delay: 0s;
-        transform-origin: center;
         border-top: 5px solid currentColor;
         content: '';
         left: 0;
         position: absolute;
         right: 0;
+        transform-origin: center;
+        transition-delay: 0s;
       }
 
       &::before {
@@ -114,8 +114,8 @@ body {
     .navigation-toggle-icon,
     .navigation-toggle-icon:before,
     .navigation-toggle-icon:after {
-      transition-property: transform, border-color;
       transition-duration: 0.25s;
+      transition-property: transform, border-color;
       transition-timing-function: cubic-bezier(0.5, -0.5, 0.5, 1.5);
     }
 
@@ -333,8 +333,15 @@ body {
         margin: 0 auto;
       }
 
-      svg g {
-        cursor: pointer;
+      svg {
+        pointer-events: none;
+
+        @include md {
+          path {
+            cursor: pointer;
+            pointer-events: painted;
+          }
+        }
       }
     }
   }
@@ -366,6 +373,7 @@ body {
     }
 
     .form-control {
+      -webkit-appearance: none;
       font-size: 24px;
       padding-left: 30px;
 
@@ -562,6 +570,7 @@ body {
 .app-overlay {
   background-color: rgba(#000, 0.2);
   bottom: 0;
+  cursor: pointer;
   display: none;
   left: 0;
   position: absolute;
@@ -584,6 +593,8 @@ body {
   border-radius: 5px;
   display: none;
   position: absolute !important;
+  min-width: 290px;
+
 
   .sp-palette {
     width: 75px;
@@ -618,7 +629,7 @@ body {
       border-color: #999;
       border-radius: 2px;
       opacity: 1;
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
   }
 }
