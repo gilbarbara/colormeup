@@ -10,10 +10,11 @@ linters:
   ColorKeyword:
     enabled: true
 
+  ColorVariable:
+    enabled: false
+
   Comment:
-    exclude:
-      - 'styles/editor-style.scss'
-    enabled: true
+    enabled: false
 
   DebugStatement:
     enabled: true
@@ -30,7 +31,7 @@ linters:
 
   EmptyLineBetweenBlocks:
     enabled: true
-    ignore_single_line_blocks: true
+    ignore_single_line_blocks: false
 
   EmptyRule:
     enabled: true
@@ -51,7 +52,10 @@ linters:
     enabled: true
 
   IdSelector:
-    enabled: true
+    enabled: false
+
+  ImportantRule:
+    enabled: false
 
   ImportPath:
     enabled: true
@@ -73,11 +77,12 @@ linters:
 
   NameFormat:
     enabled: true
+    allow_leading_underscore: false
     convention: hyphenated_lowercase # or 'BEM', or a regex pattern
 
   NestingDepth:
     enabled: true
-    max_depth: 5
+    max_depth: 6
 
   PlaceholderInExtend:
     enabled: true
@@ -85,6 +90,7 @@ linters:
   PropertySortOrder:
     enabled: true
     ignore_unspecified: false
+    separate_groups: true
 
   PropertySpelling:
     enabled: true
@@ -98,20 +104,18 @@ linters:
 
   SelectorDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 6
 
   SelectorFormat:
-    exclude:
-      - 'styles/editor-style.scss'
     enabled: true
-    convention: BEM # or 'hyphenated_lowercase', or 'snake_case', or 'camel_case', or a regex pattern
+    convention: hyphenated_BEM # or 'hyphenated_lowercase', or 'snake_case', or 'camel_case', or a regex pattern
 
   Shorthand:
     enabled: true
 
   SingleLinePerProperty:
     enabled: true
-    allow_single_line_rule_sets: true
+    allow_single_line_rule_sets: false
 
   SingleLinePerSelector:
     enabled: true
@@ -143,7 +147,7 @@ linters:
     enabled: true
 
   TrailingZero:
-    enabled: false
+    enabled: true
 
   UnnecessaryMantissa:
     enabled: true
@@ -157,14 +161,12 @@ linters:
   UrlQuotes:
     enabled: true
 
-  VendorPrefixes:
+  VariableForProperty:
+    enabled: false
+
+  VendorPrefix:
     enabled: true
     identifier_list: base
-    include: []
-    exclude: []
 
   ZeroUnit:
     enabled: true
-
-  Compass::*:
-    enabled: false

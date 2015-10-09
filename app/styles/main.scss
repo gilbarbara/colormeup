@@ -145,8 +145,8 @@ body {
     background-color: rgba(#000, 1);
     bottom: 0;
     height: 100%;
-    overflow: auto;
     opacity: 0;
+    overflow: auto;
     padding: ($grid-gutter-width / 2) ($grid-gutter-width / 1.5);
     position: fixed;
     right: -220px;
@@ -208,6 +208,7 @@ body {
             display: inline;
           }
         }
+
         .code {
           background-color: #ddd;
           border-radius: 4px;
@@ -231,7 +232,7 @@ body {
               text-align: right;
             }
 
-            & + div {
+            + div {
               margin-top: ($grid-gutter-width / 4);
             }
           }
@@ -297,9 +298,9 @@ body {
     }
 
     .close {
+      left: ($grid-gutter-width / 1.5);
       position: absolute;
       top: ($grid-gutter-width / 2);
-      left: ($grid-gutter-width / 1.5);
     }
   }
 
@@ -592,9 +593,8 @@ body {
   border: 0;
   border-radius: 5px;
   display: none;
-  position: absolute !important;
   min-width: 290px;
-
+  position: absolute !important;
 
   .sp-palette {
     width: 75px;
