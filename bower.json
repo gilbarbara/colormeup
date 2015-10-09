@@ -7,6 +7,6 @@
     "spectrum": "~1.6",
     "lodash": "~2.4",
     "jquery-bbq": "https://github.com/gilbarbara/jquery-bbq.git#~1.2.2",
-    "zeroclipboard": "~2.2.0"
+    "zeroclipboard": "~2.2"
   }
 }
