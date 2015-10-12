@@ -129,10 +129,10 @@ gulp.task('wiredep', function () {
 });
 
 gulp.task('clean', function (cb) {
-	del(['dist'], cb);
+	return del(['dist'], cb);
 });
 
-gulp.task('serve', ['fonts'], function () {
+gulp.task('serve', ['assets'], function () {
 	browserSync({
 		notify: false,
 		logPrefix: 'colormeup',
