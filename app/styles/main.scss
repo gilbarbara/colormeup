@@ -1,26 +1,21 @@
 @import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
-
 // bower:scss
 // endbower
-
-$icon-font-path: '../fonts/';
-$font-family-sans-serif: 'Lato', Helvetica, Arial, sans-serif !default;
-$headings-font-weight: 700;
-$screen-sm: 800px !default;
-$screen-md: 1024px !default;
-$screen-lg: 1280px !default;
-$grid-float-breakpoint: 801px !default;
-
-@import 'bootstrap-custom';
-@import 'utils';
+@import 'base/variables';
+@import 'base/utils';
+@import 'base/bootstrap';
+@import 'fontawesome/scss/font-awesome';
+@import '../../node_modules/sass-mediaqueries/media-queries';
 
 html {
   font-size: 62.5%;
+  height: 100%;
 }
 
 body {
   font-family: 'Lato', sans-serif;
   font-size: 1.6rem;
+  min-height: 100%;
 }
 
 .browsehappy {
@@ -199,8 +194,11 @@ body {
         display: none;
       }
 
-      &.export {
+      &.visible {
+        display: block;
+      }
 
+      &.export {
         .copy-button {
           display: none;
 
@@ -266,7 +264,6 @@ body {
             display: none;
           }
         }
-
 
       }
 
@@ -351,30 +348,39 @@ body {
     margin-top: 3rem;
     position: relative;
 
-    .input-group-btn.first:before {
-      color: #999;
-      content: '#';
-      font-size: 30px;
-      position: absolute;
-      right: -25px;
-      top: 2px;
-      z-index: 10;
+    .input-group-addon {
+      a {
+        color: $body-color;
+        display: inline-block;
+        width: 24px;
+      }
+
+      &:first-child {
+        position: relative;
+
+        &:before {
+          color: #999;
+          content: '#';
+          font-size: 30px;
+          position: absolute;
+          right: -25px;
+          top: 4px;
+          z-index: 10;
+        }
+      }
     }
 
     .input-group {
       opacity: 0.8;
 
-      .btn {
-        padding: 10px;
-      }
-
-      .glyphicon {
+      .fa {
         font-size: 24px;
       }
     }
 
     .form-control {
       -webkit-appearance: none;
+      border-width: 1px;
       font-size: 24px;
       padding-left: 30px;
 
@@ -490,11 +496,11 @@ body {
         padding-left: 26px;
       }
 
-      .glyphicon {
+      .fa {
         color: #555;
-        left: 7px;
+        left: 5px;
         position: absolute;
-        top: 22%;
+        top: 5px;
         z-index: 2;
       }
     }
@@ -539,7 +545,7 @@ body {
       }
     }
 
-    .glyphicon {
+    .fa {
       font-size: 20px;
     }
   }

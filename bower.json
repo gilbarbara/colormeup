@@ -1,12 +1,8 @@
 {
-  "name": "colormeup",
-  "private": true,
+  "name": "react-starter",
   "dependencies": {
-    "bootstrap-sass": "~3",
-    "modernizr": "~2.8",
-    "spectrum": "~1.6",
-    "lodash": "~2.4",
-    "jquery-bbq": "https://github.com/gilbarbara/jquery-bbq.git#~1.2.2",
-    "zeroclipboard": "~2.2"
+    "bootstrap": "^4",
+    "modernizr": "^2.8",
+    "fontawesome": "~4.4"
   }
 }

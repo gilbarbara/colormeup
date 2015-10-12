@@ -5,9 +5,8 @@
 root = true
 
 [*]
-
 # change these settings to your own preference
-indent_style = tab
+indent_style = space
 indent_size = 4
 
 # we recommend you to keep these unchanged
@@ -19,10 +18,15 @@ insert_final_newline = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{json,scss,sass}]
+[{package,bower}.json]
 indent_style = space
 indent_size = 2
 
 [{.eslintrc,.scss-lint.yml}]
+indent_style = space
+indent_size = 2
+
+
+[*.{scss,sass}]
 indent_style = space
 indent_size = 2

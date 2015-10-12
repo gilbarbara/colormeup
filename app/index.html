@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
 <head>
 	<meta charset="utf-8">
-	<meta name="description" content="">
+	<title>colormeup</title>
+	<meta name="description" content="colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui">
 	<meta property="og:title" content="colormeup - Know your colors" />
 	<meta property="og:url" content="http://colormeup.co" />
 	<meta property="og:description" content="colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255)." />
 	<meta property="og:image" content="http://colormeup.co/media/og-image.png" />
-	<title>colormeup</title>
 	<link rel="apple-touch-icon" href="media/icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="media/icon-72x72.png">
 	<link rel="apple-touch-icon" sizes="76x76" href="media/icon-76x76.png">
@@ -19,155 +19,34 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="media/icon-60x60@3x.png">
 	<link rel="apple-touch-icon" sizes="228x228" href="media/icon-57x57@4x.png">
 	<link rel="icon" sizes="192x192" href="media/icon-192x192.png">
-
 	<!-- build:css styles/main.css -->
-	<!-- bower:css -->
-	<!-- endbower -->
 	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
-
 	<!-- build:js scripts/vendor/modernizr.js -->
 	<script src="../bower_components/modernizr/modernizr.js"></script>
 	<!-- endbuild -->
 </head>
 <body>
 	<!--[if lt IE 10]>
-	<div class="browsehappy">You are using an <strong>outdated</strong> browser. Please
-		<a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+		your browser</a> to improve your experience.</p>
 	<![endif]-->
 
-	<div class="app">
-		<div class="app__toggle">
-			<input id="navigation-checkbox" class="navigation-checkbox" type="checkbox">
-			<label class="navigation-toggle" for="navigation-checkbox">
-				<!--<span class="navigation-toggle-label">Menu</span>-->
-				<span class="navigation-toggle-icon"></span>
-			</label>
-		</div>
-		<div class="app__picker"></div>
-		<div class="app__sidebar">
-			<div class="app__sidebar__list default">
-				<h3>starter kit<a href="#" title="Hide this kit" class="hide-starter reset"><span class="glyphicon glyphicon-eye-close"></span></a></h3>
-				<div class="items"></div>
-			</div>
+	<div id="react"></div>
 
-			<div class="app__sidebar__list favorites">
-				<h3>your favorites<a href="#" title="Erase your favorites" class="erase-favorites reset"><span class="glyphicon glyphicon-trash"></span></a></h3>
-				<div class="items"></div>
-			</div>
-
-			<div class="app__sidebar__list export">
-				<h3><a href="#" class="toggle">values</a></h3>
-				<div class="code">
-					<div class="hex-copy clearfix"><span></span><a href="#" data-clipboard-text="copy-me" class="copy-button"><i class="glyphicon glyphicon-copy"></i></a></div>
-					<div class="rgb-copy clearfix"><span></span><a href="#" data-clipboard-text="copy-me" class="copy-button"><i class="glyphicon glyphicon-copy"></i></a></div>
-					<div class="hsl-copy clearfix"><span></span><a href="#" data-clipboard-text="copy-me" class="copy-button"><i class="glyphicon glyphicon-copy"></i></a></div>
-				</div>
-			</div>
-
-			<div class="app__sidebar__list help">
-				<h3><a href="#" class="toggle"><span class="glyphicon glyphicon-question-sign"></span> Help</a></h3>
-				<div class="text">
-					<h5>Know thy color!</h5>
-					<p>colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).
-					</p>
-					<p><span class="glyphicon glyphicon-expand"></span> change the steps to get a different number of colors</p>
-					<p><span class="glyphicon glyphicon-tint"></span> open the color picker</p>
-					<p><span class="glyphicon glyphicon-heart"></span> save to your favorites</p>
-					<p class="restore-starter"><a href="#" class="btn btn-default btn-xs">Restore starter kit</a> </p>
-				</div>
-			</div>
-		</div>
-		<div class="app__message">Mensagem de erro</div>
-		<div class="app__header">
-			<div class="logo">
-				<img src="media/colormeup.png"/>
-			</div>
-
-			<div class="app__input">
-				<div class="input-group input-group-lg">
-					  <span class="input-group-btn first">
-						<a href="#" class="btn btn-default color-picker" title="Show Picker"><span
-							class="glyphicon glyphicon-tint"></span></a>
-					  </span>
-					<input type="text" class="form-control input-color" placeholder="Hex color">
-                      <span class="input-group-btn">
-						<a href="#" class="btn btn-default save-color" title="Add to Favorites"><span
-							class="glyphicon glyphicon-heart"></span></a>
-					  </span>
-				</div>
-			</div>
-
-			<div class="app__info">
-				<div class="hsl">
-					<div class="color-value"><div class="color-h"></div>hue</div>
-					<div class="color-value"><div class="color-s"></div>saturation</div>
-					<div class="color-value"><div class="color-l"></div>lightness</div>
-				</div>
-				<div class="rgb">
-					<div class="color-value"><div class="color-r"></div>red</div>
-					<div class="color-value"><div class="color-g"></div>green</div>
-					<div class="color-value"><div class="color-b"></div>blue</div>
-				</div>
-			</div>
-
-			<div class="app__type">
-				<div class="hsl">
-					<div class="btn-group" role="group" aria-label="">
-						<a href="#" class="btn btn-default" data-type="h">Hue</a>
-						<a href="#" class="btn btn-default" data-type="s">Saturation</a>
-						<a href="#" class="btn btn-default" data-type="l">Lightness</a>
-					</div>
-				</div>
-
-				<div class="rgb">
-					<div class="btn-group" role="group" aria-label="">
-						<a href="#" class="btn btn-default" data-type="r">Red</a>
-						<a href="#" class="btn btn-default" data-type="g">Green</a>
-						<a href="#" class="btn btn-default" data-type="b">Blue</a>
-					</div>
-				</div>
-				<div class="steps">
-					<span class="glyphicon glyphicon-expand"></span>
-					<input type="text" class="form-control input-steps" placeholder="steps"/>
-				</div>
-			</div>
-		</div>
-		<div class="app__boxes"></div>
-
-		<div class="app__footer">
-			<a href="http://kollectiv.org/" target="_blank"><img src="media/kollectiv.svg" width="120"></a>
-			<a href="https://github.com/gilbarbara/colormeup" target="_blank"><img src="media/github.svg" width="50"></a>
-		</div>
-	</div>
-	<div class="app-overlay"></div>
+	<!-- build:js({app,.tmp}) scripts/app.js -->
+	<script src="scripts/app.js"></script>
+	<!-- endbuild -->
 
 	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	  ga('create', 'UA-58949521-1', 'auto');
-	  ga('send', 'pageview');
+		ga('create', 'UA-58949521-1', 'auto');
+		ga('send', 'pageview');
 
 	</script>
-
-	<!-- build:js scripts/app.js -->
-	<!-- bower:js -->
-	<script src="../bower_components/jquery/dist/jquery.js"></script>
-	<script src="../bower_components/spectrum/spectrum.js"></script>
-	<script src="../bower_components/lodash/dist/lodash.compat.js"></script>
-	<script src="../bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
-	<!-- endbower -->
-	<script src="scripts/vendor/Colors.js"></script>
-	<script src="scripts/vendor/Transforms.js"></script>
-	<script src="../bower_components/jquery-bbq/jquery.ba-bbq.js"></script>
-
-	<script src="scripts/main.js"></script>
-	<script src="scripts/ui.js"></script>
-	<script src="scripts/events.js"></script>
-	<script src="scripts/utils.js"></script>
-	<!-- endbuild -->
 </body>
 </html>

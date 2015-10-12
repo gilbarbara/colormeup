@@ -14,7 +14,7 @@ linters:
     enabled: false
 
   Comment:
-    enabled: false
+    enabled: true
 
   DebugStatement:
     enabled: true
@@ -82,7 +82,7 @@ linters:
 
   NestingDepth:
     enabled: true
-    max_depth: 6
+    max_depth: 5
 
   PlaceholderInExtend:
     enabled: true
