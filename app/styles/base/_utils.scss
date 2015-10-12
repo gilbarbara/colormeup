@@ -1,0 +1,172 @@
+// #UTILS
+
+@function parse-int($n) {
+  @return $n / ($n * 0 + 1);
+}
+
+%vertical-align {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin background-image-svg($name, $width, $height) {
+  background-image: url('#{$name}.png'); // IE8 & below
+  background-image: none, url('#{$name}.svg');
+  background-size: $width $height;
+}
+
+@mixin truncate($width: 100%) {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: $width;
+  white-space: nowrap;
+}
+
+@mixin striped-bg($bg-color: #ccc, $darken-amount: 5%, $stripe-color: darken($bg-color, $darken-amount)) {
+  background: $bg-color linear-gradient(-45deg, $stripe-color 25%, transparent 25%, transparent 50%, $stripe-color 50%, $stripe-color 75%, transparent 75%, transparent);
+  background-size: 40px 40px;
+}
+
+@mixin media-query($media-query) {
+
+  @if $media-query == xs-only {
+    @media only screen and (max-width: breakpoint-max('xs')) {
+      @content;
+    }
+  }
+
+  @if $media-query == sm {
+    @media only screen and (min-width: breakpoint-min('sm')) {
+      @content;
+    }
+  }
+
+  @if $media-query == sm-only {
+    @media only screen and (max-width: breakpoint-max('md')) {
+      @content;
+    }
+  }
+
+  @if $media-query == md {
+    @media only screen and (min-width: breakpoint-min('md')) {
+      @content;
+    }
+  }
+
+  @if $media-query == lg {
+    @media only screen and (min-width: breakpoint-min('lg')) {
+      @content;
+    }
+  }
+
+  @if $media-query == xl {
+    @media only screen and (min-width: breakpoint-min('xl')) {
+      @content;
+    }
+  }
+
+  @if $media-query == retina {
+    @media (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      @content;
+    }
+  }
+}
+
+// Just mqs helpers...
+
+@mixin xs-only {
+  @include media-query(xs-only) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @include media-query(sm) {
+    @content;
+  }
+}
+
+@mixin sm-only {
+  @include media-query(sm-only) {
+    @content;
+  }
+}
+
+@mixin md {
+  @include media-query(md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @include media-query(lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @include media-query(xl) {
+    @content;
+  }
+}
+
+@mixin retina {
+  @include media-query(retina) {
+    @content;
+  }
+}
+
+@mixin material-box-shadow($level: 1) {
+  @if $level == 1 {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+  @if $level == 2 {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  @if $level == 3 {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  }
+  @if $level == 4 {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+  @if $level == 5 {
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  }
+}
+
+@mixin vertical-align($top: 50%) {
+  position: relative;
+  top: $top;
+  transform: translateY(-$top);
+}
+
+@mixin radial-gradient($from-color, $to-color) {
+  background-color: $to-color;
+  background-image: radial-gradient(ellipse at top, $from-color 0%, $to-color 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$from-color', endColorstr='$to-color', GradientType=1);
+}
+
+@mixin dashed-border($dashlength,
+$spacelength,
+$borderwidth,
+$color,
+$position: top) {
+  $per: percentage($dashlength / ($dashlength + $spacelength));
+  background-image: linear-gradient(to right, $color 0%, $color $per, rgba(0, 0, 0, 0) $per);
+  background-position: 0 $position;
+  background-size: ($dashlength + $spacelength) $borderwidth;
+  background-repeat: repeat-x;
+}
+
+@mixin dashed-border-vertical($dashlength,
+$spacelength,
+$borderwidth,
+$color,
+$position: left) {
+  $per: percentage($dashlength / ($dashlength + $spacelength));
+  background-image: linear-gradient(to bottom, $color 0%, $color $per, rgba(0, 0, 0, 0) $per);
+  background-position: $position 0;
+  background-size: $borderwidth ($dashlength + $spacelength);
+  background-repeat: repeat-y;
+}
