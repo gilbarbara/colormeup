@@ -28,7 +28,7 @@ export default class Sidebar extends React.Component {
 
 		let vars = {
 			hex: config.color,
-			hsl: 'hsl(' + math.round(config.colorObj.hue) + ', ' + math.round(config.colorObj.saturation) + '%' + ', ' + math.round(config.colorObj.lightness) + '%' + ')',
+			hsl: 'hsl(' + Math.round(config.colorObj.hue) + ', ' + Math.round(config.colorObj.saturation) + '%' + ', ' + Math.round(config.colorObj.lightness) + '%' + ')',
 			rgb: 'rgb(' + config.colorObj.red + ', ' + config.colorObj.green + ', ' + config.colorObj.blue + ')',
 			currentColor: (config.colorObj.saturation > 8 ? (
 				config.colorObj.hsl2hex({
@@ -42,34 +42,42 @@ export default class Sidebar extends React.Component {
 		return (
 			<div className="app__sidebar">
 				<div className="app__sidebar__list default">
-					<h3>starter kit<a href="#" title="Hide this kit" className="hide-starter reset"><span
-						className="fa fa-eye-slash" /></a></h3>
+					<h3>starter kit
+						<a href="#" title="Hide this kit" className="hide-starter reset">
+							<span className="fa fa-eye-slash" />
+						</a>
+					</h3>
 					<div className="items">{
 						config.defaultColors.map((d, i) => {
 							return (<a key={i} href="#" data-color={d.replace('#', '')}
-									   style={{ backgroundColor: d }}/>);
+									   style={{ backgroundColor: d }} />);
 							})
 						}</div>
 				</div>
 
 				<div className="app__sidebar__list favorites">
-					<h3>your favorites<a href="#" title="Erase your favorites"
-										 className="erase-favorites reset"><span
-						className="fa fa-trash" /></a></h3>
+					<h3>your favorites
+						<a href="#" title="Erase your favorites" className="erase-favorites reset">
+							<span className="fa fa-trash" />
+						</a></h3>
 					<div className="items"></div>
 				</div>
 
 				<div className="app__sidebar__list export">
 					<h3><a href="#" className="toggle">values</a></h3>
 					<div className="code">
-						<div className="hex-copy clearfix"><span>{vars.hex}</span><a href="#"
-																					 data-clipboard-text="copy-me"
-																					 className="copy-button"><i
-							className="fa fa-copy" /></a></div>
-						<div className="rgb-copy clearfix"><span>{vars.rgb}</span><a href="#"
-																					 data-clipboard-text="copy-me"
-																					 className="copy-button"><i
-							className="fa fa-copy" /></a></div>
+						<div className="hex-copy clearfix">
+							<span>{vars.hex}</span>
+							<a href="#" data-clipboard-text="copy-me" className="copy-button">
+								<i className="fa fa-copy" />
+							</a>
+						</div>
+						<div className="rgb-copy clearfix">
+							<span>{vars.rgb}</span>
+							<a href="#" data-clipboard-text="copy-me" className="copy-button">
+								<i className="fa fa-copy" />
+							</a>
+						</div>
 						<div className="hsl-copy clearfix"><span>{vars.hsl}</span><a href="#"
 																					 data-clipboard-text="copy-me"
 																					 className="copy-button"><i
@@ -85,13 +93,13 @@ export default class Sidebar extends React.Component {
 						<h5 style={{color: config.colorObj.lightness < 20 ? '#fff' : config.color }}>Know thy color!</h5>
 						<p>colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).
 						</p>
-						<p><span
-							className="fa fa-th" /> change the steps to get a different number of colors
+						<p>
+							<span className="fa fa-th" /> change the steps to get a different number of colors
 						</p>
 						<p><span className="fa fa-tint" /> open the color picker</p>
 						<p><span className="fa fa-heart" /> save to your favorites</p>
-						<p className="restore-starter"><a href="#"
-														  className="btn btn-default btn-xs">Restore starter kit</a>
+						<p className="restore-starter">
+							<a href="#" className="btn btn-default btn-xs">Restore starter kit</a>
 						</p>
 					</div>
 				</div>

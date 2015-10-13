@@ -31,11 +31,45 @@ export default class Header extends React.Component {
 	}
 
 	render () {
-		const props = this.props.config;
+		const config = this.props.config;
+
+		setTimeout(() => {
+			$('.logo svg')
+				.find('#color').css({
+				fill: (config.colorObj.saturation > 8 ? (
+					config.colorObj.hsl2hex({
+						h: Math.abs(config.colorObj.hue + 90),
+						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+					})
+				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				fillOpacity: (config.colorObj.saturation < 10 ? 0.6 : 1)
+			}).end()
+				.find('#me').css({
+				fill: (config.colorObj.saturation > 8 ? (
+					config.colorObj.hsl2hex({
+						h: Math.abs(config.colorObj.hue + 180),
+						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+					})
+				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				fillOpacity: (config.colorObj.saturation < 10 ? 0.4 : 1)
+			}).end()
+				.find('#up').css({
+				fill: (config.colorObj.saturation > 8 ? (
+					config.colorObj.hsl2hex({
+						h: Math.abs(config.colorObj.hue + 270),
+						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+					})
+				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
+			}).end();
+		}, 400);
 
 		return (
 			<div className="app__header"
-				 style={{ backgroundColor: props.color, borderColor: props.colorObj.darken(15) }}>
+				 style={{ backgroundColor: config.color, borderColor: config.colorObj.darken(15) }}>
 				<div className="logo">
 					<InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} />
 				</div>
@@ -48,7 +82,7 @@ export default class Header extends React.Component {
 								</a>
 					  		</span>
 						<input type="text" className="form-control input-color" placeholder="Hex color"
-							   defaultValue={props.color.replace('#', '')} />
+							   defaultValue={config.color.replace('#', '')} />
 						  <span className="input-group-addon">
 							<a href="#" className="save-color" title="Add to Favorites">
 								<span className="fa fa-heart" />
@@ -60,29 +94,29 @@ export default class Header extends React.Component {
 				<div className="app__info">
 					<div className="hsl">
 						<div className="color-value">
-							<div className="color-h">{math.round(props.colorObj.hue)}</div>
+							<div className="color-h">{Math.round(config.colorObj.hue)}</div>
 							hue
 						</div>
 						<div className="color-value">
-							<div className="color-s">{math.round(props.colorObj.saturation)}</div>
+							<div className="color-s">{Math.round(config.colorObj.saturation)}</div>
 							saturation
 						</div>
 						<div className="color-value">
-							<div className="color-l">{math.round(props.colorObj.lightness)}</div>
+							<div className="color-l">{Math.round(config.colorObj.lightness)}</div>
 							lightness
 						</div>
 					</div>
 					<div className="rgb">
 						<div className="color-value">
-							<div className="color-r">{math.round(props.colorObj.red)}</div>
+							<div className="color-r">{math.round(config.colorObj.red)}</div>
 							red
 						</div>
 						<div className="color-value">
-							<div className="color-g">{math.round(props.colorObj.green)}</div>
+							<div className="color-g">{math.round(config.colorObj.green)}</div>
 							green
 						</div>
 						<div className="color-value">
-							<div className="color-b">{math.round(props.colorObj.blue)}</div>
+							<div className="color-b">{math.round(config.colorObj.blue)}</div>
 							blue
 						</div>
 					</div>
@@ -107,7 +141,7 @@ export default class Header extends React.Component {
 					<div className="steps">
 						<span className="fa fa-th" />
 						<input type="text" className="form-control input-steps" placeholder="steps"
-							   defaultValue={props.steps} />
+							   defaultValue={config.steps} />
 					</div>
 				</div>
 				<div className="app__toggle">
