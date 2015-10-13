@@ -5,6 +5,7 @@ import deparam from 'node-jquery-deparam';
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
 
+import Loader from './common/Loader';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Boxes from './Boxes';
@@ -14,7 +15,7 @@ import Footer from './Footer';
 import mixins from '../utils/Mixins';
 import Events from './mixins/Events';
 
-class App extends mixins(Events) {
+export default class App extends mixins(Events) {
 	constructor (props) {
 		super(props);
 
@@ -76,13 +77,19 @@ class App extends mixins(Events) {
 		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
 
-	/*	static childContextTypes = {
-	 log: React.PropTypes.func
-	 }*/
+	static childContextTypes = {
+		log: React.PropTypes.func,
+		setColor: React.PropTypes.func,
+		setHash: React.PropTypes.func,
+		setValue: React.PropTypes.func
+	}
 
 	getChildContext () {
 		return {
-			log: this.log
+			log: this.log,
+			setColor: this.setColor,
+			setHash: this.setHash,
+			setValue: this.setValue
 		};
 	}
 
@@ -94,6 +101,7 @@ class App extends mixins(Events) {
 
 	componentDidMount () {
 		this.getData();
+
 		if (super.componentDidMount) {
 			super.componentDidMount();
 		}
@@ -225,26 +233,58 @@ class App extends mixins(Events) {
 		let colorObj = new Colors(state.color);
 
 		this.log('setColor', state.color);
-		this.setState(updateState(this.state, {
-			colorObj: { $set: colorObj },
-			ready: { ui: { $set: true } }
-		}));
+		this.setState({
+			colorObj
+		}, () => {
+			this.setState(updateState(this.state, {
+				ready: { ui: { $set: true } }
+			}));
+		});
+	}
+
+	setValue (options) {
+		let state = {};
+		this.log('setValue', options);
+
+		if (options.color) {
+			state.color = (options.color.indexOf('#') === -1 ? '#' : '') + options.color;
+		}
+		if (options.type) {
+			state.type = options.type;
+		}
+		if (options.steps) {
+			state.steps = options.steps;
+		}
+
+		this.setState({
+
+		}, () => {
+			if (options.color) {
+				this.setColor();
+			}
+		});
 	}
 
 	render () {
 		const state = this.state;
+		let html;
+
+		if (state.ready.ui) {
+			html = (
+				<div className="app--inner">
+					<Sidebar config={state} />
+					<Header config={state} />
+					<Boxes config={state} />
+				</div>
+			)
+		}
+		else {
+			html = <Loader />;
+		}
 
 		return (
-			<div className="app">
-				<div className="app__toggle">
-					<input id="navigation-checkbox" className="navigation-checkbox" type="checkbox" />
-					<label className="navigation-toggle" htmlFor="navigation-checkbox">
-						<span className="navigation-toggle-icon" />
-					</label>
-				</div>
-				<Sidebar />
-				<Header app={state} />
-				<Boxes app={state} />
+			<div className="app" style={{ minHeight: window.innerHeight }}>
+				{html}
 				<Footer />
 				<div className="app__message">Mensagem de erro</div>
 				<div className="app-overlay"></div>
@@ -252,9 +292,3 @@ class App extends mixins(Events) {
 		);
 	}
 }
-
-App.childContextTypes = {
-	log: React.PropTypes.func
-};
-
-export default App;
