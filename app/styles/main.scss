@@ -1,9 +1,8 @@
 @import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
-// bower:scss
-// endbower
 @import 'base/variables';
 @import 'base/utils';
 @import 'base/bootstrap';
+@import 'elements/loader';
 @import 'fontawesome/scss/font-awesome';
 @import '../../node_modules/sass-mediaqueries/media-queries';
 
@@ -31,6 +30,7 @@ body {
 }
 
 .app {
+  padding-bottom: 44px;
   position: relative;
 
   &__message {
@@ -114,7 +114,7 @@ body {
       transition-timing-function: cubic-bezier(0.5, -0.5, 0.5, 1.5);
     }
 
-    .navigation-checkbox:checked + .navigation-toggle {
+    .navigation-checkb.app__sidebarox:checked + .navigation-toggle {
       .navigation-toggle-icon {
         border-color: transparent;
         transition-delay: 0s;
@@ -142,7 +142,7 @@ body {
     height: 100%;
     opacity: 0;
     overflow: auto;
-    padding: ($grid-gutter-width / 2) ($grid-gutter-width / 1.5);
+    padding: $grid-gutter-width ($grid-gutter-width / 1.5);
     position: fixed;
     right: -220px;
     top: 0;
@@ -189,7 +189,6 @@ body {
         }
       }
 
-      &.default,
       &.favorites {
         display: none;
       }
@@ -242,10 +241,6 @@ body {
         h5 {
           font-size: 18px;
           margin-top: 0;
-        }
-
-        .text {
-          display: none;
         }
 
         p {
@@ -306,6 +301,7 @@ body {
     border-bottom: 4px solid #ccc;
     margin: 0 auto;
     padding: 1rem 15px 3rem;
+    position: relative;
     text-align: center;
     width: 100%;
 
@@ -560,9 +556,13 @@ body {
   }
 
   &__footer {
+    bottom: 0;
     display: flex;
+    left: 0;
     justify-content: space-between;
     padding: ($grid-gutter-width / 2) $grid-gutter-width;
+    position: absolute;
+    right: 0;
   }
 }
 

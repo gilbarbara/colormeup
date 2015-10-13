@@ -4,27 +4,26 @@ import updateState from 'react-addons-update';
 import Colors from '../utils/Colors';
 import Loader from './common/Loader';
 
-class Boxes extends React.Component {
+export default class Boxes extends React.Component {
 	constructor (props) {
 		super(props);
-
-		this.state = {
-			ready: false
-		};
 
 		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
 
-	componentDidUpdate (prevProps) {
-		if (this.props.app.ready.ui && prevProps.app.ready.ui !== this.props.app.ready.ui) {
-			this.setState({
-				ready: true
-			});
-		}
+	static propTypes = {
+		config: React.PropTypes.object.isRequired
+	}
+
+	static contextTypes = {
+		log: React.PropTypes.func,
+		setColor: React.PropTypes.func,
+		setHash: React.PropTypes.func,
+		setValue: React.PropTypes.func
 	}
 
 	buildBoxes () {
-		const props = this.props.app;
+		const props = this.props.config;
 
 		if ('rgb'.indexOf(props.type) > -1) {
 			return this.buildRGBBoxes();
@@ -46,7 +45,7 @@ class Boxes extends React.Component {
 	}
 
 	buildHSLBoxes (options) {
-		const props = this.props.app;
+		const props = this.props.config;
 		var settings = Object.assign({
 			max: (props.type === 'h' ? 356 : 96),
 			steps: props.steps
@@ -79,7 +78,7 @@ class Boxes extends React.Component {
 	}
 
 	buildRGBBoxes (options) {
-		const props = this.props.app;
+		const props = this.props.config;
 		var settings = Object.assign({
 			max: 255,
 			steps: this.steps
@@ -110,7 +109,7 @@ class Boxes extends React.Component {
 	}
 
 	changeHSLValue (val, type) {
-		const props = this.props.app;
+		const props = this.props.config;
 		//this.context.log('changeValue', val, type);
 
 		return props.colorObj.hsl2hex({
@@ -121,7 +120,7 @@ class Boxes extends React.Component {
 	}
 
 	changeRGBValue (val, type) {
-		const props = this.props.app;
+		const props = this.props.config;
 		//this.context.log('changeRGBValue', val, type);
 
 		return props.colorObj.rgb2hex({
@@ -132,30 +131,8 @@ class Boxes extends React.Component {
 	}
 
 	render () {
-		const state = this.state;
-		let output = {};
-
-		if (state.ready) {
-			output.html = (
-				<div className="app__boxes">
-					{this.buildBoxes()}
-				</div>
-			);
-		}
-		else {
-			output.html = <Loader />;
-		}
-
-		return output.html;
+		return (
+			<div className="app__boxes">{this.buildBoxes()}</div>
+		);
 	}
 }
-
-Boxes.propTypes = {
-	app: React.PropTypes.object.isRequired
-};
-
-Boxes.contextTypes = {
-	log: React.PropTypes.func
-};
-
-export default Boxes;

@@ -1,5 +1,6 @@
 var gulp                  = require('gulp'),
 	$                     = require('gulp-load-plugins')(),
+	babelify              = require('babelify'),
 	browserify            = require('browserify'),
 	browserSync           = require('browser-sync').create(),
 	del                   = require('del'),
@@ -44,7 +45,9 @@ function watchifyTask (options) {
 		debug: options.watch,
 		packageCache: {}, // required for watchify
 		fullPaths: options.watch, // required to be true only for watchify
-		transform: [['babelify', { ignore: /bower_components/ }]],
+		transform: [[babelify.configure({
+			optional: ["es7.classProperties"]
+		}), { ignore: /bower_components/ }]],
 		extensions: ['.jsx']
 	});
 
@@ -225,7 +228,7 @@ gulp.task('gh-pages', function () {
 gulp.task('serve', ['assets', 'scripts'], function () {
 	browserSync.init({
 		notify: true,
-		logPrefix: 'react-starter',
+		logPrefix: 'colormeup',
 		server: {
 			baseDir: [config.dest(), 'app'],
 			routes: {
