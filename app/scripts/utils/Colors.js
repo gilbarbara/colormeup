@@ -282,6 +282,24 @@ export default class Colors {
         return Math.abs(val);
     }
 
+	changeColor (color) {
+		if (color) {
+			this.hex = color.charAt(0) === '#' ? color : '#' + color;
+
+			if (!this.validHex(this.hex)) {
+				throw new Error('Not a valid color');
+			}
+
+			if (color !== null) {
+				this.rgb = this.hex2rgb(this.hex);
+			}
+
+			if (this.rgb !== null) {
+				this.hsl = this.rgb2hsl(this.rgb);
+			}
+		}
+	}
+
     /**
      * Get Red
      * @member
@@ -317,6 +335,19 @@ export default class Colors {
     get hue () {
         return +this.hsl.h;
     }
+
+	/**
+	 * Set Hue
+	 * @member
+	 * @param {number} value
+	 */
+	set hue (value) {
+		var hsl = this.mod({
+			h: value
+		});
+		this.hex = this.rgb2hex(this.hsl2rgb(hsl));
+		console.log('hsl', hsl, this.rgb2hex(this.hsl2rgb(hsl)));
+	}
 
     /**
      * Get Saturation
@@ -400,10 +431,24 @@ export default class Colors {
      */
     adjust_hue (degrees) {
         var hsl = this.mod({
-            h: this.constructor.constrain_degrees(this.hue, degrees)
+            h: this.constructor.constrain_degrees(this.hue, +degrees)
         });
 
         return this.rgb2hex(this.hsl2rgb(hsl));
     }
+
+	/**
+	 * Change the color hue
+	 * @instance
+	 * @param {number} hue
+	 * @returns {string}
+	 */
+	change_hue (hue) {
+		var hsl = this.mod({
+			h: hue
+		});
+
+		return this.rgb2hex(this.hsl2rgb(hsl));
+	}
 }
 

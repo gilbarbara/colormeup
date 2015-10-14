@@ -2,6 +2,8 @@ import React from 'react';
 import pureRenderMixin from 'react-addons-pure-render-mixin';
 import InlineSVG from 'react-inlinesvg';
 import $ from 'jquery';
+
+import Colors from '../utils/Colors';
 import math from '../utils/Math';
 import Loader from './common/Loader';
 
@@ -26,12 +28,37 @@ export default class Header extends React.Component {
 
 	_onClickToggleSidebar (e) {
 		var el = e.target;
-		console.log(el.checked);
 		$('.app__sidebar,.app-overlay').toggleClass('visible');
+	}
+
+	_onChangeSlider (e) {
+		let el = e.target,
+			color = this.props.config.colorObj.change_hue(el.value);
+
+		this.context.setColor(color);
 	}
 
 	render () {
 		const config = this.props.config;
+		let vars = {
+			sliders: [
+				{
+					name: config.slider === 'hsl' ? 'h' : 'r',
+					value: Math.round(config.slider === 'hsl' ? config.colorObj.hue : config.colorObj.red),
+					max: config.typeSteps[config.slider === 'hsl' ? 'h' : 'r'].max
+				},
+				{
+					name: config.slider === 'hsl' ? 's' : 'g',
+					value: Math.round(config.slider === 'hsl' ? config.colorObj.saturation : config.colorObj.green),
+					max: config.typeSteps[config.slider === 'hsl' ? 's' : 'g'].max
+				},
+				{
+					name: config.slider === 'hsl' ? 'l' : 'b',
+					value: Math.round(config.slider === 'hsl' ? config.colorObj.lightness : config.colorObj.blue),
+					max: config.typeSteps[config.slider === 'hsl' ? 'l' : 'b'].max
+				}
+			]
+		};
 
 		setTimeout(() => {
 			$('.logo svg')
@@ -88,6 +115,36 @@ export default class Header extends React.Component {
 								<span className="fa fa-heart" />
 							</a>
 						  </span>
+					</div>
+				</div>
+
+				<div className="app__sliders">
+					<ul className="app__sliders__menu list-unstyled">
+						<li className="active"><a href="#">HSL</a></li>
+						<li><a href="#">RGB</a></li>
+					</ul>
+					<div className="app__sliders__list">
+						<div className="range-slider">
+							<input className="input-range" name={vars.sliders[0].name} type="range"
+								   defaultValue={vars.sliders[0].value}
+								   min="0" max={vars.sliders[0].max}
+							onChange={this._onChangeSlider.bind(this)}/>
+							<span className="range-value">{vars.sliders[0].value}</span>
+						</div>
+						<div className="range-slider">
+							<input className="input-range" name={vars.sliders[1].name} type="range"
+								   defaultValue={vars.sliders[1].value}
+								   min="0" max={vars.sliders[1].max} />
+							<span
+								className="range-value">{vars.sliders[1].value}</span>
+						</div>
+						<div className="range-slider">
+							<input className="input-range" name={vars.sliders[2].name} type="range"
+								   defaultValue={vars.sliders[2].value}
+								   min="0" max={vars.sliders[2].max} />
+							<span
+								className="range-value">{vars.sliders[2].value}</span>
+						</div>
 					</div>
 				</div>
 

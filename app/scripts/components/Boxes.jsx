@@ -51,7 +51,7 @@ export default class Boxes extends React.Component {
 			steps: props.steps
 		}, options);
 
-		this.context.log('buildHSLBoxes', 'type:', props.type, props.color, props.colorObj.hsl);
+		//this.context.log('buildHSLBoxes', 'type:', props.type, props.color, props.colorObj.hsl);
 
 		var max   = (props.type === 'h' ? props.colorObj.hue : (props.order === 'desc' ? settings.max : 0)),
 			boxes = [];
@@ -71,7 +71,6 @@ export default class Boxes extends React.Component {
 
 				max = (props.order === 'desc' ? max - settings.steps : max + settings.steps);
 			}
-			this.context.log('buildHSLBoxes: hue extra loop', props.colorObj.hue, max);
 		}
 
 		return boxes;
@@ -84,7 +83,7 @@ export default class Boxes extends React.Component {
 			steps: this.steps
 		}, options);
 
-		this.context.log('buildRGBBoxes', 'type:', this.type, this.color, this.colorObj.rgb);
+		//this.context.log('buildRGBBoxes', 'type:', this.type, this.color, this.colorObj.rgb);
 
 		var max   = (this.order === 'desc' ? settings.max : 0),
 			boxes = [];

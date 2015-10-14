@@ -43,9 +43,11 @@ export default class App extends mixins(Events) {
 				ui: false
 			},
 			hash: {},
-			types: ['h', 's', 'l', 'r', 'g', 'b'],
 			orders: ['asc', 'desc'],
+			slider: 'hsl',
 			steps: 4,
+			type: 'h',
+			types: ['h', 's', 'l', 'r', 'g', 'b'],
 			typeSteps: {
 				h: {
 					optimal: 4,
@@ -87,9 +89,9 @@ export default class App extends mixins(Events) {
 	getChildContext () {
 		return {
 			log: this.log,
-			setColor: this.setColor,
-			setHash: this.setHash,
-			setValue: this.setValue
+			setColor: this.setColor.bind(this),
+			setHash: this.setHash.bind(this),
+			setValue: this.setValue.bind(this)
 		};
 	}
 
@@ -139,7 +141,7 @@ export default class App extends mixins(Events) {
 		this.log('setOptions');
 
 		this.setState(updateState(this.state, {
-				color: { $set: settings.color && Colors.validHex(settings.color) ? '#' + settings.color : (state.data.color ? this.getColors(1) : state.defaultColors[Math.floor(Math.random() * 6) + 1]) },
+				color: { $set: settings.color && Colors.validHex(settings.color) ? '#' + settings.color : (state.data.color ? this.getColors(1) : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length) + 1]) },
 				type: { $set: state.types.indexOf(settings.type) > -1 ? settings.type : 'h' },
 				order: { $set: state.orders.indexOf(settings.order) > -1 ? settings.order : 'desc' },
 				steps: { $set: settings.steps > 1 ? settings.steps : state.typeSteps[state.types.indexOf(settings.type) > -1 ? settings.type : 'h'].optimal }
@@ -228,17 +230,25 @@ export default class App extends mixins(Events) {
 		return (!max ? colors : (max === 1 ? single : range));
 	}
 
-	setColor () {
-		const state = this.state;
-		let colorObj = new Colors(state.color);
+	setColor (color = this.state.color) {
+		let state = {
+				color
+			};
 
-		this.log('setColor', state.color);
-		this.setState({
-			colorObj
-		}, () => {
-			this.setState(updateState(this.state, {
-				ready: { ui: { $set: true } }
-			}));
+		if (!this.state.colorObj) {
+			state.colorObj = new Colors(color);
+		}
+		else {
+			this.state.colorObj.changeColor(color);
+		}
+
+		this.log('setColor', color);
+		this.setState(state, () => {
+			if (!this.state.ready.ui) {
+				this.setState(updateState(this.state, {
+					ready: { ui: { $set: true } }
+				}));
+			}
 		});
 	}
 

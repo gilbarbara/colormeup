@@ -2,9 +2,10 @@
 @import 'base/variables';
 @import 'base/utils';
 @import 'base/bootstrap';
-@import 'elements/loader';
 @import 'fontawesome/scss/font-awesome';
 @import '../../node_modules/sass-mediaqueries/media-queries';
+@import 'elements/loader';
+@import 'elements/slider';
 
 html {
   font-size: 62.5%;
@@ -142,7 +143,7 @@ body {
     height: 100%;
     opacity: 0;
     overflow: auto;
-    padding: $grid-gutter-width ($grid-gutter-width / 1.5);
+    padding: ($grid-gutter-width * 1.5) ($grid-gutter-width / 1.5);
     position: fixed;
     right: -220px;
     top: 0;
@@ -383,6 +384,33 @@ body {
       &:focus {
         border-color: #ccc;
         box-shadow: none;
+      }
+    }
+  }
+
+  &__sliders {
+    background-color: rgba(#fff, 0.4);
+    border-radius: 4px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin-top: ($grid-gutter-width / 1.5);
+    min-height: 32px;
+    padding: 8px;
+
+    &__menu {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: space-around;
+
+      li {
+        a {
+          color: $body-color;
+        }
+
+        &.active a {
+          font-weight: 700;
+        }
       }
     }
   }
