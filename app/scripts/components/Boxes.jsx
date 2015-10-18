@@ -35,10 +35,11 @@ export default class Boxes extends React.Component {
 		return [];
 	}
 
-	buildBox (color) {
-		var textColor = this.textLightness(color);
+	buildBox (color, max) {
+		let textColor = this.textLightness(color);
 		return (
-			<a href="#" key={color + Math.ceil(Math.random() * 1000)} data-color={color.replace('#', '')} style={{ backgroundColor: color }}>
+			<a href="#" key={max + '-' + Math.random()} data-color={color.replace('#', '')}
+			   style={{ backgroundColor: color }}>
 				<div className="app__box" style={{ color: textColor }}>{color}</div>
 			</a>
 		);
@@ -46,19 +47,17 @@ export default class Boxes extends React.Component {
 
 	buildHSLBoxes (options) {
 		const props = this.props.config;
-		var settings = Object.assign({
-			max: (props.type === 'h' ? 356 : 96),
-			steps: props.steps
-		}, options);
+		let settings = Object.assign({
+				max: (props.type === 'h' ? 356 : 96),
+				steps: props.steps
+			}, options),
+			max      = (props.type === 'h' ? Math.round(props.colorObj.hue) : (props.order === 'desc' ? settings.max : 0)),
+			boxes    = [];
 
 		//this.context.log('buildHSLBoxes', 'type:', props.type, props.color, props.colorObj.hsl);
 
-		var max   = (props.type === 'h' ? props.colorObj.hue : (props.order === 'desc' ? settings.max : 0)),
-			boxes = [];
-
 		while (props.order === 'desc' ? max > 0 : max <= settings.max) {
-
-			boxes.push(this.buildBox(this.changeHSLValue(max, (props.type === 's' && +props.colorObj.hsl.s === 0 ? 'l' : props.type))));
+			boxes.push(this.buildBox(this.changeHSLValue(max, (props.type === 's' && props.colorObj.saturation === 0 ? 'l' : props.type)), max));
 
 			max = (props.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
@@ -67,7 +66,7 @@ export default class Boxes extends React.Component {
 			max = (props.order === 'desc' ? 360 : 0);
 
 			while (props.order === 'desc' ? max > props.colorObj.hue : max <= props.colorObj.hue) {
-				boxes.push(this.buildBox(this.changeHSLValue(max, (props.type === 's' && +props.colorObj.hsl.s === 0 ? 'l' : props.type))));
+				boxes.push(this.buildBox(this.changeHSLValue(max, (props.type === 's' && props.colorObj.saturation === 0 ? 'l' : props.type)), max));
 
 				max = (props.order === 'desc' ? max - settings.steps : max + settings.steps);
 			}
@@ -78,18 +77,17 @@ export default class Boxes extends React.Component {
 
 	buildRGBBoxes (options) {
 		const props = this.props.config;
-		var settings = Object.assign({
-			max: 255,
-			steps: this.steps
-		}, options);
+		let settings = Object.assign({
+				max: 255,
+				steps: this.steps
+			}, options),
+			max      = (this.order === 'desc' ? settings.max : 0),
+			boxes    = [];
 
 		//this.context.log('buildRGBBoxes', 'type:', this.type, this.color, this.colorObj.rgb);
 
-		var max   = (this.order === 'desc' ? settings.max : 0),
-			boxes = [];
-
 		while (this.order === 'desc' ? max > 0 : max <= settings.max) {
-			boxes.push(this.buildBox(this.changeRGBValue(max, this.type)));
+			boxes.push(this.buildBox(this.changeRGBValue(max, this.type)), max);
 
 			max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
@@ -98,12 +96,12 @@ export default class Boxes extends React.Component {
 	}
 
 	textLightness (color) {
-		var thisColor = new Colors(color);
+		let thisColor = new Colors(color);
 
 		return thisColor.hsl2hex({
-			h: thisColor.hsl.h,
-			s: thisColor.hsl.s,
-			l: (+thisColor.hsl.l + 40 > 100 ? Math.abs(40 - +thisColor.hsl.l) : +thisColor.hsl.l + 40)
+			h: thisColor.hue,
+			s: thisColor.saturation,
+			l: (thisColor.lightness + 40 > 100 ? Math.abs(40 - thisColor.lightness) : thisColor.lightness + 40)
 		});
 	}
 
@@ -112,9 +110,9 @@ export default class Boxes extends React.Component {
 		//this.context.log('changeValue', val, type);
 
 		return props.colorObj.hsl2hex({
-			h: (type === 'h' ? val : props.colorObj.hsl.h),
-			s: (type === 's' ? val : props.colorObj.hsl.s),
-			l: (type === 'l' ? val : props.colorObj.hsl.l)
+			h: (type === 'h' ? val : props.colorObj.hue),
+			s: (type === 's' ? val : props.colorObj.saturation),
+			l: (type === 'l' ? val : props.colorObj.lightness)
 		});
 	}
 
@@ -123,9 +121,9 @@ export default class Boxes extends React.Component {
 		//this.context.log('changeRGBValue', val, type);
 
 		return props.colorObj.rgb2hex({
-			r: type === 'r' ? val : props.colorObj.rgb.r,
-			g: type === 'g' ? val : props.colorObj.rgb.g,
-			b: type === 'b' ? val : props.colorObj.rgb.b
+			r: type === 'r' ? val : props.colorObj.red,
+			g: type === 'g' ? val : props.colorObj.green,
+			b: type === 'b' ? val : props.colorObj.blue
 		});
 	}
 
