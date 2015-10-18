@@ -1,13 +1,21 @@
-.range-slider {
+.slider {
+
+  .range-name {
+    display: inline-block;
+    font-size: 1.3rem;
+    margin-right: 7px;
+    min-width: 66px;
+    text-align: right;
+  }
 
   // Slider
-  .input-range {
+  .range-slider {
     -webkit-appearance: none;
     background: rgba(#000, 0.2);
     border-radius: 5px;
     height: 10px;
     outline: none;
-    width: 100px;
+    width: 200px;
 
     // Slider Handle
     &::-webkit-slider-thumb {
@@ -48,13 +56,21 @@
   }
 
   // Tooltip Tag
-  .range-value {
+  .range-input {
+    background: transparent;
+    border: 0;
     color: $body-color;
     display: inline-block;
+    font-size: 1.3rem;
     margin-left: 7px;
+    outline: none;
     position: relative;
     text-align: center;
-    width: 60px;
+    width: 40px;
+
+    &:focus {
+      color: darken($body-color, 10);
+    }
   }
 }
 

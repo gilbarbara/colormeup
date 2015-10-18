@@ -345,33 +345,20 @@ body {
     margin-top: 3rem;
     position: relative;
 
-    .input-group-addon {
-      a {
-        color: $body-color;
-        display: inline-block;
-        width: 24px;
-      }
-
-      &:first-child {
-        position: relative;
-
-        &:before {
-          color: #999;
-          content: '#';
-          font-size: 30px;
-          position: absolute;
-          right: -25px;
-          top: 4px;
-          z-index: 10;
-        }
-      }
-    }
-
     .input-group {
       opacity: 0.8;
+      position: relative;
 
       .fa {
         font-size: 24px;
+      }
+
+      &-addon {
+        a {
+          color: $body-color;
+          display: inline-block;
+          width: 24px;
+        }
       }
     }
 
@@ -615,55 +602,5 @@ body {
 
   &.visible {
     display: block;
-  }
-}
-
-// spectrum theming
-
-@import 'spectrum/spectrum.css';
-
-.sp-container {
-  background-color: rgba(#fff, 0.95);
-  border: 0;
-  border-radius: 5px;
-  display: none;
-  min-width: 290px;
-  position: absolute !important;
-
-  .sp-palette {
-    width: 75px;
-  }
-
-  .sp-picker-container {
-    border: 0;
-  }
-
-  .sp-palette .sp-thumb-el,
-  .sp-palette .sp-thumb-el:hover,
-  .sp-palette .sp-thumb-el.sp-thumb-active {
-    border: 0;
-  }
-
-  .sp-palette-row-selection {
-    margin-top: 8px;
-  }
-
-  .sp-color {
-    border-color: #ccc;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .sp-hue {
-    border-color: #ccc;
-    border-radius: 2px;
-
-    .sp-slider {
-      background-color: rgba(#fff, 0.4);
-      border-color: #999;
-      border-radius: 2px;
-      opacity: 1;
-      transform: scale(1.1);
-    }
   }
 }

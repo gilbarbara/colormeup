@@ -23,7 +23,7 @@ export default class App extends mixins(Events) {
 			name: 'colormeup',
 			version: 2.0,
 			colorObj: null,
-			color: null,
+			color: '#ff0044',
 			data: {},
 			defaultColors: [
 				'#30d22b',
@@ -47,29 +47,40 @@ export default class App extends mixins(Events) {
 			slider: 'hsl',
 			steps: 4,
 			type: 'h',
-			types: ['h', 's', 'l', 'r', 'g', 'b'],
-			typeSteps: {
+			types: {
 				h: {
+					name: 'Hue',
+					model: 'hsl',
 					optimal: 4,
 					max: 360
 				},
 				s: {
+					name: 'Saturation',
+					model: 'hsl',
 					optimal: 4,
 					max: 100
 				},
 				l: {
+					name: 'Lightness',
+					model: 'hsl',
 					optimal: 4,
 					max: 100
 				},
 				r: {
+					name: 'Red',
+					model: 'rgb',
 					optimal: 5,
 					max: 255
 				},
 				g: {
+					name: 'Green',
+					model: 'rgb',
 					optimal: 5,
 					max: 255
 				},
 				b: {
+					name: 'Blue',
+					model: 'rgb',
 					optimal: 5,
 					max: 255
 				}
@@ -83,7 +94,7 @@ export default class App extends mixins(Events) {
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
-		setValue: React.PropTypes.func
+		setOptions: React.PropTypes.func
 	}
 
 	getChildContext () {
@@ -91,7 +102,7 @@ export default class App extends mixins(Events) {
 			log: this.log,
 			setColor: this.setColor.bind(this),
 			setHash: this.setHash.bind(this),
-			setValue: this.setValue.bind(this)
+			setOptions: this.setOptions.bind(this)
 		};
 	}
 
@@ -115,7 +126,7 @@ export default class App extends mixins(Events) {
 		}
 
 		if (this.state.ready.hash && prevState.ready.hash !== this.state.ready.hash) {
-			this.setOptions();
+			this.initialize();
 		}
 
 		if (super.componentDidUpdate) {
@@ -129,7 +140,7 @@ export default class App extends mixins(Events) {
 		}
 	}
 
-	setOptions () {
+	initialize () {
 		const state = this.state;
 		let settings = Object.assign({
 			type: 'h',
@@ -138,15 +149,16 @@ export default class App extends mixins(Events) {
 			steps: 4
 		}, state.hash);
 
-		this.log('setOptions');
+		this.log('initialize', settings);
 
 		this.setState(updateState(this.state, {
-				color: { $set: settings.color && Colors.validHex(settings.color) ? '#' + settings.color : (state.data.color ? this.getColors(1) : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length) + 1]) },
-				type: { $set: state.types.indexOf(settings.type) > -1 ? settings.type : 'h' },
+				color: { $set: Boolean(settings.color) && Colors.validHex(settings.color) ? '#' + settings.color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length) + 1] },
+				type: { $set: state.types[settings.type] ? settings.type : 'h' },
 				order: { $set: state.orders.indexOf(settings.order) > -1 ? settings.order : 'desc' },
-				steps: { $set: settings.steps > 1 ? settings.steps : state.typeSteps[state.types.indexOf(settings.type) > -1 ? settings.type : 'h'].optimal }
+				steps: { $set: settings.steps > 1 ? settings.steps : state.types[state.types[settings.type] ? settings.type : 'h'].optimal }
 			}),
 			() => {
+				this.log('initialize:after', this.state);
 				this.setColor();
 			});
 	}
@@ -232,8 +244,8 @@ export default class App extends mixins(Events) {
 
 	setColor (color = this.state.color) {
 		let state = {
-				color
-			};
+			color
+		};
 
 		if (!this.state.colorObj) {
 			state.colorObj = new Colors(color);
@@ -242,7 +254,7 @@ export default class App extends mixins(Events) {
 			this.state.colorObj.changeColor(color);
 		}
 
-		this.log('setColor', color);
+		//this.log('setColor', color);
 		this.setState(state, () => {
 			if (!this.state.ready.ui) {
 				this.setState(updateState(this.state, {
@@ -252,9 +264,9 @@ export default class App extends mixins(Events) {
 		});
 	}
 
-	setValue (options) {
+	setOptions (options) {
 		let state = {};
-		this.log('setValue', options);
+		//this.log('setOptions', options);
 
 		if (options.color) {
 			state.color = (options.color.indexOf('#') === -1 ? '#' : '') + options.color;
@@ -265,12 +277,13 @@ export default class App extends mixins(Events) {
 		if (options.steps) {
 			state.steps = options.steps;
 		}
+		if (options.slider) {
+			state.slider = options.slider;
+		}
 
-		this.setState({
-
-		}, () => {
+		this.setState(state, () => {
 			if (options.color) {
-				this.setColor();
+				this.setColor(options.color);
 			}
 		});
 	}
