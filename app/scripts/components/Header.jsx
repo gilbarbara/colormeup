@@ -6,7 +6,7 @@ import $ from 'jquery';
 import math from '../utils/Math';
 import Loader from './common/Loader';
 
-export default class Header extends React.Component {
+class Header extends React.Component {
 	constructor (props) {
 		super(props);
 
@@ -14,8 +14,6 @@ export default class Header extends React.Component {
 			color: undefined
 		};
 	}
-
-	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	static contextTypes = {
 		location: React.PropTypes.object, // Router
@@ -28,6 +26,8 @@ export default class Header extends React.Component {
 	static propTypes = {
 		config: React.PropTypes.object.isRequired
 	};
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	componentWillMount () {
 		this.setState({
@@ -65,7 +65,7 @@ export default class Header extends React.Component {
 				color: '#' + value.slice(-6)
 			});
 
-			bits = value.replace('#', '').slice(-6).split('')
+			bits = value.replace('#', '').slice(-6).split('');
 		}
 
 		if (bits.length === 3) {
@@ -228,60 +228,69 @@ export default class Header extends React.Component {
 					<div className="app__sliders__list">
 						{vars.sliders.map((slider, i) => {
 							return (
-							<div key={i} className="slider">
-								<span className="range-name">{slider.name}</span>
-								<input type="range" ref={slider.key + '-slider'}
-									   className="range-slider" data-type={slider.key}
-									   data-target={slider.key + '-input'} step="1"
-									   value={slider.value} min="0" max={slider.max}
-									   onChange={this._onChangeRangeSlider.bind(this)} />
-								<input type="tel" ref={slider.key + '-input'}
-									   className="range-input" data-type={slider.key}
-									   data-target={slider.key + '-slider'}
-									   value={slider.value} tabIndex={i + 1}
-									   onChange={this._onChangeRangeInput.bind(this)} />
-							</div>
-								);
-							})}
+								<div key={i} className="slider">
+									<span className="range-name">{slider.name}</span>
+									<input type="range"
+										   ref={slider.key + '-slider'}
+										   className="range-slider"
+										   data-type={slider.key}
+										   data-target={slider.key + '-input'} step="1"
+										   value={slider.value}
+										   min="0" max={slider.max}
+										   onChange={this._onChangeRangeSlider.bind(this)} />
+									<input type="tel"
+										   ref={slider.key + '-input'}
+										   className="range-input"
+										   data-type={slider.key}
+										   data-target={slider.key + '-slider'}
+										   value={slider.value}
+										   tabIndex={i + 1}
+										   onChange={this._onChangeRangeInput.bind(this)} />
+								</div>
+							);
+						})}
 					</div>
 				</div>
 
 				<div className="app__info">
 					{Object.keys(vars.types).map((t, i) => {
 						return (
-						<div key={i} className={t}>
-							{vars.types[t].map((it, j) => {
-								return (
-								<div key={j} className="color-value">
-									<div
-										className={'color-' + it.key}>{Math.round(config.colorObj[it.name.toLowerCase()])}</div>
-									{it.name.toLowerCase()}
-								</div>
+							<div key={i} className={t}>
+								{vars.types[t].map((it, j) => {
+									return (
+										<div key={j} className="color-value">
+											<div
+												className={'color-' + it.key}>{Math.round(config.colorObj[it.name.toLowerCase()])}</div>
+											{it.name.toLowerCase()}
+										</div>
 									);
 								})}
-						</div>
-							);
-						})}
+							</div>
+						);
+					})}
 				</div>
 
 				<div className="app__type">
 					{Object.keys(vars.types).map((t, i) => {
 						return (
-						<div key={i} className={t}>
-							<div className="btn-group" role="group" aria-label={t}>
-								{vars.types[t].map((it, j) => {
-									return (
-									<a key={j} href="#" className="btn btn-secondary"
-									   data-type={it.key} onClick={this._onClickTypesMenu.bind(this)}>{it.name}</a>
+							<div key={i} className={t}>
+								<div className="btn-group" role="group" aria-label={t}>
+									{vars.types[t].map((it, j) => {
+										return (
+											<a key={j} href="#" className="btn btn-secondary"
+											   data-type={it.key}
+											   onClick={this._onClickTypesMenu.bind(this)}>{it.name}</a>
 										);
 									})}
+								</div>
 							</div>
-						</div>
-							);
-						})}
+						);
+					})}
 					<div className="steps">
 						<span className="fa fa-th" />
-						<input type="text" className="form-control input-steps" placeholder="steps"
+						<input type="text"
+							   className="form-control input-steps"
+							   placeholder="steps"
 							   defaultValue={config.steps} />
 					</div>
 				</div>
@@ -296,3 +305,5 @@ export default class Header extends React.Component {
 		);
 	}
 }
+
+export default Header;

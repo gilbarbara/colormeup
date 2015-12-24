@@ -299,7 +299,7 @@ class App extends mixins(Events) {
 					<Header config={state} />
 					<Boxes config={state} />
 				</div>
-			)
+			);
 		}
 		else {
 			html = <Loader />;

@@ -9,18 +9,18 @@ export default class Boxes extends React.Component {
 		super(props);
 	}
 
-	shouldComponentUpdate = shouldPureComponentUpdate;
-
-	static propTypes = {
-		config: React.PropTypes.object.isRequired
-	};
-
 	static contextTypes = {
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setValue: React.PropTypes.func
 	};
+
+	static propTypes = {
+		config: React.PropTypes.object.isRequired
+	};
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	buildBoxes () {
 		const props = this.props.config;
@@ -76,7 +76,6 @@ export default class Boxes extends React.Component {
 	}
 
 	buildRGBBoxes (options) {
-		const props = this.props.config;
 		let settings = Object.assign({
 				max: 255,
 				steps: this.steps
