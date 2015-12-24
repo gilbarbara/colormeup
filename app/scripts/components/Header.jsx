@@ -12,7 +12,7 @@ export default class Header extends React.Component {
 
 		this.state = {
 			color: undefined
-		}
+		};
 
 		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
@@ -71,7 +71,7 @@ export default class Header extends React.Component {
 		if (bits.length === 3) {
 			bits.forEach(d => {
 				newValue += d + d;
-			})
+			});
 		}
 		else if (bits.length === 6) {
 			newValue += bits.join('');
@@ -85,8 +85,8 @@ export default class Header extends React.Component {
 	_onChangeRangeSlider (e) {
 		let el    = e.target,
 			color = this.props.config.colorObj.remix({ key: el.dataset.type, value: el.value });
-
-		this._changeColor(color, el.value, el.dataset.target);
+		console.log('_onChangeRangeSlider', el.value);
+		this._changeColor(color);
 	}
 
 	_onChangeRangeInput (e) {
@@ -95,7 +95,8 @@ export default class Header extends React.Component {
 			newValue = isNaN(value) ? 0 : (value < el.previousSibling.min ? el.previousSibling.min : (value > el.previousSibling.max ? el.previousSibling.max : value)),
 			color    = this.props.config.colorObj.remix({ key: el.dataset.type, value: newValue });
 
-		this._changeColor(color, newValue, el.dataset.target);
+		console.log('_onChangeRangeInput', newValue);
+		this._changeColor(color);
 	}
 
 	_onClickSliderMenu (e) {
@@ -110,13 +111,10 @@ export default class Header extends React.Component {
 		this.context.setOptions({ type: e.currentTarget.dataset.type });
 	}
 
-	_changeColor (color, value, target) {
-		//this.context.setColor(color);
+	_changeColor (color) {
 		this.context.setOptions({
 			color
 		});
-		//$('.app__input input').val(color);
-		//this.refs[target].value = value;
 	}
 
 	_updateLogo () {
@@ -234,7 +232,7 @@ export default class Header extends React.Component {
 								<span className="range-name">{slider.name}</span>
 								<input type="range" ref={slider.key + '-slider'}
 									   className="range-slider" data-type={slider.key}
-									   data-target={slider.key + '-input'}
+									   data-target={slider.key + '-input'} step="1"
 									   value={slider.value} min="0" max={slider.max}
 									   onChange={this._onChangeRangeSlider.bind(this)} />
 								<input type="tel" ref={slider.key + '-input'}
@@ -249,34 +247,21 @@ export default class Header extends React.Component {
 				</div>
 
 				<div className="app__info">
-					<div className="hsl">
-						<div className="color-value">
-							<div className="color-h">{Math.round(config.colorObj.hue)}</div>
-							hue
+					{Object.keys(vars.types).map((t, i) => {
+						return (
+						<div key={i} className={t}>
+							{vars.types[t].map((it, j) => {
+								return (
+								<div key={j} className="color-value">
+									<div
+										className={'color-' + it.key}>{Math.round(config.colorObj[it.name.toLowerCase()])}</div>
+									{it.name.toLowerCase()}
+								</div>
+									);
+								})}
 						</div>
-						<div className="color-value">
-							<div className="color-s">{Math.round(config.colorObj.saturation)}</div>
-							saturation
-						</div>
-						<div className="color-value">
-							<div className="color-l">{Math.round(config.colorObj.lightness)}</div>
-							lightness
-						</div>
-					</div>
-					<div className="rgb">
-						<div className="color-value">
-							<div className="color-r">{math.round(config.colorObj.red)}</div>
-							red
-						</div>
-						<div className="color-value">
-							<div className="color-g">{math.round(config.colorObj.green)}</div>
-							green
-						</div>
-						<div className="color-value">
-							<div className="color-b">{math.round(config.colorObj.blue)}</div>
-							blue
-						</div>
-					</div>
+							);
+						})}
 				</div>
 
 				<div className="app__type">
@@ -285,8 +270,10 @@ export default class Header extends React.Component {
 						<div key={i} className={t}>
 							<div className="btn-group" role="group" aria-label={t}>
 								{vars.types[t].map((it, j) => {
-									return (<a key={j} href="#" className="btn btn-secondary"
-											   data-type={it.key} onClick={this._onClickTypesMenu.bind(this)}>{it.name}</a>);
+									return (
+									<a key={j} href="#" className="btn btn-secondary"
+									   data-type={it.key} onClick={this._onClickTypesMenu.bind(this)}>{it.name}</a>
+										);
 									})}
 							</div>
 						</div>
