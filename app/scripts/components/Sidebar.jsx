@@ -9,26 +9,26 @@ export default class Sidebar extends React.Component {
 		super(props);
 	}
 
-	shouldComponentUpdate = shouldPureComponentUpdate;
-
 	static contextTypes = {
 		location: React.PropTypes.object, // Router
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setValue: React.PropTypes.func
-	}
+	};
 
 	static propTypes = {
 		config: React.PropTypes.object.isRequired
-	}
+	};
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	render () {
 		const config = this.props.config;
 
 		let vars = {
 			hex: config.color,
-			hsl: 'hsl(' + Math.round(config.colorObj.hue) + ', ' + Math.round(config.colorObj.saturation) + '%' + ', ' + Math.round(config.colorObj.lightness) + '%' + ')',
+			hsl: 'hsl(' + Math.round(config.colorObj.hue) + ', ' + Math.round(config.colorObj.saturation) + '%, ' + Math.round(config.colorObj.lightness) + '%)',
 			rgb: 'rgb(' + config.colorObj.red + ', ' + config.colorObj.green + ', ' + config.colorObj.blue + ')',
 			currentColor: (config.colorObj.saturation > 8 ? (
 				config.colorObj.hsl2hex({
@@ -51,8 +51,8 @@ export default class Sidebar extends React.Component {
 						config.defaultColors.map((d, i) => {
 							return (<a key={i} href="#" data-color={d.replace('#', '')}
 									   style={{ backgroundColor: d }} />);
-							})
-						}</div>
+						})
+					}</div>
 				</div>
 
 				<div className="app__sidebar__list favorites">
@@ -78,10 +78,14 @@ export default class Sidebar extends React.Component {
 								<i className="fa fa-copy" />
 							</a>
 						</div>
-						<div className="hsl-copy clearfix"><span>{vars.hsl}</span><a href="#"
-																					 data-clipboard-text="copy-me"
-																					 className="copy-button"><i
-							className="fa fa-copy" /></a></div>
+						<div className="hsl-copy clearfix">
+							<span>{vars.hsl}</span>
+							<a href="#"
+							   data-clipboard-text="copy-me"
+							   className="copy-button">
+								<i className="fa fa-copy" />
+							</a>
+						</div>
 					</div>
 				</div>
 
@@ -90,7 +94,7 @@ export default class Sidebar extends React.Component {
 						<span className="fa fa-question-circle" /> Help</a>
 					</h3>
 					<div className="text">
-						<h5 style={{color: config.colorObj.lightness < 20 ? '#fff' : config.color }}>Know thy color!</h5>
+						<h5 style={{ color: config.colorObj.lightness < 20 ? '#fff' : config.color }}>Know thy color!</h5>
 						<p>colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).
 						</p>
 						<p>

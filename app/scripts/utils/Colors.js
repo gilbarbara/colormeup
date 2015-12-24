@@ -1,5 +1,5 @@
-const _    = require('lodash'),
-	  math = require('./Math');
+import _ from 'lodash';
+import math from './Math';
 
 /**
  * Colors
