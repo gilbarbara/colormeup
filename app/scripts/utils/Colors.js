@@ -136,9 +136,9 @@ export default class Colors {
 		else {
 			q = l < 0.5 ? l * (1 + s) : l + s - l * s;
 			p = 2 * l - q;
-			r = this.constructor.hue2rgb(p, q, h + 1 / 3);
-			g = this.constructor.hue2rgb(p, q, h);
-			b = this.constructor.hue2rgb(p, q, h - 1 / 3);
+			r = this.hue2rgb(p, q, h + 1 / 3);
+			g = this.hue2rgb(p, q, h);
+			b = this.hue2rgb(p, q, h - 1 / 3);
 		}
 
 		return {
@@ -159,13 +159,13 @@ export default class Colors {
 
 	/**
 	 * hue2rgb
-	 * @static
+	 * @method
 	 * @param {number} p
 	 * @param {number} q
 	 * @param {number} t
 	 * @returns {*}
 	 */
-	static hue2rgb (p, q, t) {
+	hue2rgb (p, q, t) {
 		if (t < 0) {
 			t += 1;
 		}
@@ -240,14 +240,14 @@ export default class Colors {
 
 	/**
 	 * constrain
-	 * @static
+	 * @method
 	 * @param {number} attr
 	 * @param {number} amount
 	 * @param {Array} limit
 	 * @param {string} direction
 	 * @returns {number}
 	 */
-	static constrain (attr, amount, limit, direction) {
+	constrain (attr, amount, limit, direction) {
 		let val  = math.expr(attr + direction + amount),
 			test = (limit[1] >= val && val >= limit[0]);
 
@@ -265,12 +265,12 @@ export default class Colors {
 
 	/**
 	 * constrain_degrees
-	 * @static
+	 * @method
 	 * @param {number} attr
 	 * @param {number} amount
 	 * @returns {number}
 	 */
-	static constrain_degrees (attr, amount) {
+	constrain_degrees (attr, amount) {
 		let val;
 		val = attr + amount;
 		if (val > 360) {
@@ -376,7 +376,7 @@ export default class Colors {
 	lighten (percentage) {
 		let hsl;
 		hsl = this.mod({
-			l: this.constructor.constrain(this.lightness, percentage, [0, 100], '+')
+			l: this.constrain(this.lightness, percentage, [0, 100], '+')
 		});
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
@@ -390,7 +390,7 @@ export default class Colors {
 	darken (percentage) {
 		let hsl;
 		hsl = this.mod({
-			l: this.constructor.constrain(this.lightness, percentage, [0, 100], '-')
+			l: this.constrain(this.lightness, percentage, [0, 100], '-')
 		});
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
@@ -404,7 +404,7 @@ export default class Colors {
 	saturate (percentage) {
 		let hsl;
 		hsl = this.mod({
-			s: this.constructor.constrain(this.saturation, percentage, [0, 100], '+')
+			s: this.constrain(this.saturation, percentage, [0, 100], '+')
 		});
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
@@ -418,7 +418,7 @@ export default class Colors {
 	desaturate (percentage) {
 		let hsl;
 		hsl = this.mod({
-			s: this.constructor.constrain(this.saturation, percentage, [0, 100], '-')
+			s: this.constrain(this.saturation, percentage, [0, 100], '-')
 		});
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
@@ -431,7 +431,7 @@ export default class Colors {
 	 */
 	adjust_hue (degrees) {
 		let hsl = this.mod({
-			h: this.constructor.constrain_degrees(this.hue, +degrees)
+			h: this.constrain_degrees(this.hue, +degrees)
 		});
 
 		return this.rgb2hex(this.hsl2rgb(hsl));
