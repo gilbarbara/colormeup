@@ -19,11 +19,14 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="media/icon-60x60@3x.png">
 	<link rel="apple-touch-icon" sizes="228x228" href="media/icon-57x57@4x.png">
 	<link rel="icon" sizes="192x192" href="media/icon-192x192.png">
-	<!-- build:css styles/main.css -->
+	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
-	<!-- build:js scripts/vendor/modernizr.js -->
-	<script src="../bower_components/modernizr/modernizr.js"></script>
+
+	<!-- build:js({.tmp,.}) /scripts/vendor/modernizr.js -->
+	<script src="/scripts/modernizr.js"></script>
+	<script src="/node_modules/mobile-detect/mobile-detect.js"></script>
+	<script src="/node_modules/mobile-detect/mobile-detect-modernizr.js"></script>
 	<!-- endbuild -->
 </head>
 <body>

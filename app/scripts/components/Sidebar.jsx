@@ -1,5 +1,5 @@
 import React from 'react';
-import pureRenderMixin from 'react-addons-pure-render-mixin';
+import shouldPureComponentUpdate from 'react-pure-render/function';
 
 import math from '../utils/Math';
 import Loader from './common/Loader';
@@ -7,9 +7,9 @@ import Loader from './common/Loader';
 export default class Sidebar extends React.Component {
 	constructor (props) {
 		super(props);
-
-		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	static contextTypes = {
 		location: React.PropTypes.object, // Router

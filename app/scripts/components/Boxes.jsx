@@ -1,26 +1,26 @@
 import React from 'react';
-import pureRenderMixin from 'react-addons-pure-render-mixin';
-import updateState from 'react-addons-update';
+import reactUpdate from 'react-addons-update';
+import shouldPureComponentUpdate from 'react-pure-render/function';
 import Colors from '../utils/Colors';
 import Loader from './common/Loader';
 
 export default class Boxes extends React.Component {
 	constructor (props) {
 		super(props);
-
-		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	static propTypes = {
 		config: React.PropTypes.object.isRequired
-	}
+	};
 
 	static contextTypes = {
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setValue: React.PropTypes.func
-	}
+	};
 
 	buildBoxes () {
 		const props = this.props.config;
