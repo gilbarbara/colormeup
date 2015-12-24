@@ -1,5 +1,5 @@
 import React from 'react';
-import pureRenderMixin from 'react-addons-pure-render-mixin';
+import shouldPureComponentUpdate from 'react-pure-render/function';
 import InlineSVG from 'react-inlinesvg';
 import $ from 'jquery';
 
@@ -13,9 +13,9 @@ export default class Header extends React.Component {
 		this.state = {
 			color: undefined
 		};
-
-		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	static contextTypes = {
 		location: React.PropTypes.object, // Router
@@ -23,11 +23,11 @@ export default class Header extends React.Component {
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setOptions: React.PropTypes.func
-	}
+	};
 
 	static propTypes = {
 		config: React.PropTypes.object.isRequired
-	}
+	};
 
 	componentWillMount () {
 		this.setState({

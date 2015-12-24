@@ -1,6 +1,6 @@
 import React from 'react';
-import pureRenderMixin from 'react-addons-pure-render-mixin';
-import updateState from 'react-addons-update';
+import reactUpdate from 'react-addons-update';
+import shouldPureComponentUpdate from 'react-pure-render/function';
 import deparam from 'node-jquery-deparam';
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
@@ -15,7 +15,7 @@ import Footer from './Footer';
 import mixins from '../utils/Mixins';
 import Events from './mixins/Events';
 
-export default class App extends mixins(Events) {
+class App extends mixins(Events) {
 	constructor (props) {
 		super(props);
 
@@ -86,16 +86,16 @@ export default class App extends mixins(Events) {
 				}
 			}
 		};
-
-		this.shouldComponentUpdate = pureRenderMixin.shouldComponentUpdate.bind(this);
 	}
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	static childContextTypes = {
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setOptions: React.PropTypes.func
-	}
+	};
 
 	getChildContext () {
 		return {
@@ -151,7 +151,7 @@ export default class App extends mixins(Events) {
 
 		this.log('initialize', settings);
 
-		this.setState(updateState(this.state, {
+		this.setState(reactUpdate(this.state, {
 				color: { $set: Boolean(settings.color) && Colors.validHex(settings.color) ? '#' + settings.color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length) + 1] },
 				type: { $set: state.types[settings.type] ? settings.type : 'h' },
 				order: { $set: state.orders.indexOf(settings.order) > -1 ? settings.order : 'desc' },
@@ -179,7 +179,7 @@ export default class App extends mixins(Events) {
 			Storage.setItem(this.state.name, data);
 		}
 
-		this.setState(updateState(this.state, {
+		this.setState(reactUpdate(this.state, {
 			data: { $set: data },
 			ready: { data: { $set: true } }
 		}));
@@ -199,7 +199,7 @@ export default class App extends mixins(Events) {
 		let hash = Object.assign(this.state.hash, deparam(location.hash.replace('#', '')));
 		this.log('getHash', hash);
 
-		this.setState(updateState(this.state, {
+		this.setState(reactUpdate(this.state, {
 			hash: { $set: hash },
 			ready: { hash: { $set: true } }
 		}));
@@ -257,7 +257,7 @@ export default class App extends mixins(Events) {
 		//this.log('setColor', color);
 		this.setState(state, () => {
 			if (!this.state.ready.ui) {
-				this.setState(updateState(this.state, {
+				this.setState(reactUpdate(this.state, {
 					ready: { ui: { $set: true } }
 				}));
 			}
@@ -315,3 +315,5 @@ export default class App extends mixins(Events) {
 		);
 	}
 }
+
+export default App;
