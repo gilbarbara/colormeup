@@ -1,5 +1,6 @@
 import React from 'react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
+import { autobind } from 'core-decorators';
 import InlineSVG from 'react-inlinesvg';
 import $ from 'jquery';
 
@@ -51,10 +52,12 @@ class Header extends React.Component {
 		this.updateLogo();
 	}
 
+	@autobind
 	onClickToggleSidebar () {
 		$('.app__sidebar,.app-overlay').toggleClass('visible');
 	}
 
+	@autobind
 	onChangeColorInput (e) {
 		let value    = e.target.value.replace('#', ''),
 			newValue = '#',
@@ -86,9 +89,11 @@ class Header extends React.Component {
 			color = this.props.config.colorObj.remix({ key: el.dataset.type, value: el.value });
 		console.log('_onChangeRangeSlider', el.value);
 		this._changeColor(color);
+	@autobind
 	onChangeRangeSlider (pos, props) {
 	}
 
+	@autobind
 	onChangeRangeInput (e) {
 		let el       = e.target,
 			value    = parseInt(el.value, 10),
@@ -99,12 +104,14 @@ class Header extends React.Component {
 		this.changeColor(color);
 	}
 
+	@autobind
 	onClickSliderMenu (e) {
 		e.preventDefault();
 
 		this.context.setOptions({ slider: e.currentTarget.dataset.type });
 	}
 
+	@autobind
 	onClickTypesMenu (e) {
 		e.preventDefault();
 

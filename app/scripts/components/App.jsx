@@ -1,7 +1,9 @@
 import React from 'react';
 import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
+import { autobind } from 'core-decorators';
 import deparam from 'node-jquery-deparam';
+
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
 
@@ -100,9 +102,9 @@ class App extends mixins(Events) {
 	getChildContext () {
 		return {
 			log: this.log,
-			setColor: this.setColor.bind(this),
-			setHash: this.setHash.bind(this),
-			setOptions: this.setOptions.bind(this)
+			setColor: this.setColor,
+			setHash: this.setHash,
+			setOptions: this.setOptions
 		};
 	}
 
@@ -205,6 +207,7 @@ class App extends mixins(Events) {
 		}));
 	}
 
+	@autobind
 	setHash () {
 		let state   = this.state,
 			options = {
@@ -242,6 +245,7 @@ class App extends mixins(Events) {
 		return (!max ? colors : (max === 1 ? single : range));
 	}
 
+	@autobind
 	setColor (color = this.state.color) {
 		let state = {
 			color
@@ -264,6 +268,7 @@ class App extends mixins(Events) {
 		});
 	}
 
+	@autobind
 	setOptions (options) {
 		let state = {};
 		//this.log('setOptions', options);
