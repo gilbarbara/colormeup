@@ -2,6 +2,7 @@ import React from 'react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
 import InlineSVG from 'react-inlinesvg';
+import InputSlider from 'react-input-slider';
 import $ from 'jquery';
 
 import math from '../utils/Math';
@@ -85,12 +86,12 @@ class Header extends React.Component {
 		}
 	}
 
-		let el    = e.target,
-			color = this.props.config.colorObj.remix({ key: el.dataset.type, value: el.value });
-		console.log('_onChangeRangeSlider', el.value);
-		this._changeColor(color);
 	@autobind
 	onChangeRangeSlider (pos, props) {
+		console.log('onChangeRangeSlider', pos, props);
+		let color = this.props.config.colorObj.remix({ key: props['data-type'], value: pos.x });
+
+		this.changeColor(color);
 	}
 
 	@autobind
@@ -186,9 +187,7 @@ class Header extends React.Component {
 				key: vars.keys[0],
 				value: (config.colorObj.saturation === 0 || config.colorObj.lightness === 0
 					? 0
-					: (config.colorObj.hue === 0 && this.refs[vars.keys[0] + '-slider']
-					? this.refs[vars.keys[0] + '-slider'].value
-					: Math.round(config.slider === 'hsl' ? config.colorObj.hue : config.colorObj.red))),
+					: Math.round(config.slider === 'hsl' ? config.colorObj.hue : config.colorObj.red)),
 				max: config.types[vars.keys[0]].max
 			},
 			{
@@ -204,6 +203,8 @@ class Header extends React.Component {
 				max: config.types[vars.keys[2]].max
 			}
 		];
+
+		//console.log(config.colorObj.hue, config.colorObj.saturation, config.colorObj.lightness);
 
 		return (
 			<div className="app__header"
@@ -236,13 +237,12 @@ class Header extends React.Component {
 							return (
 								<div key={i} className="slider">
 									<span className="range-name">{slider.name}</span>
-									<input type="range"
-										   ref={slider.key + '-slider'}
-										   className="range-slider"
-										   data-type={slider.key}
-										   data-target={slider.key + '-input'} step="1"
-										   value={slider.value}
-										   min="0" max={slider.max}
+									<InputSlider
+										ref={slider.key + '-slider'}
+										className="slider"
+										data-type={slider.key}
+										x={slider.value}
+										xmax={slider.max}
 										onChange={this.onChangeRangeSlider} />
 									<input type="tel"
 										   ref={slider.key + '-input'}

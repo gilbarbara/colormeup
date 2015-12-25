@@ -1,11 +1,22 @@
+// *** Fonts
 @import url('http://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
+
+// *** Variable
 @import 'base/variables';
-@import 'base/utils';
-@import 'base/bootstrap';
+
+// *** Libs
 @import 'fontawesome/scss/font-awesome';
 @import 'sass-mediaqueries/media-queries';
+
+// *** Base
+@import 'base/utils';
+@import 'base/bootstrap';
+
+// *** Elements
+
 @import 'elements/loader';
-@import 'elements/slider';
+@import 'elements/input-slider';
+//@import 'elements/slider';
 
 html {
   font-size: 62.5%;
