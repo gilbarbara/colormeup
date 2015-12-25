@@ -18,6 +18,7 @@ export default class Boxes extends React.Component {
 
 	static propTypes = {
 		config: React.PropTypes.object.isRequired
+
 	};
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
