@@ -37,7 +37,7 @@ class Header extends React.Component {
 
 	componentDidMount () {
 		setTimeout(() => {
-			this._updateLogo();
+			this.updateLogo();
 		}, 100);
 	}
 
@@ -48,14 +48,14 @@ class Header extends React.Component {
 			});
 		}
 
-		this._updateLogo();
+		this.updateLogo();
 	}
 
-	_onClickToggleSidebar () {
+	onClickToggleSidebar () {
 		$('.app__sidebar,.app-overlay').toggleClass('visible');
 	}
 
-	_onChangeColorInput (e) {
+	onChangeColorInput (e) {
 		let value    = e.target.value.replace('#', ''),
 			newValue = '#',
 			bits     = [];
@@ -78,46 +78,46 @@ class Header extends React.Component {
 		}
 
 		if (this.props.config.colorObj.validHex(newValue)) {
-			this._changeColor(newValue);
+			this.changeColor(newValue);
 		}
 	}
 
-	_onChangeRangeSlider (e) {
 		let el    = e.target,
 			color = this.props.config.colorObj.remix({ key: el.dataset.type, value: el.value });
 		console.log('_onChangeRangeSlider', el.value);
 		this._changeColor(color);
+	onChangeRangeSlider (pos, props) {
 	}
 
-	_onChangeRangeInput (e) {
+	onChangeRangeInput (e) {
 		let el       = e.target,
 			value    = parseInt(el.value, 10),
 			newValue = isNaN(value) ? 0 : (value < el.previousSibling.min ? el.previousSibling.min : (value > el.previousSibling.max ? el.previousSibling.max : value)),
 			color    = this.props.config.colorObj.remix({ key: el.dataset.type, value: newValue });
 
-		console.log('_onChangeRangeInput', newValue);
-		this._changeColor(color);
+		console.log('onChangeRangeInput', newValue);
+		this.changeColor(color);
 	}
 
-	_onClickSliderMenu (e) {
+	onClickSliderMenu (e) {
 		e.preventDefault();
 
 		this.context.setOptions({ slider: e.currentTarget.dataset.type });
 	}
 
-	_onClickTypesMenu (e) {
+	onClickTypesMenu (e) {
 		e.preventDefault();
 
 		this.context.setOptions({ type: e.currentTarget.dataset.type });
 	}
 
-	_changeColor (color) {
+	changeColor (color) {
 		this.context.setOptions({
 			color
 		});
 	}
 
-	_updateLogo () {
+	updateLogo () {
 		var config = this.props.config;
 
 		$('.logo svg')
@@ -208,7 +208,7 @@ class Header extends React.Component {
 				<div className="app__input">
 					<div className="input-group input-group-lg">
 						<input type="text" className="form-control input-color"
-							   value={this.state.color} onChange={this._onChangeColorInput.bind(this)} />
+							   value={this.state.color} onChange={this.onChangeColorInput} />
 							<span className="input-group-addon">
 							<a href="#" className="save-color" title="Add to Favorites">
 								<span className="fa fa-heart" />
@@ -216,14 +216,13 @@ class Header extends React.Component {
 							</span>
 					</div>
 				</div>
-
 				<div className="app__sliders">
 					<ul className="app__sliders__menu list-unstyled">
 						<li className={config.slider === 'hsl' ? 'active' : null}>
-							<a href="#" data-type="hsl" onClick={this._onClickSliderMenu.bind(this)}>HSL</a>
+							<a href="#" data-type="hsl" onClick={this.onClickSliderMenu}>HSL</a>
 						</li>
 						<li className={config.slider === 'rgb' ? 'active' : null}>
-							<a href="#" data-type="rgb" onClick={this._onClickSliderMenu.bind(this)}>RGB</a></li>
+							<a href="#" data-type="rgb" onClick={this.onClickSliderMenu}>RGB</a></li>
 					</ul>
 					<div className="app__sliders__list">
 						{vars.sliders.map((slider, i) => {
@@ -237,7 +236,7 @@ class Header extends React.Component {
 										   data-target={slider.key + '-input'} step="1"
 										   value={slider.value}
 										   min="0" max={slider.max}
-										   onChange={this._onChangeRangeSlider.bind(this)} />
+										onChange={this.onChangeRangeSlider} />
 									<input type="tel"
 										   ref={slider.key + '-input'}
 										   className="range-input"
@@ -245,7 +244,7 @@ class Header extends React.Component {
 										   data-target={slider.key + '-slider'}
 										   value={slider.value}
 										   tabIndex={i + 1}
-										   onChange={this._onChangeRangeInput.bind(this)} />
+										   onChange={this.onChangeRangeInput} />
 								</div>
 							);
 						})}
@@ -279,7 +278,7 @@ class Header extends React.Component {
 										return (
 											<a key={j} href="#" className="btn btn-secondary"
 											   data-type={it.key}
-											   onClick={this._onClickTypesMenu.bind(this)}>{it.name}</a>
+											   onClick={this.onClickTypesMenu}>{it.name}</a>
 										);
 									})}
 								</div>
@@ -296,7 +295,7 @@ class Header extends React.Component {
 				</div>
 				<div className="app__toggle">
 					<input id="navigation-checkbox" className="navigation-checkbox" type="checkbox"
-						   onChange={this._onClickToggleSidebar} />
+						   onChange={this.onClickToggleSidebar} />
 					<label className="navigation-toggle" htmlFor="navigation-checkbox">
 						<span className="navigation-toggle-icon" />
 					</label>
