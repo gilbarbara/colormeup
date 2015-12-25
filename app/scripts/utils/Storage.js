@@ -1,19 +1,22 @@
-var Storage = {
-    getItem: function (name) {
-        return JSON.parse(localStorage.getItem(name));
-    },
+/**
+ * Generator
+ * @exports Utils/Storage
+ */
 
-    setItem: function (name, value) {
-        localStorage.setItem(name, JSON.stringify(value));
-    },
-
-    removeItem: function (name) {
-        localStorage.removeItem(name);
-    },
-
-    clearAll: function () {
-        localStorage.clear();
-    }
+export let getItem = (name) => {
+	return JSON.parse(localStorage.getItem(name));
 };
 
-module.exports = Storage;
+export let setItem = (name, value) => {
+	localStorage.setItem(name, JSON.stringify(value));
+};
+
+export let removeItem = (name) => {
+	localStorage.removeItem(name);
+};
+
+export let clearAll = () => {
+	localStorage.clear();
+};
+
+export default { getItem, setItem, removeItem, clearAll };
