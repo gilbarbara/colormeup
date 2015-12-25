@@ -13,7 +13,7 @@ export default class Colors {
 	 * @param {string} color
 	 * @returns {Colors}
 	 */
-	constructor (color) {
+	constructor (color = '#ff0044') {
 		this.hex = color.charAt(0) === '#' ? color : '#' + color;
 
 		if (!this.validHex(this.hex)) {
@@ -39,7 +39,7 @@ export default class Colors {
 	 * @returns {Boolean}
 	 */
 	validHex (hex) {
-		return /^#[0-9A-F]{6}$/i.test(hex);
+		return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
 	}
 
 	/**
