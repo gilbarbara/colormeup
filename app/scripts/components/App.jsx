@@ -13,11 +13,7 @@ import Header from './Header';
 import Boxes from './Boxes';
 import Footer from './Footer';
 
-// Mixins
-import mixins from '../utils/Mixins';
-import Events from './mixins/Events';
-
-class App extends mixins(Events) {
+class App extends React.Component {
 	constructor (props) {
 		super(props);
 
@@ -108,18 +104,8 @@ class App extends mixins(Events) {
 		};
 	}
 
-	componentWillMount () {
-		if (super.componentWillMount) {
-			super.componentWillMount();
-		}
-	}
-
 	componentDidMount () {
 		this.getData();
-
-		if (super.componentDidMount) {
-			super.componentDidMount();
-		}
 	}
 
 	componentDidUpdate (prevProps, prevState) {
@@ -129,10 +115,6 @@ class App extends mixins(Events) {
 
 		if (this.state.ready.hash && prevState.ready.hash !== this.state.ready.hash) {
 			this.initialize();
-		}
-
-		if (super.componentDidUpdate) {
-			super.componentDidUpdate();
 		}
 	}
 
