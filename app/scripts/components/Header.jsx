@@ -1,6 +1,6 @@
 import React from 'react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
-import { autobind } from 'core-decorators';
+import { autobind, debounce } from 'core-decorators';
 import InlineSVG from 'react-inlinesvg';
 import InputSlider from 'react-input-slider';
 import $ from 'jquery';
@@ -53,75 +53,11 @@ class Header extends React.Component {
 		this.updateLogo();
 	}
 
-	@autobind
-	onClickToggleSidebar () {
-		$('.app__sidebar,.app-overlay').toggleClass('visible');
-	}
-
-	@autobind
-	onChangeColorInput (e) {
-		let value    = e.target.value.replace('#', ''),
-			newValue = '#',
-			bits     = [];
-
-		if (/^[#0-9A-F]+$/i.test(value)) {
-			this.setState({
-				color: '#' + value.slice(-6)
-			});
-
-			bits = value.replace('#', '').slice(-6).split('');
-		}
-
-		if (bits.length === 3) {
-			bits.forEach(d => {
-				newValue += d + d;
-			});
-		}
-		else if (bits.length === 6) {
-			newValue += bits.join('');
-		}
-
-		if (this.props.config.colorObj.validHex(newValue)) {
-			this.changeColor(newValue);
-		}
-	}
-
-	@autobind
-	onChangeRangeSlider (pos, props) {
-		console.log('onChangeRangeSlider', pos, props);
-		let color = this.props.config.colorObj.remix({ key: props['data-type'], value: pos.x });
-
-		this.changeColor(color);
-	}
-
-	@autobind
-	onChangeRangeInput (e) {
-		let el       = e.target,
-			value    = parseInt(el.value, 10),
-			newValue = isNaN(value) ? 0 : (value < el.previousSibling.min ? el.previousSibling.min : (value > el.previousSibling.max ? el.previousSibling.max : value)),
-			color    = this.props.config.colorObj.remix({ key: el.dataset.type, value: newValue });
-
-		console.log('onChangeRangeInput', newValue);
-		this.changeColor(color);
-	}
-
-	@autobind
-	onClickSliderMenu (e) {
-		e.preventDefault();
-
-		this.context.setOptions({ slider: e.currentTarget.dataset.type });
-	}
-
-	@autobind
-	onClickTypesMenu (e) {
-		e.preventDefault();
-
-		this.context.setOptions({ type: e.currentTarget.dataset.type });
-	}
-
 	changeColor (color) {
+		this.props.config.colorObj.setColor(color);
+
 		this.context.setOptions({
-			color
+			color: this.props.config.colorObj.hex
 		});
 	}
 
@@ -161,6 +97,73 @@ class Header extends React.Component {
 		}).end();
 	}
 
+
+	@autobind
+	onClickToggleSidebar () {
+		$('.app__sidebar,.app-overlay').toggleClass('visible');
+	}
+
+	@autobind
+	onChangeColorInput (e) {
+		let value    = e.target.value.replace('#', ''),
+			newValue = '#',
+			bits     = [];
+
+		if (/^[#0-9A-F]+$/i.test(value)) {
+			this.setState({
+				color: '#' + value.slice(-6)
+			});
+
+			bits = value.replace('#', '').slice(-6).split('');
+		}
+
+		if (bits.length === 3) {
+			bits.forEach(d => {
+				newValue += d + d;
+			});
+		}
+		else if (bits.length === 6) {
+			newValue += bits.join('');
+		}
+
+		if (this.props.config.colorObj.validHex(newValue)) {
+			this.changeColor(newValue);
+		}
+	}
+
+	@autobind
+	onChangeRangeSlider (pos, props) {
+		console.log('onChangeRangeSlider', pos, props);
+		let color = this.props.config.colorObj.remix({ [props['data-type']]: pos.x });
+
+		this.changeColor(color);
+	}
+
+	@autobind
+	onChangeRangeInput (e) {
+		let el       = e.target,
+			value    = parseInt(el.value, 10),
+			newValue = isNaN(value) ? 0 : (value < el.previousSibling.min ? el.previousSibling.min : (value > el.previousSibling.max ? el.previousSibling.max : value)),
+			color    = this.props.config.colorObj.remix({ [el.dataset.type]: newValue });
+
+		console.log('onChangeRangeInput', newValue);
+		this.changeColor(color);
+	}
+
+	@autobind
+	onClickSliderMenu (e) {
+		e.preventDefault();
+
+		this.context.setOptions({ slider: e.currentTarget.dataset.type });
+	}
+
+	@autobind
+	onClickTypesMenu (e) {
+		e.preventDefault();
+
+		this.context.setOptions({ type: e.currentTarget.dataset.type });
+	}
+
 	render () {
 		const config = this.props.config;
 
@@ -185,15 +188,13 @@ class Header extends React.Component {
 			{
 				name: config.slider === 'hsl' ? 'Hue' : 'Red',
 				key: vars.keys[0],
-				value: (config.colorObj.saturation === 0 || config.colorObj.lightness === 0
-					? 0
-					: Math.round(config.slider === 'hsl' ? config.colorObj.hue : config.colorObj.red)),
+				value: Math.round(config.slider === 'hsl' ? (config.colorObj.lightness === 0 || config.colorObj.saturation === 0 ? 0 : config.colorObj.hue) : config.colorObj.red),
 				max: config.types[vars.keys[0]].max
 			},
 			{
 				name: config.slider === 'hsl' ? 'Saturation' : 'Green',
 				key: vars.keys[1],
-				value: Math.round(config.slider === 'hsl' ? config.colorObj.saturation : config.colorObj.green),
+				value: Math.round(config.slider === 'hsl' ? (config.colorObj.lightness === 0 ? 0 : config.colorObj.saturation) : config.colorObj.green),
 				max: config.types[vars.keys[1]].max
 			},
 			{
@@ -235,10 +236,9 @@ class Header extends React.Component {
 					<div className="app__sliders__list">
 						{vars.sliders.map((slider, i) => {
 							return (
-								<div key={i} className="slider">
+								<div key={i} className="slider-wrapper">
 									<span className="range-name">{slider.name}</span>
 									<InputSlider
-										ref={slider.key + '-slider'}
 										className="slider"
 										data-type={slider.key}
 										x={slider.value}
