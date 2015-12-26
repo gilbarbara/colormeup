@@ -1,0 +1,12 @@
+{
+    "source": {
+        "include": [ "app/scripts" ],
+        "exclude": [ "app/scripts/__tests__" ],
+        "includePattern": ".+\\.js(doc)?$"
+    },
+    "opts": {
+        "encoding": "utf8",
+        "destination": "./docs/",
+        "recurse": true
+    }
+}

@@ -1,10 +1,11 @@
 /**
- * Generator
- * @exports Utils/Math
+ * Custom Math functions
+ * @module Math
  */
 
 /**
- * @instance
+ * Round decimal numbers
+ * @method
  * @param {number} number
  * @param {number} digits
  *
@@ -16,7 +17,7 @@ export let round = (number, digits = 2) => {
 };
 
 /**
- * @instance
+ * @method
  * @param {number} number
  * @param {number} digits
  *
@@ -28,7 +29,7 @@ export let ceil = (number, digits = 2) => {
 };
 
 /**
- * @instance
+ * @method
  * @param {number} number
  * @param {number} digits
  *
@@ -40,7 +41,7 @@ export let floor = (number, digits = 2) => {
 };
 
 /**
- * @instance
+ * @method
  * @param {number} number
  * @param {number} factor
  *
@@ -51,7 +52,7 @@ export let roundByFactor = (number, factor = 10000) => {
 };
 
 /**
- * @instance
+ * @method
  * @param {number} number
  * @param {number} divisions
  *
@@ -71,8 +72,8 @@ export let getFactor = (number, divisions = 8) => {
 };
 
 /**
- * @instance
- * @param {string} str
+ * @method
+ * @param {string} str - "10 * 2"
  *
  * @returns {number}
  */
