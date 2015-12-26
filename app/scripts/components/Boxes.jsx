@@ -24,12 +24,12 @@ export default class Boxes extends React.Component {
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	buildBoxes () {
-		const props = this.props.config;
+		const CONFIG = this.props.config;
 
-		if ('rgb'.indexOf(props.type) > -1) {
+		if ('rgb'.indexOf(CONFIG.type) > -1) {
 			return this.buildRGBBoxes();
 		}
-		else if ('hsl'.indexOf(props.type) > -1) {
+		else if ('hsl'.indexOf(CONFIG.type) > -1) {
 			return this.buildHSLBoxes();
 		}
 
@@ -47,29 +47,29 @@ export default class Boxes extends React.Component {
 	}
 
 	buildHSLBoxes (options) {
-		const props = this.props.config;
+		const CONFIG = this.props.config;
 		let settings = Object.assign({
-				max: (props.type === 'h' ? 356 : 96),
-				steps: props.steps
+				max: (CONFIG.type === 'h' ? 356 : 96),
+				steps: CONFIG.steps
 			}, options),
-			max      = (props.type === 'h' ? Math.round(props.colorObj.hue) : (props.order === 'desc' ? settings.max : 0)),
+			max      = (CONFIG.type === 'h' ? Math.round(CONFIG.colorObj.hue) : (CONFIG.order === 'desc' ? settings.max : 0)),
 			boxes    = [];
 
-		//this.context.log('buildHSLBoxes', 'type:', props.type, props.color, props.colorObj.hsl);
+		//this.context.log('buildHSLBoxes', 'type:', CONFIG.type, CONFIG.color, CONFIG.colorObj.hsl);
 
-		while (props.order === 'desc' ? max > 0 : max <= settings.max) {
-			boxes.push(this.buildBox(this.changeHSLValue(max, (props.type === 's' && props.colorObj.saturation === 0 ? 'l' : props.type)), max));
+		while (CONFIG.order === 'desc' ? max > 0 : max <= settings.max) {
+			boxes.push(this.buildBox(this.changeHSLValue(max, (CONFIG.type === 's' && CONFIG.colorObj.saturation === 0 ? 'l' : CONFIG.type)), max));
 
-			max = (props.order === 'desc' ? max - settings.steps : max + settings.steps);
+			max = (CONFIG.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
 
-		if (props.type === 'h') {
-			max = (props.order === 'desc' ? 360 : 0);
+		if (CONFIG.type === 'h') {
+			max = (CONFIG.order === 'desc' ? 360 : 0);
 
-			while (props.order === 'desc' ? max > props.colorObj.hue : max <= props.colorObj.hue) {
-				boxes.push(this.buildBox(this.changeHSLValue(max, (props.type === 's' && props.colorObj.saturation === 0 ? 'l' : props.type)), max));
+			while (CONFIG.order === 'desc' ? max > CONFIG.colorObj.hue : max <= CONFIG.colorObj.hue) {
+				boxes.push(this.buildBox(this.changeHSLValue(max, (CONFIG.type === 's' && CONFIG.colorObj.saturation === 0 ? 'l' : CONFIG.type)), max));
 
-				max = (props.order === 'desc' ? max - settings.steps : max + settings.steps);
+				max = (CONFIG.order === 'desc' ? max - settings.steps : max + settings.steps);
 			}
 		}
 
@@ -77,19 +77,20 @@ export default class Boxes extends React.Component {
 	}
 
 	buildRGBBoxes (options) {
+		const CONFIG = this.props.config;
 		let settings = Object.assign({
 				max: 255,
-				steps: this.steps
+				steps: CONFIG.steps
 			}, options),
-			max      = (this.order === 'desc' ? settings.max : 0),
+			max      = (CONFIG.order === 'desc' ? settings.max : 0),
 			boxes    = [];
 
-		//this.context.log('buildRGBBoxes', 'type:', this.type, this.color, this.colorObj.rgb);
+		//this.context.log('buildRGBBoxes', CONFIG.type, CONFIG.color, CONFIG.colorObj.rgb);
 
-		while (this.order === 'desc' ? max > 0 : max <= settings.max) {
-			boxes.push(this.buildBox(this.changeRGBValue(max, this.type)), max);
+		while (CONFIG.order === 'desc' ? max > 0 : max <= settings.max) {
+			boxes.push(this.buildBox(this.changeRGBValue(max, CONFIG.type)), max);
 
-			max = (this.order === 'desc' ? max - settings.steps : max + settings.steps);
+			max = (CONFIG.order === 'desc' ? max - settings.steps : max + settings.steps);
 		}
 
 		return boxes;
@@ -106,24 +107,24 @@ export default class Boxes extends React.Component {
 	}
 
 	changeHSLValue (val, type) {
-		const props = this.props.config;
+		const CONFIG = this.props.config;
 		//this.context.log('changeValue', val, type);
 
-		return props.colorObj.hsl2hex({
-			h: (type === 'h' ? val : props.colorObj.hue),
-			s: (type === 's' ? val : props.colorObj.saturation),
-			l: (type === 'l' ? val : props.colorObj.lightness)
+		return CONFIG.colorObj.hsl2hex({
+			h: (type === 'h' ? val : CONFIG.colorObj.hue),
+			s: (type === 's' ? val : CONFIG.colorObj.saturation),
+			l: (type === 'l' ? val : CONFIG.colorObj.lightness)
 		});
 	}
 
 	changeRGBValue (val, type) {
-		const props = this.props.config;
+		const CONFIG = this.props.config;
 		//this.context.log('changeRGBValue', val, type);
 
-		return props.colorObj.rgb2hex({
-			r: type === 'r' ? val : props.colorObj.red,
-			g: type === 'g' ? val : props.colorObj.green,
-			b: type === 'b' ? val : props.colorObj.blue
+		return CONFIG.colorObj.rgb2hex({
+			r: type === 'r' ? val : CONFIG.colorObj.red,
+			g: type === 'g' ? val : CONFIG.colorObj.green,
+			b: type === 'b' ? val : CONFIG.colorObj.blue
 		});
 	}
 
