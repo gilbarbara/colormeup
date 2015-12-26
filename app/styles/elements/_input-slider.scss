@@ -1,6 +1,6 @@
 $xy-handle-size: 2rem;
-$color-active: #2e8ece;
-$color-bg: #ddd;
+$color-active: #777;
+$color-bg: #ccc;
 $size: 1rem;
 $fix: 1rem;
 
@@ -33,7 +33,7 @@ $fix: 1rem;
 .u-slider-y {
   .handle:after {
     background-color: #fff;
-    border: 3px solid $color-active;
+    border: 2px solid $color-active;
     border-radius: 50%;
     height: $size + $fix;
     width: $size + $fix;

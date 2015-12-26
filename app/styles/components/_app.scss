@@ -269,22 +269,17 @@
     background-color: #dcdcdc;
     border-bottom: 4px solid #ccc;
     margin: 0 auto;
-    padding: 1rem 15px 3rem;
+    padding: 1rem 1.5rem 3rem;
     position: relative;
     text-align: center;
     width: 100%;
 
-    @include sm {
-      padding: 1rem 5% 3rem;
-    }
+    &__wrapper {
+      margin: 0 auto;
 
-    @include md {
-      padding: 3rem 20%;
-    }
-
-    @include lg {
-      padding-left: 28%;
-      padding-right: 28%;
+      @include md {
+        width: 64rem;
+      }
     }
 
     .logo {
