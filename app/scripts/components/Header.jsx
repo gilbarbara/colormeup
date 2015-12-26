@@ -40,7 +40,7 @@ class Header extends React.Component {
 	componentDidMount () {
 		setTimeout(() => {
 			this.updateLogo();
-		}, 100);
+		}, 300);
 	}
 
 	componentDidUpdate (prevProps) {
@@ -97,7 +97,6 @@ class Header extends React.Component {
 		}).end();
 	}
 
-
 	@autobind
 	onClickToggleSidebar () {
 		$('.app__sidebar,.app-overlay').toggleClass('visible');
@@ -133,7 +132,7 @@ class Header extends React.Component {
 
 	@autobind
 	onChangeRangeSlider (pos, props) {
-		console.log('onChangeRangeSlider', pos, props);
+		//console.log('onChangeRangeSlider', pos, props);
 		let color = this.props.config.colorObj.remix({ [props['data-type']]: pos.x });
 
 		this.changeColor(color);
@@ -210,102 +209,104 @@ class Header extends React.Component {
 		return (
 			<div className="app__header"
 				 style={{ backgroundColor: config.color, borderColor: config.colorObj.darken(15) }}>
-				<div className="logo">
-					<InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} />
-				</div>
+				<div className="app__header__wrapper">
+					<div className="logo">
+						<InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} />
+					</div>
 
-				<div className="app__input">
-					<div className="input-group input-group-lg">
-						<input type="text" className="form-control input-color"
-							   value={this.state.color} onChange={this.onChangeColorInput} />
+					<div className="app__input">
+						<div className="input-group input-group-lg">
+							<input type="text" className="form-control input-color"
+								   value={this.state.color} onChange={this.onChangeColorInput} />
 							<span className="input-group-addon">
 							<a href="#" className="save-color" title="Add to Favorites">
 								<span className="fa fa-heart" />
 							</a>
 							</span>
+						</div>
 					</div>
-				</div>
-				<div className="app__sliders">
-					<ul className="app__sliders__menu list-unstyled">
-						<li className={config.slider === 'hsl' ? 'active' : null}>
-							<a href="#" data-type="hsl" onClick={this.onClickSliderMenu}>HSL</a>
-						</li>
-						<li className={config.slider === 'rgb' ? 'active' : null}>
-							<a href="#" data-type="rgb" onClick={this.onClickSliderMenu}>RGB</a></li>
-					</ul>
-					<div className="app__sliders__list">
-						{vars.sliders.map((slider, i) => {
+					<div className="app__sliders">
+						<ul className="app__sliders__menu list-unstyled">
+							<li className={config.slider === 'hsl' ? 'active' : null}>
+								<a href="#" data-type="hsl" onClick={this.onClickSliderMenu}>HSL</a>
+							</li>
+							<li className={config.slider === 'rgb' ? 'active' : null}>
+								<a href="#" data-type="rgb" onClick={this.onClickSliderMenu}>RGB</a></li>
+						</ul>
+						<div className="app__sliders__list">
+							{vars.sliders.map((slider, i) => {
+								return (
+									<div key={i} className="slider-wrapper">
+										<span className="range-name">{slider.name}</span>
+										<InputSlider
+											className="slider"
+											data-type={slider.key}
+											x={slider.value}
+											xmax={slider.max}
+											onChange={this.onChangeRangeSlider} />
+										<input type="tel"
+											   ref={slider.key + '-input'}
+											   className="range-input"
+											   data-type={slider.key}
+											   data-target={slider.key + '-slider'}
+											   value={slider.value}
+											   tabIndex={i + 1}
+											   onChange={this.onChangeRangeInput} />
+									</div>
+								);
+							})}
+						</div>
+					</div>
+
+					<div className="app__info">
+						{Object.keys(vars.types).map((t, i) => {
 							return (
-								<div key={i} className="slider-wrapper">
-									<span className="range-name">{slider.name}</span>
-									<InputSlider
-										className="slider"
-										data-type={slider.key}
-										x={slider.value}
-										xmax={slider.max}
-										onChange={this.onChangeRangeSlider} />
-									<input type="tel"
-										   ref={slider.key + '-input'}
-										   className="range-input"
-										   data-type={slider.key}
-										   data-target={slider.key + '-slider'}
-										   value={slider.value}
-										   tabIndex={i + 1}
-										   onChange={this.onChangeRangeInput} />
+								<div key={i} className={t}>
+									{vars.types[t].map((it, j) => {
+										return (
+											<div key={j} className="color-value">
+												<div
+													className={'color-' + it.key}>{Math.round(config.colorObj[it.name.toLowerCase()])}</div>
+												{it.name.toLowerCase()}
+											</div>
+										);
+									})}
 								</div>
 							);
 						})}
 					</div>
-				</div>
 
-				<div className="app__info">
-					{Object.keys(vars.types).map((t, i) => {
-						return (
-							<div key={i} className={t}>
-								{vars.types[t].map((it, j) => {
-									return (
-										<div key={j} className="color-value">
-											<div
-												className={'color-' + it.key}>{Math.round(config.colorObj[it.name.toLowerCase()])}</div>
-											{it.name.toLowerCase()}
-										</div>
-									);
-								})}
-							</div>
-						);
-					})}
-				</div>
-
-				<div className="app__type">
-					{Object.keys(vars.types).map((t, i) => {
-						return (
-							<div key={i} className={t}>
-								<div className="btn-group" role="group" aria-label={t}>
-									{vars.types[t].map((it, j) => {
-										return (
-											<a key={j} href="#" className="btn btn-secondary"
-											   data-type={it.key}
-											   onClick={this.onClickTypesMenu}>{it.name}</a>
-										);
-									})}
+					<div className="app__type">
+						{Object.keys(vars.types).map((t, i) => {
+							return (
+								<div key={i} className={t}>
+									<div className="btn-group" role="group" aria-label={t}>
+										{vars.types[t].map((it, j) => {
+											return (
+												<a key={j} href="#" className="btn btn-secondary"
+												   data-type={it.key}
+												   onClick={this.onClickTypesMenu}>{it.name}</a>
+											);
+										})}
+									</div>
 								</div>
-							</div>
-						);
-					})}
-					<div className="steps">
-						<span className="fa fa-th" />
-						<input type="text"
-							   className="form-control input-steps"
-							   placeholder="steps"
-							   defaultValue={config.steps} />
+							);
+						})}
+						<div className="steps">
+							<span className="fa fa-th" />
+							<input type="text"
+								   className="form-control input-steps"
+								   placeholder="steps"
+								   defaultValue={config.steps} />
+						</div>
 					</div>
-				</div>
-				<div className="app__toggle">
-					<input id="navigation-checkbox" className="navigation-checkbox" type="checkbox"
-						   onChange={this.onClickToggleSidebar} />
-					<label className="navigation-toggle" htmlFor="navigation-checkbox">
-						<span className="navigation-toggle-icon" />
-					</label>
+					<div className="app__toggle">
+						<input id="navigation-checkbox" className="navigation-checkbox" type="checkbox"
+							   onChange={this.onClickToggleSidebar} />
+						<label className="navigation-toggle" htmlFor="navigation-checkbox">
+							<span className="navigation-toggle-icon" />
+						</label>
+					</div>
 				</div>
 			</div>
 		);

@@ -35,13 +35,13 @@ class App extends React.Component {
 				'#ffd200',
 				'#ff0044'
 			],
+			hash: {},
+			orders: ['asc', 'desc'],
 			ready: {
 				data: false,
 				hash: false,
 				ui: false
 			},
-			hash: {},
-			orders: ['asc', 'desc'],
 			slider: 'hsl',
 			steps: 4,
 			type: 'h',
@@ -86,8 +86,6 @@ class App extends React.Component {
 		};
 	}
 
-	shouldComponentUpdate = shouldPureComponentUpdate;
-
 	static childContextTypes = {
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
@@ -103,6 +101,8 @@ class App extends React.Component {
 			setOptions: this.setOptions
 		};
 	}
+
+	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	componentDidMount () {
 		this.getData();
@@ -136,7 +136,7 @@ class App extends React.Component {
 		this.log('initialize', settings);
 
 		this.setState(reactUpdate(this.state, {
-				color: { $set: Boolean(settings.color) && Colors.validHex(settings.color) ? '#' + settings.color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length) + 1] },
+				color: { $set: Boolean(settings.color) && Colors.validHex(settings.color) ? '#' + settings.color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1] },
 				type: { $set: state.types[settings.type] ? settings.type : 'h' },
 				order: { $set: state.orders.indexOf(settings.order) > -1 ? settings.order : 'desc' },
 				steps: { $set: settings.steps > 1 ? settings.steps : state.types[state.types[settings.type] ? settings.type : 'h'].optimal }
@@ -247,6 +247,7 @@ class App extends React.Component {
 					ready: { ui: { $set: true } }
 				}));
 			}
+			this.log('setColor', this.state.colorObj);
 		});
 	}
 
