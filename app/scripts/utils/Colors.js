@@ -6,8 +6,7 @@ import math from './Math';
  * @class
  * @version 1.0
  */
-
-export default class Colors {
+class Colors {
 	/**
 	 * @constructs Colors
 	 * @param {string|array|object} color
@@ -470,3 +469,5 @@ export default class Colors {
 		return hex ? mod.r ? this.rgb2hex(mod) : this.hsl2hex(mod) : mod;
 	}
 }
+
+export default Colors;

@@ -116,7 +116,7 @@ gulp.task('scripts:lint', function () {
 });
 
 gulp.task('modernizr', function (cb) {
-	return exec('./node_modules/.bin/modernizr -c .modernizr-config.json -d .tmp/scripts/modernizr.js', cb);
+	return exec('./node_modules/.bin/modernizr -c .modernizr.json -d .tmp/scripts/modernizr.js', cb);
 });
 
 gulp.task('bundle', function () {
@@ -178,14 +178,14 @@ gulp.task('fonts', function () {
 		}));
 });
 
-gulp.task('clean', function (cb) {
+gulp.task('clean', function () {
 	var target = ['.tmp/*'];
 
 	if (isProduction()) {
 		target.push('dist/*');
 	}
 
-	return del(target, cb);
+	return del(target);
 });
 
 gulp.task('sizer', function () {
@@ -207,6 +207,13 @@ gulp.task('mocha', function () {
 		.pipe($.mocha({
 			reporter: 'nyan'
 		}));
+});
+
+gulp.task('docs', function (cb) {
+	del(['docs/*'])
+		.then(function () {
+			return exec('jsdoc -c .jsdoc.json -R README.md', cb);
+		});
 });
 
 gulp.task('gh-pages', function () {
@@ -240,12 +247,12 @@ gulp.task('serve', ['assets'], function () {
 		}
 	});
 	gulp.watch(['app/*.html', 'app/media/**/*']).on('change', browserSync.reload);
-	gulp.watch('.modernizr-config.json', ['modernizr', browserSync.reload]);
+	gulp.watch('.modernizr.json', ['modernizr', browserSync.reload]);
 });
 
 gulp.task('build', ['clean'], function (cb) {
 	process.env.NODE_ENV = 'production';
-	runSequence('scripts:lint', 'assets', ['bundle', 'media'], 'sizer', cb);
+	runSequence('scripts:lint', 'assets', ['bundle', 'media', 'docs'], 'sizer', cb);
 });
 
 gulp.task('deploy', function (cb) {
