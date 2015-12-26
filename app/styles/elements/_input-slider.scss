@@ -1,8 +1,8 @@
-$xy-handle-size: 20px;
+$xy-handle-size: 2rem;
 $color-active: #2e8ece;
 $color-bg: #ddd;
-$size: 20px;
-$fix: 4px;
+$size: 1rem;
+$fix: 1rem;
 
 .u-slider {
   background-color: $color-bg;
@@ -64,6 +64,7 @@ $fix: 4px;
 
   .handle {
     width: 100%;
+
     &:after {
       left: -($fix / 2);
       top: -($size + $fix) / 2;
@@ -93,9 +94,9 @@ $fix: 4px;
       content: '';
       display: block;
       height: $xy-handle-size;
-      left: -($xy-handle-size/2);
+      left: -($xy-handle-size / 2);
       position: relative;
-      top: -($xy-handle-size/2);
+      top: -($xy-handle-size / 2);
       width: $xy-handle-size;
     }
   }

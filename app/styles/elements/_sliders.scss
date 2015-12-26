@@ -1,0 +1,40 @@
+.slider-wrapper {
+  height: 3rem;
+  width: 100%;
+
+  .slider {
+    width: calc(100% - 12rem);
+  }
+
+  .range-name {
+    display: inline-block;
+    font-size: 1.3rem;
+    margin-right: 7px;
+    min-width: 66px;
+    text-align: right;
+  }
+
+  // Tooltip Tag
+  .range-input {
+    background: transparent;
+    border: 0;
+    color: $body-color;
+    display: inline-block;
+    font-size: 1.3rem;
+    margin-left: 7px;
+    outline: none;
+    position: relative;
+    text-align: center;
+    width: 4rem;
+
+    &:focus {
+      font-weight: 700;
+    }
+  }
+}
+
+// Firefox Overrides
+
+input::-moz-focus-inner {
+  border: 0;
+}

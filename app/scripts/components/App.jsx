@@ -237,7 +237,7 @@ class App extends React.Component {
 			state.colorObj = new Colors(color);
 		}
 		else {
-			this.state.colorObj.changeColor(color);
+			this.state.colorObj.setColor(color);
 		}
 
 		//this.log('setColor', color);
@@ -256,7 +256,7 @@ class App extends React.Component {
 		//this.log('setOptions', options);
 
 		if (options.color) {
-			state.color = (options.color.indexOf('#') === -1 ? '#' : '') + options.color;
+			state.color = options.color;
 		}
 		if (options.type) {
 			state.type = options.type;
@@ -268,11 +268,7 @@ class App extends React.Component {
 			state.slider = options.slider;
 		}
 
-		this.setState(state, () => {
-			if (options.color) {
-				this.setColor(options.color);
-			}
-		});
+		this.setState(state);
 	}
 
 	render () {
