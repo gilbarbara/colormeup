@@ -10,10 +10,7 @@ export default class Boxes extends React.Component {
 	}
 
 	static contextTypes = {
-		log: React.PropTypes.func,
-		setColor: React.PropTypes.func,
-		setHash: React.PropTypes.func,
-		setValue: React.PropTypes.func
+		log: React.PropTypes.func
 	};
 
 	static propTypes = {
