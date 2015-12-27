@@ -1,17 +1,22 @@
 import React from 'react';
 import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
+import { createHashHistory } from 'history';
 import { autobind } from 'core-decorators';
-import deparam from 'node-jquery-deparam';
 
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
+import { param, deparam } from '../utils/Parameterizr';
 
 import Loader from './common/Loader';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Boxes from './Boxes';
 import Footer from './Footer';
+
+let history = createHashHistory({ queryKey: false });
+
+//todo add button to randomize
 
 class App extends React.Component {
 	constructor (props) {
@@ -102,6 +107,10 @@ class App extends React.Component {
 		};
 	}
 
+	static propTypes = {
+		location: React.PropTypes.object
+	}
+
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	componentDidMount () {
@@ -116,27 +125,26 @@ class App extends React.Component {
 		if (this.state.ready.hash && prevState.ready.hash !== this.state.ready.hash) {
 			this.initialize();
 		}
-	}
 
-	log () {
-		if (location.hostname === 'localhost') {
-			console.log(...arguments);
+		if (prevState.color !== this.state.color) {
+			this.setHash();
 		}
 	}
 
 	initialize () {
 		const state = this.state;
 		let settings = Object.assign({
-			type: 'h',
-			order: 'desc',
-			color: '',
-			steps: 4
-		}, state.hash);
+				type: 'h',
+				order: 'desc',
+				color: '',
+				steps: 4
+			}, state.hash),
+			color = '#' + settings.color;
 
-		this.log('initialize', settings);
+		this.log('initialize', settings, this.state.color, color);
 
 		this.setState(reactUpdate(this.state, {
-				color: { $set: Boolean(settings.color) && Colors.validHex(settings.color) ? '#' + settings.color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1] },
+				color: { $set: Boolean(color) && Colors.prototype.validHex(color) ? color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1] },
 				type: { $set: state.types[settings.type] ? settings.type : 'h' },
 				order: { $set: state.orders.indexOf(settings.order) > -1 ? settings.order : 'desc' },
 				steps: { $set: settings.steps > 1 ? settings.steps : state.types[state.types[settings.type] ? settings.type : 'h'].optimal }
@@ -180,7 +188,8 @@ class App extends React.Component {
 	}
 
 	getHash () {
-		let hash = Object.assign(this.state.hash, deparam(location.hash.replace('#', '')));
+		let hash = Object.assign(this.state.hash, deparam(this.props.location.hash.replace('#', '')));
+
 		this.log('getHash', hash);
 
 		this.setState(reactUpdate(this.state, {
@@ -193,27 +202,22 @@ class App extends React.Component {
 	setHash () {
 		let state   = this.state,
 			options = {
-				color: state.color.replace('#', ''),
-				type: state.type
-			},
-			hash;
+				color: state.color.replace('#', '')
+			};
 
-		this.log('setHash');
-
-		if (state.order !== 'desc') {
+/*		if (state.order !== 'desc') {
 			options.order = state.order;
 		}
 
 		if (+state.steps !== 4) {
 			options.steps = state.steps;
 		}
+*/
+		this.log('setHash', options);
 
-		hash = Object.assign(state.hash, options);
-
-		this.setState({
-			hash
-		});
-		location.hash = $.param(hash);
+		if (param(options) !== param(state.hash)) {
+			history.push(param(options));
+		}
 	}
 
 	getColors (max) {
@@ -270,6 +274,12 @@ class App extends React.Component {
 		}
 
 		this.setState(state);
+	}
+
+	log () {
+		if (location.hostname === 'localhost') {
+			console.log(...arguments);
+		}
 	}
 
 	render () {

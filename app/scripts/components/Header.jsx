@@ -38,7 +38,7 @@ class Header extends React.Component {
 
 	componentDidMount () {
 		setTimeout(() => {
-			this.updateLogo();
+			this.updateColors();
 		}, 300);
 	}
 
@@ -49,7 +49,7 @@ class Header extends React.Component {
 			});
 		}
 
-		this.updateLogo();
+		this.updateColors();
 	}
 
 	changeColor (color) {
@@ -60,7 +60,7 @@ class Header extends React.Component {
 		});
 	}
 
-	updateLogo () {
+	updateColors () {
 		var config = this.props.config;
 
 		$('.logo svg')
@@ -94,6 +94,16 @@ class Header extends React.Component {
 			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
 			fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
 		}).end();
+
+		$('.navigation-toggle-icon').css({
+			color: (config.colorObj.saturation > 8 ? (
+				config.colorObj.hsl2hex({
+					h: Math.abs(config.colorObj.hue + 90),
+					s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+				})
+			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333'))
+		});
 	}
 
 	@autobind
@@ -222,8 +232,9 @@ class Header extends React.Component {
 
 					<div className="app__input">
 						<div className="input-group input-group-lg">
-							<input type="text" className="form-control input-color"
-								   value={this.state.color} onChange={this.onChangeColorInput} />
+							<input
+								type="text" className="form-control input-color"
+								value={this.state.color} onChange={this.onChangeColorInput} />
 							<span className="input-group-addon">
 							<a href="#" className="save-color" title="Add to Favorites">
 								<span className="fa fa-heart" />
@@ -250,14 +261,15 @@ class Header extends React.Component {
 											x={slider.value}
 											xmax={slider.max}
 											onChange={this.onChangeRangeSlider} />
-										<input type="tel"
-											   ref={slider.key + '-input'}
-											   className="range-input"
-											   data-type={slider.key}
-											   data-target={slider.key + '-slider'}
-											   value={slider.value}
-											   tabIndex={i + 1}
-											   onChange={this.onChangeRangeInput} />
+										<input
+											type="tel"
+											ref={slider.key + '-input'}
+											className="range-input"
+											data-type={slider.key}
+											data-target={slider.key + '-slider'}
+											value={slider.value}
+											tabIndex={i + 1}
+											onChange={this.onChangeRangeInput} />
 									</div>
 								);
 							})}
@@ -289,9 +301,13 @@ class Header extends React.Component {
 									<div className="btn-group" role="group" aria-label={t}>
 										{vars.types[t].map((it, j) => {
 											return (
-												<a key={j} href="#" className="btn btn-secondary"
-												   data-type={it.key}
-												   onClick={this.onClickTypesMenu}>{it.name}</a>
+												<a
+													key={j} href="#"
+													className={'btn btn-' + (config.type === it.key ? 'selected' : 'secondary')}
+													data-type={it.key}
+													onClick={this.onClickTypesMenu}>
+													{it.name}
+												</a>
 											);
 										})}
 									</div>
@@ -309,8 +325,9 @@ class Header extends React.Component {
 						</div>
 					</div>
 					<div className="app__toggle">
-						<input id="navigation-checkbox" className="navigation-checkbox" type="checkbox"
-							   onChange={this.onClickToggleSidebar} />
+						<input
+							id="navigation-checkbox" className="navigation-checkbox" type="checkbox"
+							onChange={this.onClickToggleSidebar} />
 						<label className="navigation-toggle" htmlFor="navigation-checkbox">
 							<span className="navigation-toggle-icon" />
 						</label>
