@@ -7,6 +7,7 @@ $fix: 1rem;
 .u-slider {
   background-color: $color-bg;
   border-radius: 3px;
+  cursor: pointer;
   display: inline-block;
   position: relative;
 
@@ -35,8 +36,13 @@ $fix: 1rem;
     background-color: #fff;
     border: 2px solid $color-active;
     border-radius: 50%;
+    cursor: grab;
     height: $size + $fix;
     width: $size + $fix;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 }
 
