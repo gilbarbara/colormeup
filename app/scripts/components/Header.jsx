@@ -3,6 +3,8 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind, debounce } from 'core-decorators';
 import InlineSVG from 'react-inlinesvg';
 import InputSlider from 'react-input-slider';
+import NumericInput from './common/NumericInput';
+
 import $ from 'jquery';
 
 import math from '../utils/Math';
@@ -150,6 +152,13 @@ class Header extends React.Component {
 	}
 
 	@autobind
+	onChangeSteps (value) {
+		if (value) {
+			this.context.setOptions({ steps: value });
+		}
+	}
+
+	@autobind
 	onClickSliderMenu (e) {
 		e.preventDefault();
 
@@ -294,10 +303,12 @@ class Header extends React.Component {
 						})}
 						<div className="steps">
 							<span className="fa fa-th" />
-							<input type="text"
-								   className="form-control input-steps"
-								   placeholder="steps"
-								   defaultValue={config.steps} />
+							<NumericInput
+								className="form-control input-steps"
+								min={1}
+								max={64}
+								value={config.steps}
+								onChange={this.onChangeSteps} />
 						</div>
 					</div>
 					<div className="app__toggle">
