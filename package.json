@@ -24,7 +24,6 @@
     "history": "^1.17",
     "lodash": "^3.10",
     "mobile-detect": "^1.2",
-    "node-jquery-deparam": "0.0.3",
     "react": "^0.14",
     "react-addons-update": "^0.14",
     "react-dom": "^0.14",

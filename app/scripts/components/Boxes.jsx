@@ -1,6 +1,7 @@
 import React from 'react';
 import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
+import { autobind } from 'core-decorators';
 import Colors from '../utils/Colors';
 import Loader from './common/Loader';
 
@@ -10,12 +11,12 @@ export default class Boxes extends React.Component {
 	}
 
 	static contextTypes = {
-		log: React.PropTypes.func
+		log: React.PropTypes.func,
+		setColor: React.PropTypes.func
 	};
 
 	static propTypes = {
 		config: React.PropTypes.object.isRequired
-
 	};
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
@@ -36,9 +37,9 @@ export default class Boxes extends React.Component {
 	buildBox (color, max) {
 		let textColor = this.textLightness(color);
 		return (
-			<a href="#" key={max + '-' + Math.random()} data-color={color.replace('#', '')}
-			   style={{ backgroundColor: color }}>
-				<div className="app__box" style={{ color: textColor }}>{color}</div>
+			<a href="#" key={max + '-' + Math.random()} data-color={color}
+			   style={{ backgroundColor: color }} onClick={this.onClickBox}>
+				<span className="app__box" style={{ color: textColor }}>{color}</span>
 			</a>
 		);
 	}
@@ -123,6 +124,14 @@ export default class Boxes extends React.Component {
 			g: type === 'g' ? val : CONFIG.colorObj.green,
 			b: type === 'b' ? val : CONFIG.colorObj.blue
 		});
+	}
+
+	@autobind
+	onClickBox (e) {
+		e.preventDefault();
+		let el = e.currentTarget;
+
+		this.context.setColor(el.dataset.color);
 	}
 
 	render () {
