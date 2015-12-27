@@ -366,7 +366,6 @@ class Colors {
 			h: value
 		});
 		this.hex = this.rgb2hex(this.hsl2rgb(hsl));
-		console.log('hsl', hsl, this.rgb2hex(this.hsl2rgb(hsl)));
 	}
 
 	/**
@@ -467,6 +466,16 @@ class Colors {
 		mod = this.mod(model);
 
 		return hex ? mod.r ? this.rgb2hex(mod) : this.hsl2hex(mod) : mod;
+	}
+
+	schemeFromDegrees (degrees) {
+		let newColors = [];
+		for (let i = 0, j = degrees.length; i < j; i++) {
+			let col = Object.assign({}, this.hsl);
+			col.h = (col.h + degrees[i]) % 360;
+			newColors.push(col);
+		}
+		return newColors;
 	}
 }
 
