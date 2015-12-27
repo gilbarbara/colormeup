@@ -20,10 +20,7 @@ class Header extends React.Component {
 	}
 
 	static contextTypes = {
-		location: React.PropTypes.object, // Router
 		log: React.PropTypes.func,
-		setColor: React.PropTypes.func,
-		setHash: React.PropTypes.func,
 		setOptions: React.PropTypes.func
 	};
 

@@ -10,11 +10,7 @@ export default class Sidebar extends React.Component {
 	}
 
 	static contextTypes = {
-		location: React.PropTypes.object, // Router
-		log: React.PropTypes.func,
-		setColor: React.PropTypes.func,
-		setHash: React.PropTypes.func,
-		setValue: React.PropTypes.func
+		log: React.PropTypes.func
 	};
 
 	static propTypes = {
