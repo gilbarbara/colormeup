@@ -83,7 +83,7 @@
       transition-timing-function: cubic-bezier(0.5, -0.5, 0.5, 1.5);
     }
 
-    .navigation-checkb.app__sidebarox:checked + .navigation-toggle {
+    .navigation-checkbox:checked + .navigation-toggle {
       .navigation-toggle-icon {
         border-color: transparent;
         transition-delay: 0s;
@@ -399,7 +399,7 @@
   }
 
   &__info {
-    display: flex;
+    display: none;
     flex-flow: row wrap;
     justify-content: space-between;
     margin-top: ($grid-gutter-width / 1.5);
@@ -500,14 +500,16 @@
       position: relative;
 
       .form-control {
-        padding-left: 26px;
+        height: 3rem;
+        line-height: 2.2rem;
+        padding-left: 2.6rem;
       }
 
       .fa {
         color: #555;
         left: 5px;
         position: absolute;
-        top: 5px;
+        top: 0.65rem;
         z-index: 2;
       }
     }
@@ -559,6 +561,7 @@
 
   &__box {
     bottom: 8px;
+    display: inline-block;
     font-size: 20px;
     font-weight: 200;
     position: absolute;
