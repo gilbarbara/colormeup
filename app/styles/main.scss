@@ -11,6 +11,7 @@
 // *** Base
 @import 'base/utils';
 @import 'base/bootstrap';
+@import 'base/bootstrap-theme';
 
 // *** Elements
 @import 'elements/loader';
@@ -20,7 +21,6 @@
 
 // *** Components
 @import 'components/app';
-
 
 html {
   font-size: 62.5%;

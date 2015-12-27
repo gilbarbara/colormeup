@@ -1,0 +1,9 @@
+.btn-selected {
+  background-color: #767765;
+  color: #fff;
+  
+  &:hover,
+  &:focus {
+    color: #fff;
+  }
+}
