@@ -23,10 +23,8 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			name: 'colormeup',
-			version: 2.0,
+			color: '',
 			colorObj: null,
-			color: '#ff0044',
 			data: {},
 			defaultColors: [
 				'#30d22b',
@@ -41,50 +39,43 @@ class App extends React.Component {
 				'#ff0044'
 			],
 			hash: {},
-			orders: ['asc', 'desc'],
 			ready: {
 				data: false,
 				hash: false,
 				ui: false
 			},
 			slider: 'hsl',
-			steps: 4,
+			steps: 24,
 			type: 'h',
 			types: {
 				h: {
 					name: 'Hue',
 					model: 'hsl',
-					optimal: 4,
 					max: 360
 				},
 				s: {
 					name: 'Saturation',
 					model: 'hsl',
-					optimal: 4,
 					max: 100
 				},
 				l: {
 					name: 'Lightness',
 					model: 'hsl',
-					optimal: 4,
 					max: 100
 				},
 				r: {
 					name: 'Red',
 					model: 'rgb',
-					optimal: 5,
 					max: 255
 				},
 				g: {
 					name: 'Green',
 					model: 'rgb',
-					optimal: 5,
 					max: 255
 				},
 				b: {
 					name: 'Blue',
 					model: 'rgb',
-					optimal: 5,
 					max: 255
 				}
 			}
@@ -98,6 +89,10 @@ class App extends React.Component {
 		setOptions: React.PropTypes.func
 	};
 
+	static propTypes = {
+		location: React.PropTypes.object
+	}
+
 	getChildContext () {
 		return {
 			log: this.log,
@@ -105,10 +100,6 @@ class App extends React.Component {
 			setHash: this.setHash,
 			setOptions: this.setOptions
 		};
-	}
-
-	static propTypes = {
-		location: React.PropTypes.object
 	}
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
@@ -133,26 +124,15 @@ class App extends React.Component {
 
 	initialize () {
 		const state = this.state;
-		let settings = Object.assign({
-				type: 'h',
-				order: 'desc',
-				color: '',
-				steps: 4
-			}, state.hash),
-			color = '#' + settings.color;
+		let color = '#' + state.hash.color;
 
-		this.log('initialize', settings, this.state.color, color);
-
-		this.setState(reactUpdate(this.state, {
-				color: { $set: Boolean(color) && Colors.prototype.validHex(color) ? color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1] },
-				type: { $set: state.types[settings.type] ? settings.type : 'h' },
-				order: { $set: state.orders.indexOf(settings.order) > -1 ? settings.order : 'desc' },
-				steps: { $set: settings.steps > 1 ? settings.steps : state.types[state.types[settings.type] ? settings.type : 'h'].optimal }
-			}),
-			() => {
-				this.log('initialize:after', this.state);
+		this.setState({
+			color: Colors.prototype.validHex(color) ? color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1]
+		}, () => {
+				this.log('initialize', this.state);
 				this.setColor();
-			});
+			}
+		);
 	}
 
 	getData () {
@@ -205,14 +185,14 @@ class App extends React.Component {
 				color: state.color.replace('#', '')
 			};
 
-/*		if (state.order !== 'desc') {
-			options.order = state.order;
-		}
+		/*		if (state.order !== 'desc') {
+		 options.order = state.order;
+		 }
 
-		if (+state.steps !== 4) {
-			options.steps = state.steps;
-		}
-*/
+		 if (+state.steps !== 4) {
+		 options.steps = state.steps;
+		 }
+		 */
 		this.log('setHash', options);
 
 		if (param(options) !== param(state.hash)) {
