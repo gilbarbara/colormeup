@@ -30,6 +30,7 @@ class Header extends React.Component {
 	};
 
 	static propTypes = {
+		addToFavorites: React.PropTypes.func.isRequired,
 		config: React.PropTypes.object.isRequired
 	};
 
@@ -50,6 +51,9 @@ class Header extends React.Component {
 		this.updateColors();
 	}
 
+	/**
+	 * @param {Object} opts
+	 */
 	changeColor (opts) {
 		this.context.setHash({
 			color: opts.r ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
@@ -169,6 +173,13 @@ class Header extends React.Component {
 		this.context.setOptions({ type: e.currentTarget.dataset.type });
 	}
 
+	@autobind
+	onClickSaveColor (e) {
+		e.preventDefault();
+
+		this.props.addToFavorites();
+	}
+
 	render () {
 		const CONFIG = this.props.config;
 
@@ -229,7 +240,7 @@ class Header extends React.Component {
 								tabIndex={1}
 								onChange={this.onChangeColorInput} />
 							<span className="input-group-addon">
-							<a href="#" className="save-color" title="Add to Favorites">
+							<a href="#" className="save-color" title="Add to Favorites" onClick={this.onClickSaveColor}>
 								<span className="fa fa-heart" />
 							</a>
 							</span>
