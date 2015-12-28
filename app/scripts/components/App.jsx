@@ -6,7 +6,7 @@ import { autobind } from 'core-decorators';
 
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
-import { param, deparam } from '../utils/Parameterizr';
+import { param, deparam } from '../utils/Object';
 
 import Loader from './common/Loader';
 import Sidebar from './Sidebar';
@@ -17,6 +17,9 @@ import Footer from './Footer';
 let history = createHashHistory({ queryKey: false });
 
 //todo add button to randomize
+//todo add to favorites
+//todo re-add steps and type to params?
+//todo new font!
 
 class App extends React.Component {
 	constructor (props) {
@@ -38,10 +41,8 @@ class App extends React.Component {
 				'#ffd200',
 				'#ff0044'
 			],
-			hash: {},
 			ready: {
 				data: false,
-				hash: false,
 				ui: false
 			},
 			slider: 'hsl',
@@ -78,7 +79,8 @@ class App extends React.Component {
 					model: 'rgb',
 					max: 255
 				}
-			}
+			},
+			version: 2.0
 		};
 	}
 
@@ -89,10 +91,6 @@ class App extends React.Component {
 		setOptions: React.PropTypes.func
 	};
 
-	static propTypes = {
-		location: React.PropTypes.object
-	}
-
 	getChildContext () {
 		return {
 			log: this.log,
@@ -100,6 +98,10 @@ class App extends React.Component {
 			setHash: this.setHash,
 			setOptions: this.setOptions
 		};
+	}
+
+	static propTypes = {
+		location: React.PropTypes.object
 	}
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
@@ -110,25 +112,27 @@ class App extends React.Component {
 
 	componentDidUpdate (prevProps, prevState) {
 		if (this.state.ready.data && prevState.ready.data !== this.state.ready.data) {
-			this.getHash();
-		}
-
-		if (this.state.ready.hash && prevState.ready.hash !== this.state.ready.hash) {
 			this.initialize();
 		}
 
-		if (prevState.color !== this.state.color) {
-			this.setHash();
+		if (prevProps.location.hash !== this.props.location.hash) {
+			let hash = this.getHash();
+			//this.log('hashchange', hash);
+
+			if (hash.color) {
+				this.setColor('#' + hash.color);
+			}
 		}
 	}
 
 	initialize () {
 		const state = this.state;
-		let color = '#' + state.hash.color;
+		let hash  = this.getHash(),
+			color = '#' + hash.color;
 
 		this.setState({
-			color: Colors.prototype.validHex(color) ? color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1]
-		}, () => {
+				color: Colors.prototype.validHex(color) ? color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1]
+			}, () => {
 				this.log('initialize', this.state);
 				this.setColor();
 			}
@@ -161,41 +165,37 @@ class App extends React.Component {
 		let data = this.state.data;
 		this.log('setData');
 
-		data.version = this.version;
+		data.version = this.state.version;
 		data.updated = Math.floor(Date.now() / 1000);
 
 		Storage.setItem(this.name, data);
 	}
 
 	getHash () {
-		let hash = Object.assign(this.state.hash, deparam(this.props.location.hash.replace('#', '')));
-
-		this.log('getHash', hash);
-
-		this.setState(reactUpdate(this.state, {
-			hash: { $set: hash },
-			ready: { hash: { $set: true } }
-		}));
+		return deparam(this.props.location.hash.replace('#', ''));
 	}
 
 	@autobind
-	setHash () {
+	setHash (opts = {}) {
 		let state   = this.state,
-			options = {
-				color: state.color.replace('#', '')
-			};
+			options = Object.assign({
+				color: state.color
+			}, opts);
+
+		options.color = options.color.replace('#', '');
+
+		//this.log('setHash', options, opts);
 
 		/*		if (state.order !== 'desc') {
 		 options.order = state.order;
 		 }
 
-		 if (+state.steps !== 4) {
+		 if (+state.steps !== options.steps) {
 		 options.steps = state.steps;
 		 }
 		 */
-		this.log('setHash', options);
 
-		if (param(options) !== param(state.hash)) {
+		if (param(options) !== param(this.getHash())) {
 			history.push(param(options));
 		}
 	}
@@ -219,19 +219,20 @@ class App extends React.Component {
 
 		if (!this.state.colorObj) {
 			state.colorObj = new Colors(color);
+			//window.colorObj = state.colorObj;
 		}
 		else {
 			this.state.colorObj.setColor(color);
 		}
 
 		//this.log('setColor', color);
+
 		this.setState(state, () => {
 			if (!this.state.ready.ui) {
 				this.setState(reactUpdate(this.state, {
 					ready: { ui: { $set: true } }
 				}));
 			}
-			this.log('setColor', this.state.colorObj);
 		});
 	}
 
@@ -276,7 +277,7 @@ class App extends React.Component {
 			);
 		}
 		else {
-			html = <Loader />;
+			html = (<Loader />);
 		}
 
 		return (

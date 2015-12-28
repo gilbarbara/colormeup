@@ -12,7 +12,7 @@ export default class Boxes extends React.Component {
 
 	static contextTypes = {
 		log: React.PropTypes.func,
-		setColor: React.PropTypes.func
+		setHash: React.PropTypes.func
 	};
 
 	static propTypes = {
@@ -41,19 +41,20 @@ export default class Boxes extends React.Component {
 				steps: CONFIG.steps
 			}, options),
 			rate     = settings.max / settings.steps,
-			initial  = CONFIG.colorObj.hsl[CONFIG.type],
-			value    = initial,
+			value    = CONFIG.colorObj.hsl[CONFIG.type],
 			boxes    = [];
 
-		while (value < settings.max) {
-			value += rate;
+		if (CONFIG.type !== 'h') {
+			while (value < settings.max) {
+				value += rate;
+			}
+			value -= rate;
 		}
-		value -= rate;
 
 		//this.context.log('buildHSLBoxes', 'type:', CONFIG.type, CONFIG.color, CONFIG.colorObj.hsl);
 
 		for (let i = 0; i < settings.steps; i++) {
-			boxes.push(this.buildBox(this.changeHSLValue({ [CONFIG.type]: Math.round(value) })));
+			boxes.push(this.buildBox(this.changeHSLValue({ [CONFIG.type]: value < 0 ? settings.max + value : value })));
 			value -= rate;
 		}
 
@@ -67,8 +68,7 @@ export default class Boxes extends React.Component {
 				steps: CONFIG.steps
 			}, options),
 			rate     = settings.max / settings.steps,
-			initial  = CONFIG.colorObj.rgb[CONFIG.type],
-			value    = initial,
+			value    = CONFIG.colorObj.rgb[CONFIG.type],
 			boxes    = [];
 
 		while (value < settings.max) {
@@ -132,7 +132,7 @@ export default class Boxes extends React.Component {
 		e.preventDefault();
 		let el = e.currentTarget;
 
-		this.context.setColor(el.dataset.color);
+		this.context.setHash({ color: el.dataset.color });
 	}
 
 	render () {
