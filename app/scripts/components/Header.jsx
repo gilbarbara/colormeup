@@ -8,6 +8,7 @@ import NumericInput from './common/NumericInput';
 import $ from 'jquery';
 
 import math from '../utils/Math';
+import { diff } from '../utils/Object';
 import Loader from './common/Loader';
 
 class Header extends React.Component {
@@ -15,12 +16,16 @@ class Header extends React.Component {
 		super(props);
 
 		this.state = {
-			color: undefined
+			color: props.config.color
 		};
+
+		this.tabIndex = 0;
 	}
 
 	static contextTypes = {
+		location: React.PropTypes.object,
 		log: React.PropTypes.func,
+		setHash: React.PropTypes.func,
 		setOptions: React.PropTypes.func
 	};
 
@@ -30,33 +35,24 @@ class Header extends React.Component {
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
-	componentWillMount () {
-		this.setState({
-			color: this.props.config.color
-		});
-	}
-
 	componentDidMount () {
 		setTimeout(() => {
 			this.updateColors();
 		}, 300);
 	}
 
-	componentDidUpdate (prevProps) {
-		if (prevProps.config.color !== this.props.config.color) {
+	componentWillReceiveProps (nextProps, nextContext) {
+		if (!diff(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
 			this.setState({
-				color: this.props.config.color
+				color: nextProps.config.color
 			});
 		}
-
 		this.updateColors();
 	}
 
 	changeColor (color) {
-		this.props.config.colorObj.setColor(color);
-
-		this.context.setOptions({
-			color: this.props.config.colorObj.hex
+		this.context.setHash({
+			color: this.props.config.colorObj.hsl2hex(color)
 		});
 	}
 
@@ -113,48 +109,41 @@ class Header extends React.Component {
 
 	@autobind
 	onChangeColorInput (e) {
-		let value    = e.target.value.replace('#', ''),
-			newValue = '#',
-			bits     = [];
+		const CONFIG = this.props.config;
+		let value = e.target.value.replace(/[^0-9A-F]+/i, ''),
+			color = '#' + value.replace(/[^0-9A-F]+/i, '').slice(-6);
 
-		if (/^[#0-9A-F]+$/i.test(value)) {
-			this.setState({
-				color: '#' + value.slice(-6)
-			});
+		//console.log('onChangeColorInput', newValue);
 
-			bits = value.replace('#', '').slice(-6).split('');
-		}
-
-		if (bits.length === 3) {
-			bits.forEach(d => {
-				newValue += d + d;
-			});
-		}
-		else if (bits.length === 6) {
-			newValue += bits.join('');
-		}
-
-		if (this.props.config.colorObj.validHex(newValue)) {
-			this.changeColor(newValue);
-		}
+		this.setState({
+			color
+		}, () => {
+			if (CONFIG.colorObj.validHex(this.state.color)) {
+				this.changeColor(CONFIG.colorObj.hex2hsl(this.state.color));
+			}
+		});
 	}
 
 	@autobind
 	onChangeRangeSlider (pos, props) {
 		//console.log('onChangeRangeSlider', pos, props);
-		let color = this.props.config.colorObj.remix({ [props['data-type']]: pos.x });
+		let color           = this.props.config.colorObj.remix({ [props['data-type']]: pos.x }),
+			lastSliderValue = this.state.lastSliderValue;
 
-		this.changeColor(color);
+		this.setState({
+			lastSliderValue: lastSliderValue === undefined ? Math.round(pos.x) : (lastSliderValue !== Math.round(pos.x) ? Math.round(pos.x) : lastSliderValue)
+		}, () => {
+			if (lastSliderValue !== this.state.lastSliderValue) {
+				this.changeColor(color);
+			}
+		});
 	}
 
 	@autobind
-	onChangeRangeInput (e) {
-		let el       = e.target,
-			value    = parseInt(el.value, 10),
-			newValue = isNaN(value) ? 0 : (value < el.previousSibling.min ? el.previousSibling.min : (value > el.previousSibling.max ? el.previousSibling.max : value)),
-			color    = this.props.config.colorObj.remix({ [el.dataset.type]: newValue });
+	onChangeRangeInput (value, props) {
+		//console.log('onChangeRangeInput', value, props);
+		let color = this.props.config.colorObj.remix({ [props.type]: value });
 
-		console.log('onChangeRangeInput', newValue);
 		this.changeColor(color);
 	}
 
@@ -203,7 +192,7 @@ class Header extends React.Component {
 			{
 				name: config.slider === 'hsl' ? 'Hue' : 'Red',
 				key: vars.keys[0],
-				value: Math.round(config.slider === 'hsl' ? (config.colorObj.lightness === 0 || config.colorObj.saturation === 0 ? 0 : config.colorObj.hue) : config.colorObj.red),
+				value: Math.round(config.slider === 'hsl' ? (config.colorObj.lightness === 0 || config.colorObj.saturation === 0 ? 0 : (this.state.lastSliderValue === 360 ? this.state.lastSliderValue : config.colorObj.hue)) : config.colorObj.red),
 				max: config.types[vars.keys[0]].max
 			},
 			{
@@ -233,8 +222,11 @@ class Header extends React.Component {
 					<div className="app__input">
 						<div className="input-group input-group-lg">
 							<input
-								type="text" className="form-control input-color"
-								value={this.state.color} onChange={this.onChangeColorInput} />
+								type="text"
+								className="form-control input-color"
+								value={this.state.color}
+								tabIndex={++this.tabIndex}
+								onChange={this.onChangeColorInput} />
 							<span className="input-group-addon">
 							<a href="#" className="save-color" title="Add to Favorites">
 								<span className="fa fa-heart" />
@@ -261,14 +253,14 @@ class Header extends React.Component {
 											x={slider.value}
 											xmax={slider.max}
 											onChange={this.onChangeRangeSlider} />
-										<input
-											type="tel"
-											ref={slider.key + '-input'}
-											className="range-input"
-											data-type={slider.key}
-											data-target={slider.key + '-slider'}
+										<NumericInput
+											name="range-input"
+											className="form-control"
+											min={1}
+											max={slider.max}
 											value={slider.value}
-											tabIndex={i + 1}
+											type={slider.key}
+											tabIndex={++this.tabIndex}
 											onChange={this.onChangeRangeInput} />
 									</div>
 								);
@@ -321,6 +313,7 @@ class Header extends React.Component {
 								min={1}
 								max={64}
 								value={config.steps}
+								tabIndex={++this.tabIndex}
 								onChange={this.onChangeSteps} />
 						</div>
 					</div>
