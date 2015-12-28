@@ -178,6 +178,19 @@ class App extends React.Component {
 		Storage.setItem(this.name, data);
 	}
 
+	@autobind
+	addToFavorites () {
+		//this.log('addToFavorites', this.state.color, this.state.data.colors);
+
+		if (this.state.data.colors.indexOf(this.state.color) === -1) {
+			this.setState(reactUpdate(this.state, {
+				data: { colors: { $push: [this.state.color] } }
+			}), () => {
+				this.setData();
+			});
+		}
+	}
+
 	getHash () {
 		return deparam(this.props.location.hash.replace('#', ''));
 	}
@@ -276,7 +289,7 @@ class App extends React.Component {
 			html = (
 				<div className="app--inner">
 					<Sidebar config={state} />
-					<Header config={state} />
+					<Header config={state} addToFavorites={this.addToFavorites} />
 					<Boxes config={state} />
 				</div>
 			);
