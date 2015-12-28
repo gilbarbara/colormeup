@@ -28,7 +28,7 @@
       content: '';
       height: 0;
       left: 50%;
-      margin: -0.3ex 0 0 -0.6ex;
+      margin: -0.2rem 0 0 -0.4rem;
       position: absolute;
       top: 50%;
       user-select: none;
@@ -64,7 +64,7 @@
 
     &:before {
       border-color: transparent transparent rgba(0, 0, 0, 0.7);
-      border-width: 0 0.6ex 0.6ex;
+      border-width: 0 0.4rem 0.4rem;
     }
   }
 
@@ -86,7 +86,7 @@
 
     &:before {
       border-color: rgba(0, 0, 0, 0.7) transparent transparent;
-      border-width: 0.6ex 0.6ex 0;
+      border-width: 0.4rem 0.4rem 0;
     }
   }
 
@@ -136,9 +136,8 @@
 .mobile {
   .numeric-input-wrap {
     input {
-      border-radius: 2px;
-      padding-left: 3.4ex;
-      padding-right: 3.4ex;
+      padding-left: 2.6rem;
+      padding-right: 2.6rem;
       text-align: center;
     }
 
@@ -148,7 +147,7 @@
       box-shadow: none;
       margin: 0;
       top: 1px;
-      width: 3.3ex;
+      width: 2.6rem;
 
       &:before,
       &:after {
@@ -197,10 +196,6 @@
     }
 
     &.bs-form-control {
-      input {
-        border-radius: 4px;
-      }
-
       .numeric-input-up {
         border-radius: 0 3px 3px 0;
       }

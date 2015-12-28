@@ -3,14 +3,14 @@
   width: 100%;
 
   .slider {
-    width: calc(100% - 13rem);
+    width: calc(100% - 12.5rem);
   }
 
   .range-name {
     display: inline-block;
     font-size: 1.3rem;
     margin-right: 1.2rem;
-    min-width: 66px;
+    min-width: 6rem;
     text-align: right;
   }
 
@@ -21,7 +21,7 @@
     color: $body-color;
     display: inline-block;
     font-size: 1.3rem;
-    margin-left: 7px;
+    margin-left: 1.2rem;
     outline: none;
     position: relative;
     text-align: center;
@@ -29,6 +29,17 @@
 
     &:focus {
       font-weight: 700;
+    }
+
+    &-wrap {
+      a {
+        display: none;
+      }
+
+      .range-input {
+        padding-left: $grid-gutter-width / 6;
+        padding-right: $grid-gutter-width / 6;
+      }
     }
   }
 }
