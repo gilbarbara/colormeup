@@ -16,7 +16,6 @@ class NumericInput extends React.Component {
 		super(props);
 
 		this._timer = null;
-		this.setCustomProps();
 
 		this.step = this.step.bind(this);
 		this.onChange = this.onChange.bind(this);
@@ -73,8 +72,9 @@ class NumericInput extends React.Component {
 	 * Exclude the required props to pass it back
 	 * @extends this
 	 */
-	setCustomProps () {
+	setCustomProps (props = this.props) {
 		this.customProps = {};
+
 		let widgetProps = [
 			'format',
 			'max',
@@ -86,14 +86,15 @@ class NumericInput extends React.Component {
 			'value'
 		];
 
-		Object.keys(this.props).forEach(d => {
+		Object.keys(props).forEach(d => {
 			if (widgetProps.indexOf(d) === -1) {
-				this.customProps[d] = this.props[d];
+				this.customProps[d] = props[d];
 			}
 		});
 	}
+
 	/**
-	 *
+	 * Convert string to number
 	 * @param {string} x
 	 * @returns {Number|String}
 	 * @private
@@ -283,14 +284,14 @@ class NumericInput extends React.Component {
 				ref: 'input'
 			};
 
+		this.setCustomProps();
+
 		Object.keys(this.customProps).forEach(key => {
 			inputProps[key] = this.customProps[key];
 		});
 
 		inputProps.type = 'text';
-		inputProps.value = this.state.value || this.state.value === 0 ?
-			this.format(this.state.value) :
-			'';
+		inputProps.value = this.state.value || this.state.value === 0 ? this.format(this.state.value) : '';
 		inputProps.onChange = this.onChange;
 		inputProps.onKeyDown = this.onKeyDown;
 		inputProps.onKeyUp = this.stopTimer;
