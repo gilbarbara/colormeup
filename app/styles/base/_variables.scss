@@ -1,12 +1,35 @@
-$brand-red: #ed4e53;
-$brand-green: #78c00c;
+$media-path: '../media/';
+$fa-font-path: 'fonts/';
 
 $enable-flex: true;
-$brand-primary: $brand-red;
+$enable-transitions: true;
+$grid-gutter-width: 3rem;
+
+
+$grid-breakpoints: (
+  xs: 0,
+  ix: 400px,
+  sm: 480px,
+  is: 600px,
+  md: 768px,
+  im: 880px,
+  lg: 1024px,
+  xl: 1280px
+);
+
+$container-max-widths: (
+  ix: 40rem,
+  sm: 48rem,
+  is: 58rem,
+  md: 72rem,
+  im: 100%,
+  lg: 96rem,
+  xl: 114rem
+);
+
+$brand-primary: #ed4e53;
 
 $font-family-sans-serif: 'Lato', Helvetica, Arial, sans-serif;
 $headings-font-weight: 700;
 $font-size-base: 1.2rem;
 
-$media-path: '../media/';
-$fa-font-path: 'fonts/';
