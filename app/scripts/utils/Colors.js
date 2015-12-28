@@ -92,19 +92,38 @@ class Colors {
 
 	/**
 	 * Convert a hex string to RGB object
-	 * @param {string} color
+	 * @param {string} hex
 	 * @returns {object} {r: Number, g: Number, b: Number}
 	 */
-	hex2rgb (color = this.hex) {
-		if (color.charAt(0) === '#') {
-			color = color.substr(1);
+	hex2rgb (hex = this.hex) {
+		hex = this.parseHex(hex);
+		if (hex.charAt(0) === '#') {
+			hex = hex.substr(1);
 		}
 
 		return {
-			r: parseInt(String(color.charAt(0)) + color.charAt(1), 16),
-			g: parseInt(String(color.charAt(2)) + color.charAt(3), 16),
-			b: parseInt(String(color.charAt(4)) + color.charAt(5), 16)
+			r: parseInt(String(hex.charAt(0)) + hex.charAt(1), 16),
+			g: parseInt(String(hex.charAt(2)) + hex.charAt(3), 16),
+			b: parseInt(String(hex.charAt(4)) + hex.charAt(5), 16)
 		};
+	}
+
+	/**
+	 * Convert a hex string to HSL object
+	 * @param {string} hex
+	 * @returns {object} {h: Number, s: Number, l: Number}
+	 */
+	hex2hsl (hex = this.hex) {
+		hex = this.parseHex(hex);
+		if (hex.charAt(0) === '#') {
+			hex = hex.substr(1);
+		}
+
+		return this.rgb2hsl({
+			r: parseInt(String(hex.charAt(0)) + hex.charAt(1), 16),
+			g: parseInt(String(hex.charAt(2)) + hex.charAt(3), 16),
+			b: parseInt(String(hex.charAt(4)) + hex.charAt(5), 16)
+		});
 	}
 
 	/**
