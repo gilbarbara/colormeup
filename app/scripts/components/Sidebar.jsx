@@ -1,9 +1,6 @@
 import React from 'react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 
-import math from '../utils/Math';
-import Loader from './common/Loader';
-
 export default class Sidebar extends React.Component {
 	constructor (props) {
 		super(props);
@@ -20,19 +17,19 @@ export default class Sidebar extends React.Component {
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	render () {
-		const config = this.props.config;
+		const CONFIG = this.props.config;
 
 		let vars = {
-			hex: config.color,
-			hsl: 'hsl(' + Math.round(config.colorObj.hue) + ', ' + Math.round(config.colorObj.saturation) + '%, ' + Math.round(config.colorObj.lightness) + '%)',
-			rgb: 'rgb(' + config.colorObj.red + ', ' + config.colorObj.green + ', ' + config.colorObj.blue + ')',
-			currentColor: (config.colorObj.saturation > 8 ? (
-				config.colorObj.hsl2hex({
-					h: Math.abs(config.colorObj.hue + 90),
-					s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+			hex: CONFIG.color,
+			hsl: 'hsl(' + Math.round(CONFIG.colorObj.hue) + ', ' + Math.round(CONFIG.colorObj.saturation) + '%, ' + Math.round(CONFIG.colorObj.lightness) + '%)',
+			rgb: 'rgb(' + CONFIG.colorObj.red + ', ' + CONFIG.colorObj.green + ', ' + CONFIG.colorObj.blue + ')',
+			currentColor: (CONFIG.colorObj.saturation > 8 ? (
+				CONFIG.colorObj.hsl2hex({
+					h: Math.abs(CONFIG.colorObj.hue + 90),
+					s: (CONFIG.colorObj.saturation < 30 ? Math.abs(CONFIG.colorObj.saturation + 30) : CONFIG.colorObj.saturation),
+					l: (CONFIG.colorObj.lightness < 35 ? CONFIG.colorObj.lightness + 20 : CONFIG.colorObj.lightness)
 				})
-			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333'))
+			) : (CONFIG.colorObj.lightness < 30 ? '#FFF' : '#333'))
 		};
 
 		return (
@@ -44,7 +41,7 @@ export default class Sidebar extends React.Component {
 						</a>
 					</h3>
 					<div className="items">{
-						config.defaultColors.map((d, i) => {
+						CONFIG.defaultColors.map((d, i) => {
 							return (<a key={i} href="#" data-color={d.replace('#', '')}
 									   style={{ backgroundColor: d }} />);
 						})
@@ -90,7 +87,7 @@ export default class Sidebar extends React.Component {
 						<span className="fa fa-question-circle" /> Help</a>
 					</h3>
 					<div className="text">
-						<h5 style={{ color: config.colorObj.lightness < 20 ? '#fff' : config.color }}>Know thy color!</h5>
+						<h5 style={{ color: CONFIG.colorObj.lightness < 20 ? '#fff' : CONFIG.color }}>Know thy color!</h5>
 						<p>colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).
 						</p>
 						<p>
