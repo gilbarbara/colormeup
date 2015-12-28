@@ -1,6 +1,6 @@
 import React from 'react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
-import { autobind, debounce } from 'core-decorators';
+import { autobind } from 'core-decorators';
 import InlineSVG from 'react-inlinesvg';
 import InputSlider from 'react-input-slider';
 import NumericInput from './common/NumericInput';

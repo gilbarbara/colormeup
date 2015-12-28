@@ -127,8 +127,8 @@ class App extends React.Component {
 
 	initialize () {
 		const STATE = this.state;
-		let hash  = this.getHash(),
-			color = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null,
+		let hash         = this.getHash(),
+			color        = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null,
 			defaultColor = STATE.defaultColors[Math.floor(Math.random() * STATE.defaultColors.length - 1) + 1];
 
 		this.setState({
