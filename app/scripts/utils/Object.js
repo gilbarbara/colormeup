@@ -1,7 +1,27 @@
 /**
- * Convert Objects to querytrings and vice-versa
- * @module Parameterizr
+ * Helper methods for Objects
+ * @module Object
  */
+
+export let isObjectLike = (value) => {
+	return Boolean(value) && typeof value === 'object';
+};
+
+export let diff = (a, b) => {
+	var r = {};
+
+	Object.keys(a).forEach(k => {
+		let v = a[k];
+
+		if (b[k] === v) {
+			return;
+		}
+
+		r[k] = isObjectLike(v) ? diff(v, b[k]) : v;
+	});
+
+	return Object.keys(r).length > 0;
+};
 
 /**
  * Convert object to querystring
@@ -23,6 +43,7 @@ export let param = (data) => {
 				else {
 					string += '[' + key + ']';
 				}
+
 				if (obj[key] instanceof Array) {
 					string += stringify(obj[key], topLevel, key);
 				}
@@ -44,7 +65,7 @@ export let param = (data) => {
 };
 
 /**
- * Convert object to querystring
+ * Convert querystring to object
  * @method
  * @param {String} params
  * @param {Boolean} [coerce]
@@ -58,7 +79,7 @@ export let deparam = (params, coerce) => {
 		return obj;
 	}
 	if (typeof coerce === 'undefined') {
-		coerce = true;
+		coerce = false;
 	}
 
 	function safeDecodeURIComponent (component) {
@@ -162,4 +183,4 @@ export let deparam = (params, coerce) => {
 	return obj;
 };
 
-export default { param, deparam };
+export default { param, deparam, diff };
