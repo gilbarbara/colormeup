@@ -174,6 +174,14 @@ class Header extends React.Component {
 	}
 
 	@autobind
+	onClickRandomColor (e) {
+		e.preventDefault();
+		let randomColor = this.props.config.colorObj.random();
+
+		this.changeColor(randomColor.hsl);
+	}
+
+	@autobind
 	onClickSaveColor (e) {
 		e.preventDefault();
 
@@ -233,6 +241,12 @@ class Header extends React.Component {
 
 					<div className="app__input">
 						<div className="input-group input-group-lg">
+							<span className="input-group-addon">
+							<a href="#" className="random-color" title="Randomize Color"
+							   onClick={this.onClickRandomColor}>
+								<span className="fa fa-refresh" />
+							</a>
+							</span>
 							<input
 								type="text"
 								className="form-control input-color"
