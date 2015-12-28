@@ -18,13 +18,27 @@ class NumericInput extends React.Component {
 
 		this._timer = null;
 
+		let widgetProps = [
+			'format',
+			'max',
+			'min',
+			'onChange',
+			'parse',
+			'precision',
+			'step',
+			'value'
+		];
+
+		this.customProps = {};
+
+		Object.keys(props).forEach(d => {
+			if (widgetProps.indexOf(d) === -1) {
+				this.customProps[d] = props[d];
+			}
+		});
+
 		this.state = {
-			step: props.step,
-			min: props.min,
-			max: props.max,
-			value: 'value' in props ?
-				this.parse(String(props.value || '')) :
-				null
+			value: 'value' in props ? this.parse(String(props.value || '')) : null
 		};
 	}
 
@@ -54,11 +68,17 @@ class NumericInput extends React.Component {
 		format: null
 	};
 
+	componentWillReceiveProps (nextProps) {
+		this.setState({
+			value: nextProps.value
+		});
+	}
+
 	/**
 	 * This is used to clear the timer if any
 	 */
 	componentWillUnmount () {
-		this.stop();
+		this.stopTimer();
 	}
 
 	/**
@@ -119,12 +139,12 @@ class NumericInput extends React.Component {
 	 */
 	@autobind
 	step (n) {
-		let _n = this.toNumber((this.state.value || 0) + this.state.step * n);
+		let _n = this.toNumber((this.state.value || 0) + this.props.step * n);
 
 		if (_n !== this.state.value) {
 			this.setState({ value: _n }, () => {
 				if (typeof this.props.onChange === 'function') {
-					this.props.onChange(this.state.value);
+					this.props.onChange(this.state.value, this.customProps);
 				}
 			});
 		}
@@ -143,7 +163,7 @@ class NumericInput extends React.Component {
 			value: this.parse(e.target.value)
 		}, () => {
 			if (typeof this.props.onChange === 'function') {
-				this.props.onChange(this.state.value);
+				this.props.onChange(this.state.value, this.customProps);
 			}
 		});
 	}
@@ -155,13 +175,24 @@ class NumericInput extends React.Component {
 	 */
 	@autobind
 	onKeyDown (e) {
-		if (e.keyCode === KEYCODE_UP) {
+		let step;
+
+		if (e.keyCode === KEYCODE_UP || e.keyCode === KEYCODE_DOWN) {
 			e.preventDefault();
-			this.step(e.ctrlKey || e.metaKey ? 0.1 : e.shiftKey ? 10 : 1);
-		}
-		else if (e.keyCode === KEYCODE_DOWN) {
-			e.preventDefault();
-			this.step(e.ctrlKey || e.metaKey ? -0.1 : e.shiftKey ? -10 : -1);
+
+			if (e.keyCode === KEYCODE_UP) {
+				step = e.ctrlKey || e.metaKey ? 0.1 : e.shiftKey ? 10 : 1;
+			}
+			else {
+				step = e.ctrlKey || e.metaKey ? -0.1 : e.shiftKey ? -10 : -1;
+			}
+
+			if ((this.state.value > this.props.min || this.state.value < this.props.max) && this._timer === null) {
+				this._timer = setTimeout(() => {
+					this.step(step);
+					this.stopTimer();
+				}, SPEED);
+			}
 		}
 	}
 
@@ -172,11 +203,6 @@ class NumericInput extends React.Component {
 		this[el.classList.contains('numeric-input-up') ? 'increase' : 'decrease']();
 	}
 
-	@autobind
-	onMouseUpBtn () {
-		this.stop();
-	}
-
 	preventClick (e) {
 		e.preventDefault();
 	}
@@ -185,9 +211,10 @@ class NumericInput extends React.Component {
 	 * Stops the widget from auto-changing by clearing the timer (if any)
 	 */
 	@autobind
-	stop () {
+	stopTimer () {
 		if (this._timer) {
 			window.clearTimeout(this._timer);
+			this._timer = null;
 		}
 	}
 
@@ -199,7 +226,7 @@ class NumericInput extends React.Component {
 	 * @param {Boolean} doFocus
 	 */
 	increase (_recursive = false, doFocus = true) {
-		this.stop();
+		this.stopTimer();
 		this.step(1);
 
 		if (isNaN(this.state.value) || this.state.value < this.props.max) {
@@ -223,7 +250,7 @@ class NumericInput extends React.Component {
 	 * @param {Boolean} doFocus
 	 */
 	decrease (_recursive = false, doFocus = true) {
-		this.stop();
+		this.stopTimer();
 		this.step(-1);
 
 		if (isNaN(this.state.value) || this.state.value > this.props.min) {
@@ -241,27 +268,17 @@ class NumericInput extends React.Component {
 
 	/**
 	 * Renders an input wrapped in relative span and up/down buttons
+	 * @returns {ReactElement}
 	 */
 	render () {
 		const PROPS = this.props;
 		let attrs,
-			inputProps  = {
+			inputProps = {
 				ref: 'input'
-			},
-			widgetProps = [
-				'step',
-				'min',
-				'max',
-				'precision',
-				'parse',
-				'format',
-				'value'
-			];
+			};
 
-		Object.keys(PROPS).forEach(key => {
-			if (widgetProps.indexOf(key) === -1) {
-				inputProps[key] = PROPS[key];
-			}
+		Object.keys(this.customProps).forEach(key => {
+			inputProps[key] = this.customProps[key];
 		});
 
 		inputProps.type = 'text';
@@ -270,6 +287,7 @@ class NumericInput extends React.Component {
 			'';
 		inputProps.onChange = this.onChange;
 		inputProps.onKeyDown = this.onKeyDown;
+		inputProps.onKeyUp = this.stopTimer;
 		inputProps.classNames = [];
 
 		if (PROPS.className) {
@@ -278,8 +296,8 @@ class NumericInput extends React.Component {
 
 		attrs = {
 			wrap: {
-				onMouseUp: this.stop,
-				onMouseOut: this.stop,
+				onMouseUp: this.stopTimer,
+				onMouseOut: this.stopTimer,
 				classNames: []
 			},
 			input: inputProps,
@@ -287,13 +305,13 @@ class NumericInput extends React.Component {
 				href: '#',
 				onClick: this.preventClick,
 				onMouseDown: this.onClickBtn,
-				onMouseUp: this.onMouseUpBtn
+				onMouseUp: this.stopTimer
 			},
 			btnDown: {
 				href: '#',
 				onClick: this.preventClick,
 				onMouseDown: this.onClickBtn,
-				onMouseUp: this.onMouseUpBtn
+				onMouseUp: this.stopTimer
 			}
 		};
 
@@ -301,6 +319,11 @@ class NumericInput extends React.Component {
 		attrs.input.classNames.push('numeric-input-input');
 		attrs.btnUp.className = 'numeric-input-up';
 		attrs.btnDown.className = 'numeric-input-down';
+
+		if (PROPS.name) {
+			attrs.input.classNames.push(PROPS.name);
+			attrs.wrap.classNames.push(PROPS.name + '-wrap');
+		}
 
 		if (attrs.input.readOnly) {
 			attrs.wrap.classNames.push('readonly');
