@@ -484,7 +484,7 @@ class Colors {
 
 		mod = this.mod(model);
 
-		return hex ? mod.r ? this.rgb2hex(mod) : this.hsl2hex(mod) : mod;
+		return hex ? (mod.r ? this.rgb2hex(mod) : this.hsl2hex(mod)) : mod;
 	}
 
 	schemeFromDegrees (degrees) {

@@ -19,7 +19,7 @@ class Header extends React.Component {
 			color: props.config.color
 		};
 
-		this.tabIndex = 0;
+		this.tabIndex = 1;
 	}
 
 	static contextTypes = {
@@ -50,9 +50,9 @@ class Header extends React.Component {
 		this.updateColors();
 	}
 
-	changeColor (color) {
+	changeColor (opts) {
 		this.context.setHash({
-			color: this.props.config.colorObj.hsl2hex(color)
+			color: opts.r ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
 		});
 	}
 
@@ -133,6 +133,7 @@ class Header extends React.Component {
 		this.setState({
 			lastSliderValue: lastSliderValue === undefined ? Math.round(pos.x) : (lastSliderValue !== Math.round(pos.x) ? Math.round(pos.x) : lastSliderValue)
 		}, () => {
+
 			if (lastSliderValue !== this.state.lastSliderValue) {
 				this.changeColor(color);
 			}
@@ -142,7 +143,7 @@ class Header extends React.Component {
 	@autobind
 	onChangeRangeInput (value, props) {
 		//console.log('onChangeRangeInput', value, props);
-		let color = this.props.config.colorObj.remix({ [props.type]: value });
+		let color = this.props.config.colorObj.remix({ [props['data-type']]: value });
 
 		this.changeColor(color);
 	}
@@ -169,51 +170,51 @@ class Header extends React.Component {
 	}
 
 	render () {
-		const config = this.props.config;
+		const CONFIG = this.props.config;
 
 		let vars = {
 			keys: [
-				config.slider === 'hsl' ? 'h' : 'r',
-				config.slider === 'hsl' ? 's' : 'g',
-				config.slider === 'hsl' ? 'l' : 'b'
+				CONFIG.slider === 'hsl' ? 'h' : 'r',
+				CONFIG.slider === 'hsl' ? 's' : 'g',
+				CONFIG.slider === 'hsl' ? 'l' : 'b'
 			],
 			types: {}
 		};
 
-		Object.keys(config.types).map(t => {
-			if (!vars.types[config.types[t].model]) {
-				vars.types[config.types[t].model] = [];
+		Object.keys(CONFIG.types).map(t => {
+			if (!vars.types[CONFIG.types[t].model]) {
+				vars.types[CONFIG.types[t].model] = [];
 			}
-			config.types[t].key = t;
-			vars.types[config.types[t].model].push(config.types[t]);
+			CONFIG.types[t].key = t;
+			vars.types[CONFIG.types[t].model].push(CONFIG.types[t]);
 		});
 
 		vars.sliders = [
 			{
-				name: config.slider === 'hsl' ? 'Hue' : 'Red',
+				name: CONFIG.slider === 'hsl' ? 'Hue' : 'Red',
 				key: vars.keys[0],
-				value: Math.round(config.slider === 'hsl' ? (config.colorObj.lightness === 0 || config.colorObj.saturation === 0 ? 0 : (this.state.lastSliderValue === 360 ? this.state.lastSliderValue : config.colorObj.hue)) : config.colorObj.red),
-				max: config.types[vars.keys[0]].max
+				value: Math.round(CONFIG.slider === 'hsl' ? (CONFIG.colorObj.lightness === 0 || CONFIG.colorObj.saturation === 0 ? 0 : (this.state.lastSliderValue === 360 ? this.state.lastSliderValue : CONFIG.colorObj.hue)) : CONFIG.colorObj.red),
+				max: CONFIG.types[vars.keys[0]].max
 			},
 			{
-				name: config.slider === 'hsl' ? 'Saturation' : 'Green',
+				name: CONFIG.slider === 'hsl' ? 'Saturation' : 'Green',
 				key: vars.keys[1],
-				value: Math.round(config.slider === 'hsl' ? (config.colorObj.lightness === 0 ? 0 : config.colorObj.saturation) : config.colorObj.green),
-				max: config.types[vars.keys[1]].max
+				value: Math.round(CONFIG.slider === 'hsl' ? (CONFIG.colorObj.lightness === 0 ? 0 : CONFIG.colorObj.saturation) : CONFIG.colorObj.green),
+				max: CONFIG.types[vars.keys[1]].max
 			},
 			{
-				name: config.slider === 'hsl' ? 'Lightness' : 'Blue',
+				name: CONFIG.slider === 'hsl' ? 'Lightness' : 'Blue',
 				key: vars.keys[2],
-				value: Math.round(config.slider === 'hsl' ? config.colorObj.lightness : config.colorObj.blue),
-				max: config.types[vars.keys[2]].max
+				value: Math.round(CONFIG.slider === 'hsl' ? CONFIG.colorObj.lightness : CONFIG.colorObj.blue),
+				max: CONFIG.types[vars.keys[2]].max
 			}
 		];
 
-		//console.log(config.colorObj.hue, config.colorObj.saturation, config.colorObj.lightness);
+		//console.log(CONFIG.colorObj.hue, CONFIG.colorObj.saturation, CONFIG.colorObj.lightness);
 
 		return (
 			<div className="app__header"
-				 style={{ backgroundColor: config.color, borderColor: config.colorObj.darken(15) }}>
+				 style={{ backgroundColor: CONFIG.color, borderColor: CONFIG.colorObj.darken(15) }}>
 				<div className="app__header__wrapper">
 					<div className="logo">
 						<InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} />
@@ -225,7 +226,7 @@ class Header extends React.Component {
 								type="text"
 								className="form-control input-color"
 								value={this.state.color}
-								tabIndex={++this.tabIndex}
+								tabIndex={1}
 								onChange={this.onChangeColorInput} />
 							<span className="input-group-addon">
 							<a href="#" className="save-color" title="Add to Favorites">
@@ -236,10 +237,10 @@ class Header extends React.Component {
 					</div>
 					<div className="app__sliders">
 						<ul className="app__sliders__menu list-unstyled">
-							<li className={config.slider === 'hsl' ? 'active' : null}>
+							<li className={CONFIG.slider === 'hsl' ? 'active' : null}>
 								<a href="#" data-type="hsl" onClick={this.onClickSliderMenu}>HSL</a>
 							</li>
-							<li className={config.slider === 'rgb' ? 'active' : null}>
+							<li className={CONFIG.slider === 'rgb' ? 'active' : null}>
 								<a href="#" data-type="rgb" onClick={this.onClickSliderMenu}>RGB</a></li>
 						</ul>
 						<div className="app__sliders__list">
@@ -256,10 +257,10 @@ class Header extends React.Component {
 										<NumericInput
 											name="range-input"
 											className="form-control"
-											min={1}
+											min={0}
 											max={slider.max}
 											value={slider.value}
-											type={slider.key}
+											data-type={slider.key}
 											tabIndex={++this.tabIndex}
 											onChange={this.onChangeRangeInput} />
 									</div>
@@ -276,7 +277,7 @@ class Header extends React.Component {
 										return (
 											<div key={j} className="color-value">
 												<div
-													className={'color-' + it.key}>{Math.round(config.colorObj[it.name.toLowerCase()])}</div>
+													className={'color-' + it.key}>{Math.round(CONFIG.colorObj[it.name.toLowerCase()])}</div>
 												{it.name.toLowerCase()}
 											</div>
 										);
@@ -295,7 +296,7 @@ class Header extends React.Component {
 											return (
 												<a
 													key={j} href="#"
-													className={'btn btn-' + (config.type === it.key ? 'selected' : 'secondary')}
+													className={'btn btn-' + (CONFIG.type === it.key ? 'selected' : 'secondary')}
 													data-type={it.key}
 													onClick={this.onClickTypesMenu}>
 													{it.name}
@@ -312,7 +313,7 @@ class Header extends React.Component {
 								className="form-control input-steps"
 								min={1}
 								max={64}
-								value={config.steps}
+								value={CONFIG.steps}
 								tabIndex={++this.tabIndex}
 								onChange={this.onChangeSteps} />
 						</div>
