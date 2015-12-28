@@ -126,15 +126,22 @@ class App extends React.Component {
 	}
 
 	initialize () {
-		const state = this.state;
+		const STATE = this.state;
 		let hash  = this.getHash(),
-			color = '#' + hash.color;
+			color = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null,
+			defaultColor = STATE.defaultColors[Math.floor(Math.random() * STATE.defaultColors.length - 1) + 1];
 
 		this.setState({
-				color: Colors.prototype.validHex(color) ? color : state.defaultColors[Math.floor(Math.random() * state.defaultColors.length - 1) + 1]
+				color: color || defaultColor
 			}, () => {
 				this.log('initialize', this.state);
 				this.setColor();
+
+				if (!color) {
+					this.setHash({
+						color: defaultColor
+					});
+				}
 			}
 		);
 	}
@@ -213,19 +220,17 @@ class App extends React.Component {
 
 	@autobind
 	setColor (color = this.state.color) {
+		//this.log('setColor', color);
 		let state = {
 			color
 		};
 
 		if (!this.state.colorObj) {
 			state.colorObj = new Colors(color);
-			//window.colorObj = state.colorObj;
 		}
 		else {
 			this.state.colorObj.setColor(color);
 		}
-
-		//this.log('setColor', color);
 
 		this.setState(state, () => {
 			if (!this.state.ready.ui) {
