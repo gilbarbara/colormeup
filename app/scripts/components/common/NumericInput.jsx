@@ -1,5 +1,4 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 
 const KEYCODE_UP = 38;
 const KEYCODE_DOWN = 40;
@@ -17,28 +16,16 @@ class NumericInput extends React.Component {
 		super(props);
 
 		this._timer = null;
+		this.setCustomProps();
 
-		let widgetProps = [
-			'format',
-			'max',
-			'min',
-			'onChange',
-			'parse',
-			'precision',
-			'step',
-			'value'
-		];
-
-		this.customProps = {};
-
-		Object.keys(props).forEach(d => {
-			if (widgetProps.indexOf(d) === -1) {
-				this.customProps[d] = props[d];
-			}
-		});
+		this.step = this.step.bind(this);
+		this.onChange = this.onChange.bind(this);
+		this.onKeyDown = this.onKeyDown.bind(this);
+		this.onClickBtn = this.onClickBtn.bind(this);
+		this.stopTimer = this.stopTimer.bind(this);
 
 		this.state = {
-			value: 'value' in props ? this.parse(String(props.value || '')) : null
+			value: props.value ? this.parse(String(props.value || '')) : null
 		};
 	}
 
@@ -47,6 +34,7 @@ class NumericInput extends React.Component {
 		format: React.PropTypes.func,
 		max: React.PropTypes.number,
 		min: React.PropTypes.number,
+		name: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		parse: React.PropTypes.func,
 		precision: React.PropTypes.number,
@@ -81,6 +69,29 @@ class NumericInput extends React.Component {
 		this.stopTimer();
 	}
 
+	/**
+	 * Exclude the required props to pass it back
+	 * @extends this
+	 */
+	setCustomProps () {
+		this.customProps = {};
+		let widgetProps = [
+			'format',
+			'max',
+			'min',
+			'onChange',
+			'parse',
+			'precision',
+			'step',
+			'value'
+		];
+
+		Object.keys(this.props).forEach(d => {
+			if (widgetProps.indexOf(d) === -1) {
+				this.customProps[d] = this.props[d];
+			}
+		});
+	}
 	/**
 	 *
 	 * @param {string} x
@@ -137,7 +148,6 @@ class NumericInput extends React.Component {
 	 * @private
 	 * @param {Number} n
 	 */
-	@autobind
 	step (n) {
 		let _n = this.toNumber((this.state.value || 0) + this.props.step * n);
 
@@ -157,7 +167,6 @@ class NumericInput extends React.Component {
 	 * @param  {element#change} e
 	 * @listens element#change
 	 */
-	@autobind
 	onChange (e) {
 		this.setState({
 			value: this.parse(e.target.value)
@@ -173,7 +182,6 @@ class NumericInput extends React.Component {
 	 * @param  {element#keydown} e
 	 * @listens element#keydown
 	 */
-	@autobind
 	onKeyDown (e) {
 		let step;
 
@@ -196,7 +204,6 @@ class NumericInput extends React.Component {
 		}
 	}
 
-	@autobind
 	onClickBtn (e) {
 		let el = e.target;
 
@@ -210,7 +217,6 @@ class NumericInput extends React.Component {
 	/**
 	 * Stops the widget from auto-changing by clearing the timer (if any)
 	 */
-	@autobind
 	stopTimer () {
 		if (this._timer) {
 			window.clearTimeout(this._timer);
