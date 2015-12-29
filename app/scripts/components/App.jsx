@@ -3,6 +3,7 @@ import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import { createHashHistory } from 'history';
 import { autobind } from 'core-decorators';
+import $ from 'jquery';
 
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
@@ -30,12 +31,12 @@ class App extends React.Component {
 			defaultColors: [
 				'#30d22b',
 				'#f05350',
-				'#443348',
+				'#690780',
 				'#1da6d6',
 				'#fe7724',
 				'#1e4d84',
 				'#9bd615',
-				'#4C2719',
+				'#ac4f44',
 				'#ffd200',
 				'#ff0044'
 			],
@@ -82,18 +83,18 @@ class App extends React.Component {
 	static childContextTypes = {
 		addToFavorites: React.PropTypes.func,
 		log: React.PropTypes.func,
-		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
-		setOptions: React.PropTypes.func
+		setOptions: React.PropTypes.func,
+		updateData: React.PropTypes.func
 	};
 
 	getChildContext () {
 		return {
 			addToFavorites: this.addToFavorites,
 			log: this.log,
-			setColor: this.setColor,
 			setHash: this.setHash,
-			setOptions: this.setOptions
+			setOptions: this.setOptions,
+			updateData: this.updateData
 		};
 	}
 
@@ -173,6 +174,18 @@ class App extends React.Component {
 		data.updated = Math.floor(Date.now() / 1000);
 
 		Storage.setItem(this.name, data);
+	}
+
+	@autobind
+	updateData (key, value) {
+		let data = this.state.data;
+		this.log('updateData', data);
+
+		this.setState(reactUpdate(this.state, {
+			data: { [key]: { $set: value } }
+		}), () => {
+			this.saveData();
+		});
 	}
 
 	@autobind
