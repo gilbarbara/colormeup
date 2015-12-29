@@ -350,6 +350,18 @@
         box-shadow: none;
       }
     }
+
+    .random-color {
+      .fa-refresh {
+        transform: rotate(0deg);
+      }
+
+      &.rotate {
+        .fa-refresh {
+          animation: rotate 0.4s;
+        }
+      }
+    }
   }
 
   &__sliders {
@@ -499,7 +511,8 @@
     }
 
     .btn {
-      padding: 0.6rem 1rem;
+      line-height: 1;
+      padding: 0.8rem 1rem;
     }
 
     .hsl {
@@ -511,9 +524,13 @@
     }
 
     .steps {
-      flex: 0 6.5rem;
+      flex: 0 9rem;
       order: 2;
       position: relative;
+
+      @include md {
+        flex: 0 7.5rem;
+      }
 
       .form-control {
         height: 3rem;
@@ -527,6 +544,10 @@
         position: absolute;
         top: 0.65rem;
         z-index: 2;
+
+        @include is-only {
+          display: none;
+        }
       }
     }
 
@@ -594,6 +615,7 @@
     position: absolute;
     right: 0;
   }
+
 }
 
 .app-overlay {

@@ -54,9 +54,9 @@ class Header extends React.Component {
 	/**
 	 * @param {Object} opts
 	 */
-	changeColor (opts) {
+	changeColor (opts = {}) {
 		this.context.setHash({
-			color: opts.r ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
+			color: typeof opts.r === 'number' ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
 		});
 	}
 
@@ -130,15 +130,17 @@ class Header extends React.Component {
 
 	@autobind
 	onChangeRangeSlider (pos, props) {
-		//console.log('onChangeRangeSlider', pos, props);
-		let color           = this.props.config.colorObj.remix({ [props['data-type']]: pos.x }),
-			lastSliderValue = this.state.lastSliderValue;
+		let value     = ['r', 'g', 'b'].indexOf(props['data-type']) > -1 ? Math.round(pos.x) : pos.x,
+			newValue  = Math.round(pos.x),
+			color     = this.props.config.colorObj.remix({ [props['data-type']]: value }),
+			lastValue = this.state.lastSliderValue;
+
+		//console.log('onChangeRangeSlider', value, newValue props);
 
 		this.setState({
-			lastSliderValue: lastSliderValue === undefined ? Math.round(pos.x) : (lastSliderValue !== Math.round(pos.x) ? Math.round(pos.x) : lastSliderValue)
+			lastSliderValue: lastValue === undefined ? newValue : (lastValue !== newValue ? newValue : lastValue)
 		}, () => {
-
-			if (lastSliderValue !== this.state.lastSliderValue) {
+			if (lastValue !== this.state.lastSliderValue) {
 				this.changeColor(color);
 			}
 		});
@@ -146,17 +148,10 @@ class Header extends React.Component {
 
 	@autobind
 	onChangeRangeInput (value, props) {
-		//console.log('onChangeRangeInput', value, props);
 		let color = this.props.config.colorObj.remix({ [props['data-type']]: value });
+		//console.log('onChangeRangeInput', value, props, color);
 
 		this.changeColor(color);
-	}
-
-	@autobind
-	onChangeSteps (value) {
-		if (value) {
-			this.context.setOptions({ steps: value });
-		}
 	}
 
 	@autobind
@@ -164,6 +159,13 @@ class Header extends React.Component {
 		e.preventDefault();
 
 		this.context.setOptions({ slider: e.currentTarget.dataset.type });
+	}
+
+	@autobind
+	onChangeSteps (value) {
+		if (value) {
+			this.context.setOptions({ steps: value });
+		}
 	}
 
 	@autobind
@@ -176,7 +178,13 @@ class Header extends React.Component {
 	@autobind
 	onClickRandomColor (e) {
 		e.preventDefault();
-		let randomColor = this.props.config.colorObj.random();
+		let el          = e.currentTarget,
+			randomColor = this.props.config.colorObj.random();
+
+		$(el).addClass('rotate');
+		setTimeout(() => {
+			$(el).removeClass('rotate');
+		}, 400);
 
 		this.changeColor(randomColor.hsl);
 	}
@@ -184,6 +192,25 @@ class Header extends React.Component {
 	@autobind
 	onClickSaveColor (e) {
 		e.preventDefault();
+		let el     = e.currentTarget,
+			$icon  = $(el).find('.fa-heart'),
+			offset = $icon.offset();
+
+		$($icon
+			.clone()
+			.css({
+				fontSize: $icon.css('font-size'),
+				position: 'absolute',
+				top: offset.top,
+				left: offset.left
+			})
+			.addClass('grow-element'))
+			.appendTo('body');
+
+		$('.grow-element').addClass('grow');
+		setTimeout(() => {
+			$('.grow-element').remove();
+		}, 800);
 
 		this.context.addToFavorites();
 	}

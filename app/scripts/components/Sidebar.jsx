@@ -6,8 +6,6 @@ import classNames from 'classnames';
 import $ from 'jquery';
 import ZeroClipboard from 'zeroclipboard';
 
-//todo clipboard copy
-
 export default class Sidebar extends React.Component {
 	constructor (props) {
 		super(props);
