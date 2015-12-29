@@ -16,8 +16,6 @@ import Footer from './Footer';
 
 let history = createHashHistory({ queryKey: false });
 
-//todo add button to randomize
-//todo add to favorites
 //todo re-add steps and type to params?
 //todo new font!
 
@@ -41,10 +39,7 @@ class App extends React.Component {
 				'#ffd200',
 				'#ff0044'
 			],
-			ready: {
-				data: false,
-				ui: false
-			},
+			ready: false,
 			slider: 'hsl',
 			steps: 24,
 			type: 'h',
@@ -106,15 +101,15 @@ class App extends React.Component {
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
+	componentWillMount () {
+		this.loadData();
+	}
+
 	componentDidMount () {
-		this.getData();
+		this.initialize();
 	}
 
 	componentDidUpdate (prevProps, prevState) {
-		if (this.state.ready.data && prevState.ready.data !== this.state.ready.data) {
-			this.initialize();
-		}
-
 		if (prevProps.location.hash !== this.props.location.hash) {
 			let hash = this.getHash();
 			//this.log('hashchange', hash);
@@ -146,31 +141,31 @@ class App extends React.Component {
 		);
 	}
 
-	getData () {
+	loadData () {
 		let data = Storage.getItem(this.name);
-		this.log('getData');
 
-		if (!data) {
+		if (!data || !data.version || data.version < this.state.version) {
 			data = {
 				version: this.state.version,
 				created: Math.floor(Date.now() / 1000),
 				updated: null,
 				starter: true,
 				help: true,
-				colors: []
+				colors: data && data.colors ? data.colors : []
 			};
-			Storage.setItem(this.state.name, data);
+			this.log('init data');
+			this.saveData(data);
 		}
 
-		this.setState(reactUpdate(this.state, {
-			data: { $set: data },
-			ready: { data: { $set: true } }
-		}));
+		this.log('loadData', data);
+
+		this.setState({
+			data
+		});
 	}
 
-	setData () {
-		let data = this.state.data;
-		this.log('setData');
+	saveData (data = this.state.data) {
+		this.log('saveData');
 
 		data.version = this.state.version;
 		data.updated = Math.floor(Date.now() / 1000);
@@ -186,7 +181,7 @@ class App extends React.Component {
 			this.setState(reactUpdate(this.state, {
 				data: { colors: { $push: [this.state.color] } }
 			}), () => {
-				this.setData();
+				this.saveData();
 			});
 		}
 	}
@@ -246,10 +241,10 @@ class App extends React.Component {
 		}
 
 		this.setState(state, () => {
-			if (!this.state.ready.ui) {
-				this.setState(reactUpdate(this.state, {
-					ready: { ui: { $set: true } }
-				}));
+			if (!this.state.ready) {
+				this.setState({
+					ready: true
+				});
 			}
 		});
 	}
@@ -285,9 +280,9 @@ class App extends React.Component {
 		const state = this.state;
 		let html;
 
-		if (state.ready.ui) {
+		if (state.ready) {
 			html = (
-				<div className="app--inner">
+				<div>
 					<Sidebar config={state} />
 					<Header config={state} addToFavorites={this.addToFavorites} />
 					<Boxes config={state} />
