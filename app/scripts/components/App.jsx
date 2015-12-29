@@ -80,6 +80,7 @@ class App extends React.Component {
 	}
 
 	static childContextTypes = {
+		addToFavorites: React.PropTypes.func,
 		log: React.PropTypes.func,
 		setColor: React.PropTypes.func,
 		setHash: React.PropTypes.func,
@@ -88,6 +89,7 @@ class App extends React.Component {
 
 	getChildContext () {
 		return {
+			addToFavorites: this.addToFavorites,
 			log: this.log,
 			setColor: this.setColor,
 			setHash: this.setHash,
@@ -284,7 +286,7 @@ class App extends React.Component {
 			html = (
 				<div>
 					<Sidebar config={state} />
-					<Header config={state} addToFavorites={this.addToFavorites} />
+					<Header config={state} />
 					<Boxes config={state} />
 				</div>
 			);

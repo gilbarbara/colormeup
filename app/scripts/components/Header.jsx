@@ -23,6 +23,7 @@ class Header extends React.Component {
 	}
 
 	static contextTypes = {
+		addToFavorites: React.PropTypes.func,
 		location: React.PropTypes.object,
 		log: React.PropTypes.func,
 		setHash: React.PropTypes.func,
@@ -30,7 +31,6 @@ class Header extends React.Component {
 	};
 
 	static propTypes = {
-		addToFavorites: React.PropTypes.func.isRequired,
 		config: React.PropTypes.object.isRequired
 	};
 
@@ -108,7 +108,7 @@ class Header extends React.Component {
 
 	@autobind
 	onClickToggleSidebar () {
-		$('.app__sidebar,.app-overlay').toggleClass('visible');
+		$('.app__sidebar, .app-overlay').toggleClass('visible');
 	}
 
 	@autobind
@@ -185,7 +185,7 @@ class Header extends React.Component {
 	onClickSaveColor (e) {
 		e.preventDefault();
 
-		this.props.addToFavorites();
+		this.context.addToFavorites();
 	}
 
 	render () {
