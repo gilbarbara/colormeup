@@ -52,3 +52,58 @@ body {
     }
   }
 }
+
+.grow-element {
+  opacity: 1;
+  transform: scale(1);
+
+  &.grow {
+    animation: grow 0.8s;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+
+  10% {
+    transform: rotate(10deg) scale(1.2);
+  }
+
+  20% {
+    transform: rotate(-10deg) scale(1.4);
+  }
+
+  30% {
+    transform: rotate(10deg) scale(1.6);
+  }
+
+  45% {
+    transform: rotate(-10deg) scale(1.8);
+  }
+
+  60% {
+    transform: rotate(10deg) scale(2);
+  }
+
+  75% {
+    transform: rotate(-10deg) scale(2.2);
+  }
+
+  100% {
+    color: #f00;
+    opacity: 0;
+    transform: rotate(0deg) scale(3);
+  }
+}

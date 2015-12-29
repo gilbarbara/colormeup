@@ -7,6 +7,12 @@
   .numeric-input-input {
     box-sizing: border-box;
     padding-right: 2rem;
+    text-align: center;
+
+    &:focus {
+      border-color: #bbb;
+      outline: 0;
+    }
   }
 
   // The Up/Down buttons -----------------------------------------------------
@@ -143,10 +149,10 @@
 
     .numeric-input-up,
     .numeric-input-down {
-      bottom: 1px;
+      bottom: 0;
       box-shadow: none;
       margin: 0;
-      top: 1px;
+      top: 0;
       width: 2.6rem;
 
       &:before,
@@ -163,7 +169,7 @@
     .numeric-input-up {
       border-radius: 0 1px 1px 0;
       //box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.1) inset;
-      right: 1px;
+      right: 0;
 
       &:before {
         height: 2px;
@@ -181,7 +187,7 @@
     .numeric-input-down {
       border-radius: 1px 0 0 1px;
       box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.1) inset;
-      left: 1px;
+      left: 0;
       right: auto;
 
       &:before {
@@ -197,11 +203,11 @@
 
     &.bs-form-control {
       .numeric-input-up {
-        border-radius: 0 3px 3px 0;
+        border-radius: 0 $border-radius $border-radius 0;
       }
 
       .numeric-input-down {
-        border-radius: 3px 0 0 3px;
+        border-radius: $border-radius 0 0 $border-radius;
       }
     }
   }

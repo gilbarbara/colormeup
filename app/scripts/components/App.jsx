@@ -18,6 +18,7 @@ import Footer from './Footer';
 let history = createHashHistory({ queryKey: false });
 
 //todo re-add steps and type to params?
+//todo keypress space, random color.
 //todo new font!
 
 class App extends React.Component {
