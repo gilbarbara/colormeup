@@ -1,10 +1,11 @@
 .app {
-  padding-bottom: 44px;
+  @include striped-bg(#eee);
+  padding-bottom: 5.4rem;
   position: relative;
 
   &__message {
     background-color: rgba(#fff, 0.8);
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 0.6rem 0.6rem;
     color: #f00;
     display: none;
     font-size: 2rem;
@@ -32,17 +33,17 @@
     .navigation-toggle {
       cursor: pointer;
       display: block;
-      height: 40px;
+      height: 3rem;
       position: relative;
-      width: 35px;
+      width: 3.5rem;
     }
 
     .navigation-toggle-label {
-      bottom: -20px;
+      bottom: -2rem;
       color: #000;
       display: block;
       font-family: Helvetica, Arial, sans-serif;
-      font-size: 14px;
+      font-size: 1.4rem;
       font-weight: bold;
       position: relative;
       text-align: center;
@@ -50,14 +51,14 @@
     }
 
     .navigation-toggle-icon {
-      border-bottom: 5px solid currentColor;
+      border-bottom: 0.5rem solid currentColor;
       display: block;
-      padding-top: 10px;
+      padding-top: 1rem;
       transition-delay: 0.125s;
 
       &:before,
       &:after {
-        border-top: 5px solid currentColor;
+        border-top: 0.5rem solid currentColor;
         content: '';
         left: 0;
         position: absolute;
@@ -71,7 +72,7 @@
       }
 
       &:after {
-        bottom: 14px;
+        bottom: 0.4rem;
       }
     }
 
@@ -95,11 +96,11 @@
         }
 
         &:before {
-          transform: translateY(8px) rotate(135deg);
+          transform: translateY(0.8rem) rotate(135deg);
         }
 
         &:after {
-          transform: translateY(-13px) rotate(-135deg);
+          transform: translateY(-1.3rem) rotate(-135deg);
         }
       }
     }
@@ -113,10 +114,10 @@
     overflow: auto;
     padding: ($grid-gutter-width * 1.5) ($grid-gutter-width / 1.5);
     position: fixed;
-    right: -220px;
+    right: -22rem;
     top: 0;
     transition: all 0.3s ease-in-out;
-    width: 220px;
+    width: 22rem;
     z-index: 10;
 
     &.visible {
@@ -129,7 +130,7 @@
         color: #999;
         display: block;
         font-family: Montserrat, sans-serif;
-        font-size: 14px;
+        font-size: 1.4rem;
         font-weight: 700;
         margin-bottom: ($grid-gutter-width / 3);
         text-transform: uppercase;
@@ -138,28 +139,33 @@
           &:hover {
             .reset {
               display: inline-block;
-              font-size: 12px;
+              font-size: 1.2rem;
             }
           }
+        }
+
+        > * {
+          vertical-align: middle;
         }
 
         .toggle {
           color: #999;
           text-decoration: none;
+
+          &:hover,
+          &:focus {
+            color: #bbb;
+          }
         }
 
         .reset {
           color: #dc143c;
-          margin-left: 4px;
+          margin-left: 0.4rem;
 
           @include md {
             display: none;
           }
         }
-      }
-
-      &.favorites {
-        display: none;
       }
 
       &.visible {
@@ -173,20 +179,25 @@
           @include md {
             display: inline;
           }
+
+          &:focus {
+            color: #2d70c2;
+            outline: none;
+          }
         }
 
         .code {
           background-color: #ddd;
-          border-radius: 4px;
+          border-radius: 0.4rem;
           color: #666;
           display: block;
           font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-          margin-top: 15px;
+          margin-top: 1.5rem;
           padding: ($grid-gutter-width / 3);
 
           div {
             color: #666;
-            font-size: 12px;
+            font-size: 1.2rem;
 
             span {
               float: left;
@@ -206,29 +217,28 @@
       }
 
       &.help {
+        color: #fff;
 
         h5 {
-          font-size: 18px;
+          font-size: 1.8rem;
           margin-top: 0;
         }
 
         p {
-          color: #fff;
-          font-size: 12px;
+          font-size: 1.4rem;
+        }
 
-          + p {
-            margin-top: 4px;
-          }
+        ul li {
+          font-size: 1.2rem;
 
-          &:nth-of-type(1) {
-            font-size: 14px;
-          }
-
-          &.restore-starter {
-            display: none;
+          + li {
+            margin-top: 0.5rem;
           }
         }
 
+        .text.hidden {
+          display: none;
+        }
       }
 
       + div {
@@ -238,9 +248,14 @@
       .items {
         font-size: 0;
 
+        p {
+          color: #fff;
+          font-size: 1.5rem;
+        }
+
         a {
           $size: (100% - (4 * 3)) / 5;
-          border: 1px solid #bbb;
+          border: 0.1rem solid #bbb;
           display: inline-block;
           height: 0;
           margin-left: 3%;
@@ -267,9 +282,9 @@
 
   &__header {
     background-color: #dcdcdc;
-    border-bottom: 4px solid #ccc;
+    border-bottom: 0.4rem solid #ccc;
     margin: 0 auto;
-    padding: 1rem 1.5rem 3rem;
+    padding: ($grid-gutter-width / 2) ($grid-gutter-width / 2) $grid-gutter-width;
     position: relative;
     text-align: center;
     width: 100%;
@@ -313,22 +328,22 @@
       position: relative;
 
       .fa {
-        font-size: 24px;
+        font-size: 2.4rem;
       }
 
       &-addon {
         a {
           color: $body-color;
           display: inline-block;
-          width: 24px;
+          width: 2.4rem;
         }
       }
     }
 
     .form-control {
       -webkit-appearance: none;
-      border-width: 1px;
-      font-size: 24px;
+      border-width: 0.1rem;
+      font-size: 2.4rem;
 
       &:focus {
         border-color: #ccc;
@@ -339,7 +354,7 @@
 
   &__sliders {
     background-color: rgba(#fff, 0.4);
-    border-radius: 4px;
+    border-radius: 0.4rem;
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
@@ -355,25 +370,26 @@
       display: flex;
       flex-flow: row wrap;
       justify-content: center;
+      margin-bottom: 0;
 
       @include md {
         flex-direction: column;
       }
 
       li {
-        align-items: center;
         background-color: rgba(#000, 0.1);
-        display: flex;
-        height: 3rem;
-        justify-content: center;
-        width: 5rem;
-
-        @include md {
-          height: 4rem;
-        }
 
         a {
+          align-items: center;
           color: $body-color;
+          display: flex;
+          height: $grid-gutter-width;
+          justify-content: center;
+          width: 5rem;
+
+          @include md {
+            height: $grid-gutter-width * 1.5;
+          }
 
           &:focus,
           &:hover {
@@ -393,7 +409,7 @@
 
     &__list {
       @include md {
-        width: 88%;
+        width: 90%;
       }
     }
   }
@@ -403,30 +419,30 @@
     flex-flow: row wrap;
     justify-content: space-between;
     margin-top: ($grid-gutter-width / 1.5);
-    min-height: 32px;
+    min-height: 3.2rem;
 
     > div {
       background-color: rgba(#fff, 0.4);
-      border-radius: 4px;
+      border-radius: 0.4rem;
       flex: 1 100%;
       font-size: 0;
-      padding: 8px;
+      padding: 0.8rem;
 
       @include sm {
         flex: 1 1 auto;
       }
 
       @include md {
-        padding: 12px;
+        padding: 1.2rem;
       }
 
       &:nth-child(1) {
         @include sm {
-          margin-right: 10px;
+          margin-right: 1rem;
         }
 
         @include md {
-          margin-right: 20px;
+          margin-right: 2rem;
         }
       }
 
@@ -434,35 +450,35 @@
         margin-top: ($grid-gutter-width / 2);
 
         @include sm {
-          margin-left: 10px;
+          margin-left: 1rem;
           margin-top: 0;
         }
 
         @include md {
-          margin-left: 20px;
+          margin-left: 2rem;
         }
       }
     }
 
     .color-value {
       display: inline-block;
-      font-size: 14px;
+      font-size: 1.4rem;
       line-height: 1;
       width: (100% / 3);
 
       &:nth-child(1n+2) {
-        border-left: 1px solid rgba(#000, 0.2);
+        border-left: 0.1rem solid rgba(#000, 0.2);
       }
 
       div {
         font-family: Montserrat, sans-serif;
-        font-size: 18px;
+        font-size: 1.8rem;
         font-weight: 700;
-        min-height: 22px;
+        min-height: 2.2rem;
       }
 
       &:nth-child(1n+4) {
-        margin-top: 12px;
+        margin-top: 1.2rem;
 
         @include md {
           margin-top: 0;
@@ -475,15 +491,15 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: -10px;
+    margin-bottom: -1rem;
     margin-top: ($grid-gutter-width / 1.5);
 
     > * {
-      padding-bottom: 10px;
+      padding-bottom: 1rem;
     }
 
     .btn {
-      padding: 6px 10px;
+      padding: 0.6rem 1rem;
     }
 
     .hsl {
@@ -495,7 +511,7 @@
     }
 
     .steps {
-      flex: 0 65px;
+      flex: 0 6.5rem;
       order: 2;
       position: relative;
 
@@ -507,7 +523,7 @@
 
       .fa {
         color: #555;
-        left: 5px;
+        left: 0.5rem;
         position: absolute;
         top: 0.65rem;
         z-index: 2;
@@ -521,7 +537,6 @@
   }
 
   &__boxes {
-    @include striped-bg(#eee);
     font-size: 0;
     position: relative;
 
@@ -555,14 +570,14 @@
     }
 
     .fa {
-      font-size: 20px;
+      font-size: 2rem;
     }
   }
 
   &__box {
-    bottom: 8px;
+    bottom: 0.8rem;
     display: inline-block;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 200;
     position: absolute;
     text-align: center;
@@ -570,6 +585,7 @@
   }
 
   &__footer {
+    background-color: #fff;
     bottom: 0;
     display: flex;
     justify-content: space-between;
