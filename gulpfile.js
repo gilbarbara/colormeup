@@ -119,10 +119,16 @@ gulp.task('modernizr', function (cb) {
 	return exec('./node_modules/.bin/modernizr -c .modernizr.json -d .tmp/scripts/modernizr.js', cb);
 });
 
+gulp.task('zeroclipboard', function () {
+	return gulp.src(['bower_components/zeroclipboard/dist/ZeroClipboard.swf'])
+		.pipe(gulp.dest('.tmp/scripts'));
+});
+
 gulp.task('bundle', function () {
 	var copy,
 		fonts,
-		optimize;
+		optimize,
+		zeroclipboard;
 
 	optimize = gulp.src('app/index.html')
 		.pipe($.useref())
@@ -149,7 +155,10 @@ gulp.task('bundle', function () {
 			title: 'copy'
 		}));
 
-	return merge(optimize, fonts, copy);
+	zeroclipboard = gulp.src('.tmp/scripts/ZeroClipboard.swf')
+		.pipe(gulp.dest('dist/scripts'));
+
+	return merge(optimize, fonts, copy, zeroclipboard);
 });
 
 gulp.task('media', function () {
@@ -197,7 +206,7 @@ gulp.task('sizer', function () {
 });
 
 gulp.task('assets', function (cb) {
-	runSequence('styles', 'scripts', ['modernizr', 'fonts'], cb);
+	runSequence('styles', 'scripts', ['zeroclipboard', 'modernizr', 'fonts'], cb);
 });
 
 gulp.task('mocha', function () {
