@@ -278,6 +278,13 @@ class App extends React.Component {
 		}
 	}
 
+	@autobind
+	hideSidebar (e) {
+		e.preventDefault();
+
+		$('.app__toggle input').trigger('click');
+	}
+
 	render () {
 		const state = this.state;
 		let html;
@@ -300,7 +307,7 @@ class App extends React.Component {
 				{html}
 				<Footer />
 				<div className="app__message">Mensagem de erro</div>
-				<div className="app-overlay"></div>
+				<a href="#" className="app-overlay" onClick={this.hideSidebar}/>
 			</div>
 		);
 	}
