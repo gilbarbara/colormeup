@@ -77,33 +77,9 @@ body {
     transform: scale(1);
   }
 
-  10% {
-    transform: rotate(10deg) scale(1.2);
-  }
-
-  20% {
-    transform: rotate(-10deg) scale(1.4);
-  }
-
-  30% {
-    transform: rotate(10deg) scale(1.6);
-  }
-
-  45% {
-    transform: rotate(-10deg) scale(1.8);
-  }
-
-  60% {
-    transform: rotate(10deg) scale(2);
-  }
-
-  75% {
-    transform: rotate(-10deg) scale(2.2);
-  }
-
   100% {
     color: #f00;
     opacity: 0;
-    transform: rotate(0deg) scale(3);
+    transform: rotate(0deg) scale(3.5);
   }
 }

@@ -40,6 +40,15 @@ class Header extends React.Component {
 		setTimeout(() => {
 			this.updateColors();
 		}, 300);
+
+		this.keyPressListener = (e) => {
+			if (e.target.tagName === 'BODY' && e.keyCode === 32) {
+				e.preventDefault();
+				document.querySelector('.random-color').click();
+			}
+		};
+
+		document.addEventListener('keypress', this.keyPressListener);
 	}
 
 	componentWillReceiveProps (nextProps, nextContext) {
@@ -49,6 +58,10 @@ class Header extends React.Component {
 			});
 		}
 		this.updateColors();
+	}
+
+	componentWillUnmount () {
+		document.body.removeEventListener('keypress', this.keyPressListener);
 	}
 
 	/**
@@ -268,8 +281,8 @@ class Header extends React.Component {
 
 					<div className="app__input">
 						<div className="input-group input-group-lg">
-							<span className="input-group-addon">
-							<a href="#" className="random-color" title="Randomize Color"
+							<span className="input-group-btn">
+							<a href="#" className="btn btn-secondary random-color" title="Randomize Color"
 							   onClick={this.onClickRandomColor}>
 								<span className="fa fa-refresh" />
 							</a>
@@ -280,8 +293,8 @@ class Header extends React.Component {
 								value={this.state.color}
 								tabIndex={1}
 								onChange={this.onChangeColorInput} />
-							<span className="input-group-addon">
-							<a href="#" className="save-color" title="Add to Favorites" onClick={this.onClickSaveColor}>
+							<span className="input-group-btn">
+							<a href="#" className="btn btn-secondary save-color" title="Add to Favorites" onClick={this.onClickSaveColor}>
 								<span className="fa fa-heart" />
 							</a>
 							</span>
