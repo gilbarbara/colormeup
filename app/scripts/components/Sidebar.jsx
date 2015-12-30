@@ -16,6 +16,7 @@ export default class Sidebar extends React.Component {
 	}
 
 	static contextTypes = {
+		hideSidebar: React.PropTypes.func,
 		log: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		updateData: React.PropTypes.func
@@ -83,6 +84,7 @@ export default class Sidebar extends React.Component {
 	onClickColor (e) {
 		e.preventDefault();
 
+		this.context.hideSidebar();
 		this.context.setHash({
 			color: e.currentTarget.dataset.color
 		});

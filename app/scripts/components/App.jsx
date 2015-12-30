@@ -18,7 +18,6 @@ import Footer from './Footer';
 let history = createHashHistory({ queryKey: false });
 
 //todo re-add steps and type to params?
-//todo keypress space, random color.
 //todo new font!
 
 class App extends React.Component {
@@ -83,6 +82,7 @@ class App extends React.Component {
 
 	static childContextTypes = {
 		addToFavorites: React.PropTypes.func,
+		hideSidebar: React.PropTypes.func,
 		log: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setOptions: React.PropTypes.func,
@@ -92,6 +92,7 @@ class App extends React.Component {
 	getChildContext () {
 		return {
 			addToFavorites: this.addToFavorites,
+			hideSidebar: this.hideSidebar,
 			log: this.log,
 			setHash: this.setHash,
 			setOptions: this.setOptions,
@@ -123,6 +124,7 @@ class App extends React.Component {
 			}
 		}
 	}
+
 
 	initialize () {
 		const STATE = this.state;
@@ -292,11 +294,12 @@ class App extends React.Component {
 		}
 	}
 
-	@autobind
 	hideSidebar (e) {
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
 
-		$('.app__toggle input').trigger('click');
+		document.querySelector('.app__toggle input').click();
 	}
 
 	render () {
@@ -321,7 +324,7 @@ class App extends React.Component {
 				{html}
 				<Footer />
 				<div className="app__message">Mensagem de erro</div>
-				<a href="#" className="app-overlay" onClick={this.hideSidebar}/>
+				<a href="#" className="app-overlay" onClick={this.hideSidebar} />
 			</div>
 		);
 	}
