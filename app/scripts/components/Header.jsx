@@ -8,7 +8,7 @@ import NumericInput from './common/NumericInput';
 import $ from 'jquery';
 
 import math from '../utils/Math';
-import { diff } from '../utils/Object';
+import { equal } from '../utils/Object';
 import Loader from './common/Loader';
 
 class Header extends React.Component {
@@ -52,7 +52,7 @@ class Header extends React.Component {
 	}
 
 	componentWillReceiveProps (nextProps, nextContext) {
-		if (!diff(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
+		if (!equal(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
 			this.setState({
 				color: nextProps.config.color
 			});
