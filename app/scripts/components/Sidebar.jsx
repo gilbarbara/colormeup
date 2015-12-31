@@ -199,7 +199,7 @@ export default class Sidebar extends React.Component {
 					</h3>
 					<div className={classNames('text', { hidden: !CONFIG.data.help })}>
 						<h5 style={{ color: CONFIG.colorObj.lightness < 20 ? '#fff' : CONFIG.color }}>Know thy color!</h5>
-						<p>colormeup is a tool to inspect a color and play with its many variations in HSL or RGB.
+						<p>colormeup is a tool to inspect colors and play with its many variations in HSL or RGB.
 						</p>
 						<ul className="list-unstyled">
 							<li><span className="fa fa-th fa-fw" /> change the number of colors</li>
