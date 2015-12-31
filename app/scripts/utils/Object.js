@@ -25,7 +25,7 @@ export let diff = (a, b) => {
 
 export let equal = (a, b) => {
 	return Object.keys(diff(a, b)).length > 0;
-}
+};
 
 /**
  * Convert object to querystring
@@ -99,15 +99,12 @@ export let deparam = (params, coerce) => {
 
 	// Iterate over all name=value pairs.
 	params.replace(/\+/g, ' ').split('&').forEach(function (element) {
-		let param     = element.split('='),
-			key       = safeDecodeURIComponent(param[0]),
-			val,
+		let parm      = element.split('='),
+			key       = safeDecodeURIComponent(parm[0]),
 			cur       = obj,
 			i         = 0,
-
-			// If key is more complex than 'foo', like 'a[]' or 'a[b][c]', split it
-			// into its component parts.
-			keys      = key.split(']['),
+			val,
+			keys      = key.split(']['), // If key is more complex than 'foo', like 'a[]' or 'a[b][c]', split it into its component parts.
 			keys_last = keys.length - 1;
 
 		// If the first keys part contains [ and the last ends with ], then []
@@ -128,8 +125,8 @@ export let deparam = (params, coerce) => {
 		}
 
 		// Are we dealing with a name=value pair, or just a name?
-		if (param.length === 2) {
-			val = safeDecodeURIComponent(param[1]);
+		if (parm.length === 2) {
+			val = safeDecodeURIComponent(parm[1]);
 
 			// Coerce values.
 			if (coerce) {
@@ -156,23 +153,18 @@ export let deparam = (params, coerce) => {
 						: val;
 				}
 			}
+			else if (Array.isArray(obj[key])) {
+				// val is already an array, so push on the next value.
+				obj[key].push(val);
+			}
+			else if (obj[key] !== undefined) {
+				// val isn't an array, but since a second value has been specified,
+				// convert val into an array.
+				obj[key] = [obj[key], val];
+			}
 			else {
-				// Simple key, even simpler rules, since only scalars and shallow
-				// arrays are allowed.
-
-				if (Array.isArray(obj[key])) {
-					// val is already an array, so push on the next value.
-					obj[key].push(val);
-				}
-				else if (obj[key] !== undefined) {
-					// val isn't an array, but since a second value has been specified,
-					// convert val into an array.
-					obj[key] = [obj[key], val];
-				}
-				else {
-					// val is a scalar.
-					obj[key] = val;
-				}
+				// val is a scalar.
+				obj[key] = val;
 			}
 
 		}
