@@ -5,7 +5,6 @@ import { autobind } from 'core-decorators';
 
 import $ from 'jquery';
 
-import History from '../utils/History';
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
 import { param, deparam } from '../utils/Object';
@@ -243,7 +242,7 @@ class App extends React.Component {
 		 */
 
 		if (param(options) !== param(this.getHash())) {
-			History.push(param(options));
+			this.props.history.push({ pathname: param(options) });
 		}
 	}
 

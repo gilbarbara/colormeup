@@ -31,7 +31,7 @@
     "react-inlinesvg": "^0.4",
     "react-input-slider": "gilbarbara/react-input-slider",
     "react-pure-render": "^1.0",
-    "react-router": "1.0",
+    "react-router": "^2.0.0-rc4",
     "whatwg-fetch": "^0.10"
   },
   "devDependencies": {
