@@ -1,21 +1,21 @@
 import React from 'react';
 import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
-import { createHashHistory } from 'history';
 import { autobind } from 'core-decorators';
+
 import $ from 'jquery';
 
+import History from '../utils/History';
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
 import { param, deparam } from '../utils/Object';
+import changed from '../utils/Changed';
 
 import Loader from './common/Loader';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Boxes from './Boxes';
 import Footer from './Footer';
-
-let history = createHashHistory({ queryKey: false });
 
 //todo re-add steps and type to params?
 //todo new font!
@@ -171,7 +171,7 @@ class App extends React.Component {
 	}
 
 	saveData (data = this.state.data) {
-		this.log('saveData');
+		//this.log('saveData');
 
 		data.version = this.state.version;
 		data.updated = Math.floor(Date.now() / 1000);
@@ -205,7 +205,7 @@ class App extends React.Component {
 	}
 
 	getHash () {
-		return deparam(this.props.location.hash.replace('#', ''));
+		return deparam(this.props.location.pathname);
 	}
 
 	@autobind
@@ -229,7 +229,7 @@ class App extends React.Component {
 		 */
 
 		if (param(options) !== param(this.getHash())) {
-			history.push(param(options));
+			History.push(param(options));
 		}
 	}
 
