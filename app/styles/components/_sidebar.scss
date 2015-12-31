@@ -1,0 +1,259 @@
+.app__toggle {
+  position: fixed;
+  right: ($grid-gutter-width / 2);
+  top: ($grid-gutter-width / 2);
+  z-index: 15;
+
+  .navigation-checkbox {
+    display: none;
+  }
+
+  .navigation-toggle {
+    cursor: pointer;
+    display: block;
+    height: 3rem;
+    position: relative;
+    width: 3.5rem;
+  }
+
+  .navigation-toggle-label {
+    bottom: -2rem;
+    color: #000;
+    display: block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.4rem;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .navigation-toggle-icon {
+    border-bottom: 0.5rem solid currentColor;
+    display: block;
+    padding-top: 1rem;
+    transition-delay: 0.125s;
+
+    &:before,
+    &:after {
+      border-top: 0.5rem solid currentColor;
+      content: '';
+      left: 0;
+      position: absolute;
+      right: 0;
+      transform-origin: center;
+      transition-delay: 0s;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &:after {
+      bottom: 0.4rem;
+    }
+  }
+
+  .navigation-toggle-icon,
+  .navigation-toggle-icon:before,
+  .navigation-toggle-icon:after {
+    transition-duration: 0.25s;
+    transition-property: transform, border-color;
+    transition-timing-function: cubic-bezier(0.5, -0.5, 0.5, 1.5);
+  }
+
+  .navigation-checkbox:checked + .navigation-toggle {
+    .navigation-toggle-icon {
+      border-color: transparent;
+      transition-delay: 0s;
+
+      &:before,
+      &:after {
+        border-color: #999 !important;
+        transition-delay: 0.125s;
+      }
+
+      &:before {
+        transform: translateY(0.8rem) rotate(135deg);
+      }
+
+      &:after {
+        transform: translateY(-1.3rem) rotate(-135deg);
+      }
+    }
+  }
+}
+
+.app__sidebar {
+  background-color: rgba(#000, 1);
+  bottom: 0;
+  height: 100%;
+  opacity: 0;
+  overflow: auto;
+  padding: ($grid-gutter-width * 1.5) ($grid-gutter-width / 1.5);
+  position: fixed;
+  right: -22rem;
+  top: 0;
+  transition: all 0.3s ease-in-out;
+  width: 22rem;
+  z-index: 10;
+
+  &.visible {
+    opacity: 1;
+    right: 0;
+  }
+
+  &__list {
+    h3 {
+      color: #999;
+      display: block;
+      font-family: Montserrat, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: ($grid-gutter-width / 3);
+      text-transform: uppercase;
+
+      @include md {
+        &:hover {
+          .reset {
+            display: inline-block;
+            font-size: 1.2rem;
+          }
+        }
+      }
+
+      > * {
+        vertical-align: middle;
+      }
+
+      .toggle {
+        color: #999;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          color: #bbb;
+        }
+      }
+
+      .reset {
+        color: #dc143c;
+        margin-left: 0.4rem;
+
+        @include md {
+          display: none;
+        }
+      }
+    }
+
+    &.visible {
+      display: block;
+    }
+
+    &.export {
+      .copy-button {
+        display: none;
+
+        @include md {
+          display: inline;
+        }
+
+        &:focus {
+          color: #2d70c2;
+          outline: none;
+        }
+      }
+
+      .code {
+        background-color: #ddd;
+        border-radius: 0.4rem;
+        color: #666;
+        display: block;
+        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        margin-top: 1.5rem;
+        padding: ($grid-gutter-width / 3);
+
+        div {
+          color: #666;
+          font-size: 1.2rem;
+
+          span {
+            float: left;
+          }
+
+          a {
+            color: #666;
+            float: right;
+            text-align: right;
+          }
+
+          + div {
+            margin-top: ($grid-gutter-width / 4);
+          }
+        }
+      }
+    }
+
+    &.help {
+      color: #fff;
+
+      h5 {
+        font-size: 1.8rem;
+        margin-top: 0;
+      }
+
+      p {
+        font-size: 1.4rem;
+      }
+
+      ul li {
+        font-size: 1.2rem;
+
+        + li {
+          margin-top: 0.5rem;
+        }
+      }
+
+      .text.hidden {
+        display: none;
+      }
+    }
+
+    + div {
+      margin-top: $grid-gutter-width;
+    }
+
+    .items {
+      font-size: 0;
+
+      p {
+        color: #fff;
+        font-size: 1.5rem;
+      }
+
+      a {
+        $size: (100% - (4 * 3)) / 5;
+        border: 0.1rem solid #bbb;
+        display: inline-block;
+        height: 0;
+        margin-left: 3%;
+        padding-bottom: $size - 1%;
+        width: $size;
+
+        &:nth-child(5n+1) {
+          margin-left: 0;
+        }
+
+        &:nth-child(1n+6) {
+          margin-top: 3%;
+        }
+      }
+    }
+  }
+
+  .close {
+    left: ($grid-gutter-width / 1.5);
+    position: absolute;
+    top: ($grid-gutter-width / 2);
+  }
+}

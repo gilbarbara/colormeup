@@ -15,12 +15,15 @@
 
 // *** Elements
 @import 'elements/loader';
-@import 'elements/sliders';
 @import 'elements/input-slider';
 @import 'elements/input-numeric';
 
 // *** Components
 @import 'components/app';
+@import 'components/header';
+@import 'components/sliders';
+@import 'components/sidebar';
+@import 'components/boxes';
 
 html {
   font-size: 62.5%;
