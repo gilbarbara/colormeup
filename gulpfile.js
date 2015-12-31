@@ -225,15 +225,18 @@ gulp.task('docs', function (cb) {
 		});
 });
 
-gulp.task('gh-pages', function () {
-	var filter = $.filter('**/app.js');
-
-	return gulp.src(['dist/**/*', 'README.md'])
-		.pipe(filter)
-		.pipe($.replace(new RegExp('{path:"/",handler:d}', 'g'), '{path:"/react-starter/",handler:d}'))
-		.pipe(filter.restore())
-		.pipe($.ghPages({
-			force: true
+gulp.task('deploy', ['build'], function() {
+	return gulp.src('dist/**', {
+			dot: true
+		})
+		.pipe($.rsync({
+			incremental: true,
+			exclude: ['.DS_Store'],
+			progress: true,
+			root: 'dist',
+			username: 'colormeup',
+			hostname: 'colormeup.co',
+			destination: '/home/colormeup/public_html'
 		}));
 });
 
@@ -261,11 +264,7 @@ gulp.task('serve', ['assets'], function () {
 
 gulp.task('build', ['clean'], function (cb) {
 	process.env.NODE_ENV = 'production';
-	runSequence('scripts:lint', 'assets', ['bundle', 'media', 'docs'], 'sizer', cb);
-});
-
-gulp.task('deploy', function (cb) {
-	runSequence('build', 'gh-pages', cb);
+	runSequence('scripts:lint', 'assets', ['bundle', 'media'], 'sizer', cb);
 });
 
 gulp.task('default', ['serve']);
