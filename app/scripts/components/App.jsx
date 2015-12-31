@@ -214,7 +214,12 @@ class App extends React.Component {
 	}
 
 	getHash () {
-		return deparam(this.props.location.pathname);
+		let pathname = this.props.location.pathname;
+		if (pathname.charAt(0) === '/') {
+			pathname = this.props.location.pathname.substring(1);
+		}
+
+		return deparam(pathname);
 	}
 
 	@autobind
