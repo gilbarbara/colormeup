@@ -6,9 +6,10 @@ import 'classlist-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router } from 'react-router';
-import History from './utils/History';
-import routes from './routes';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+
+import App from './components/App';
+import NotFound from './components/common/NotFound';
 
 /**
  * Main
@@ -16,6 +17,12 @@ import routes from './routes';
  * @description Initialize the Router and mount the React Component
  */
 
+let routes = (
+	<Route path="/" component={App}>
+		<Route path="*" component={NotFound} />
+	</Route>
+);
+
 document.addEventListener('DOMContentLoaded', function () {
-	ReactDOM.render(<Router history={History}>{routes}</Router>, document.getElementById('react'));
+	ReactDOM.render(<Router history={browserHistory}>{routes}</Router>, document.getElementById('react'));
 });
