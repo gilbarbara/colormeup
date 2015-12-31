@@ -114,8 +114,14 @@ class App extends React.Component {
 		this.initialize();
 	}
 
+	componentWillUpdate (nextProps, nextState) {
+		this.scrollTop = document.body.scrollTop;
+	}
+
 	componentDidUpdate (prevProps, prevState) {
-		if (prevProps.location.hash !== this.props.location.hash) {
+		//changed(this, prevProps, prevState);
+
+		if (prevProps.location.pathname !== this.props.location.pathname) {
 			let hash = this.getHash();
 			//this.log('hashchange', hash);
 
@@ -123,8 +129,11 @@ class App extends React.Component {
 				this.setColor('#' + hash.color);
 			}
 		}
-	}
 
+		if (this.scrollTop !== document.body.scrollTop) {
+			document.body.scrollTop = this.scrollTop;
+		}
+	}
 
 	initialize () {
 		const STATE = this.state;
