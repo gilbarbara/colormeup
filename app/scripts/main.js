@@ -7,7 +7,7 @@ import 'classlist-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import History from './utils/History';
 import routes from './routes';
 
 /**
@@ -17,5 +17,5 @@ import routes from './routes';
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-	ReactDOM.render(<Router history={createBrowserHistory()}>{routes}</Router>, document.getElementById('react'));
+	ReactDOM.render(<Router history={History}>{routes}</Router>, document.getElementById('react'));
 });
