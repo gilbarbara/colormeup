@@ -2,7 +2,7 @@ $xy-handle-size: 2rem;
 $color-active: #777;
 $color-bg: #ccc;
 $size: 1rem;
-$fix: 1rem;
+$fix: 0.4rem;
 
 .u-slider {
   background-color: $color-bg;
@@ -12,8 +12,8 @@ $fix: 1rem;
   position: relative;
 
   .value {
-    background-color: $color-active;
-    border-radius: 3px;
+    background-color: $color-bg;
+    border-radius: $size / 2;
     position: absolute;
   }
 
@@ -33,20 +33,16 @@ $fix: 1rem;
 .u-slider-x,
 .u-slider-y {
   .handle:after {
-    background-color: #fff;
+    background-color: $color-bg;
     border: 2px solid $color-active;
     border-radius: 50%;
-    cursor: grab;
     height: $size + $fix;
     width: $size + $fix;
-
-    &:active {
-      cursor: grabbing;
-    }
   }
 }
 
 .u-slider-x {
+  border-radius: $size / 2;
   height: $size;
   width: 100%;
 
@@ -60,6 +56,7 @@ $fix: 1rem;
   }
 
   .value {
+    border-radius: $size / 2;
     height: 100%;
     top: 0;
   }
