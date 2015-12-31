@@ -133,6 +133,10 @@ export default class Boxes extends React.Component {
 		let el = e.currentTarget;
 
 		this.context.setHash({ color: el.dataset.color });
+
+		if (document.body.scrollTop > 150) {
+			$('html, body').animate({ scrollTop: 0 }, 500, 'swing');
+		}
 	}
 
 	render () {
