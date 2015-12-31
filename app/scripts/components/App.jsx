@@ -100,6 +100,7 @@ class App extends React.Component {
 	}
 
 	static propTypes = {
+		history: React.PropTypes.object,
 		location: React.PropTypes.object
 	}
 
