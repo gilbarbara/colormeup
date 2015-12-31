@@ -3,8 +3,8 @@
  * @module Object
  */
 
-export let isObjectLike = (value) => {
-	return Boolean(value) && typeof value === 'object';
+export let isObject = (value) => {
+	return Boolean(value) && typeof value === 'object' && value.length === undefined;
 };
 
 export let diff = (a, b) => {
@@ -17,11 +17,15 @@ export let diff = (a, b) => {
 			return;
 		}
 
-		r[k] = isObjectLike(v) ? diff(v, b[k]) : v;
+		r[k] = isObject(v) ? diff(v, b[k]) : v;
 	});
 
-	return Object.keys(r).length > 0;
+	return r;
 };
+
+export let equal = (a, b) => {
+	return Object.keys(diff(a, b)).length > 0;
+}
 
 /**
  * Convert object to querystring
@@ -183,4 +187,4 @@ export let deparam = (params, coerce) => {
 	return obj;
 };
 
-export default { param, deparam, diff };
+export default { param, deparam, diff, equal, isObject };
