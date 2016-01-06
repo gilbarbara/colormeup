@@ -52,6 +52,19 @@ class Colors {
 		}
 	}
 
+	parseRGB(rgb) {
+		const isString = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+		if ((isString && isString.length === 4)) {
+			return {
+				r: parseInt(isString[1], 10),
+				g: parseInt(isString[2], 10),
+				b: parseInt(isString[3], 10)
+			};
+		}
+
+		return false;
+	}
+
 	/**
 	 * Parse HEX color
 	 * @param {String} hex
@@ -128,22 +141,27 @@ class Colors {
 
 	/**
 	 * Convert a RGB object to HSL
-	 * @param {Object} rgb
+	 * @param {Object|string} rgb
 	 * @returns {Object} {h: Number, s: Number, l: Number}
 	 */
 	rgb2hsl(rgb = this.rgb) {
-		let r, g, b, h, s, l, d, max, min, _ref;
-		_ref = [rgb.r, rgb.g, rgb.b];
-		r = _ref[0];
-		g = _ref[1];
-		b = _ref[2];
+		let newRGB = rgb;
 
-		r /= 255;
-		g /= 255;
-		b /= 255;
-		max = Math.max(r, g, b);
-		min = Math.min(r, g, b);
-		d = max - min;
+		if (typeof rgb === 'string') {
+			newRGB = this.parseRGB(rgb);
+		}
+
+		const arr = [newRGB.r, newRGB.g, newRGB.b];
+		let r = arr[0] / 255;
+		let g = arr[1] / 255;
+		let b = arr[2] / 255;
+
+		let min = Math.min(r, g, b);
+		let max = Math.max(r, g, b);
+		let d = max - min;
+
+		let h, s, l;
+
 		h = (function () {
 			switch (max) {
 				case min:
@@ -163,6 +181,7 @@ class Colors {
 		}
 		l = (max + min) / 2.0;
 		s = max === min ? 0 : l < 0.5 ? d / (2 * l) : d / (2 - 2 * l);
+
 		return {
 			h: Math.abs(+((h % 360).toFixed(5))),
 			s: +((s * 100).toFixed(5)),
@@ -173,11 +192,17 @@ class Colors {
 	/**
 	 * Convert a RGA object to hex
 	 * @public
-	 * @param {Object} rgb
+	 * @param {Object|string} rgb
 	 * @returns {String} #ffffff
 	 */
 	rgb2hex(rgb = this.rgb) {
-		return '#' + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
+		let newRGB = rgb;
+
+		if (typeof rgb === 'string') {
+			newRGB = this.parseRGB(rgb);
+		}
+
+		return '#' + ((1 << 24) + (newRGB.r << 16) + (newRGB.g << 8) + newRGB.b).toString(16).slice(1);
 	}
 
 	/**
