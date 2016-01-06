@@ -8,7 +8,7 @@ import NumericInput from './common/NumericInput';
 import $ from 'jquery';
 
 import math from '../utils/Math';
-import { equal } from '../utils/Object';
+import { isEqual } from '../utils/Extras';
 import Loader from './common/Loader';
 
 class Header extends React.Component {
@@ -51,8 +51,8 @@ class Header extends React.Component {
 		document.addEventListener('keypress', this.keyPressListener);
 	}
 
-	componentWillReceiveProps (nextProps, nextContext) {
-		if (!equal(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
+	componentWillReceiveProps(nextProps, nextContext) {
+		if (!isEqual(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
 			this.setState({
 				color: nextProps.config.color
 			});

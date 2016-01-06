@@ -7,7 +7,7 @@ import $ from 'jquery';
 
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
-import { param, deparam } from '../utils/Object';
+import { param, deparam } from '../utils/Extras';
 import changed from '../utils/Changed';
 
 import Loader from './common/Loader';
