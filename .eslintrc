@@ -214,7 +214,7 @@
 	],
 	"space-after-keywords": 1,
 	"space-before-blocks": 1,
-	"space-before-function-paren": 1,
+    "space-before-function-paren": [1, {"anonymous": "always", "named": "never"} ],
 	"space-before-keywords": 1,
 	"space-infix-ops": 1,
 	"space-return-throw-case": 1,

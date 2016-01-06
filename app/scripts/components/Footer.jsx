@@ -1,12 +1,12 @@
 import React from 'react';
 
 export default class Footer extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 		this.state = {};
 	}
 
-	render () {
+	render() {
 		return (
 			<div className="app__footer">
 				<a href="http://kollectiv.org/" target="_blank">

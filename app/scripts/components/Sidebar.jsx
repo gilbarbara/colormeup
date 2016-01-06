@@ -7,7 +7,7 @@ import $ from 'jquery';
 import ZeroClipboard from 'zeroclipboard';
 
 export default class Sidebar extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
@@ -28,7 +28,7 @@ export default class Sidebar extends React.Component {
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
-	componentDidMount () {
+	componentDidMount() {
 		var clipboard = new ZeroClipboard(document.getElementsByClassName('copy-button'));
 
 		clipboard.on('aftercopy', (event) => {
@@ -39,7 +39,7 @@ export default class Sidebar extends React.Component {
 	}
 
 	@autobind
-	onClickResetFavorites (e) {
+	onClickResetFavorites(e) {
 		e.preventDefault();
 
 		if (this.state.pendingReset) {
@@ -59,7 +59,7 @@ export default class Sidebar extends React.Component {
 	}
 
 	@autobind
-	onClickHelp (e) {
+	onClickHelp(e) {
 		e.preventDefault();
 		this.context.updateData('help', !this.props.config.data.help);
 
@@ -67,21 +67,21 @@ export default class Sidebar extends React.Component {
 	}
 
 	@autobind
-	onClickHideStarter (e) {
+	onClickHideStarter(e) {
 		e.preventDefault();
 
 		this.context.updateData('starter', !this.props.config.data.starter);
 	}
 
 	@autobind
-	onClickRestore (e) {
+	onClickRestore(e) {
 		e.preventDefault();
 
 		this.context.updateData('starter', true);
 	}
 
 	@autobind
-	onClickColor (e) {
+	onClickColor(e) {
 		e.preventDefault();
 
 		this.context.hideSidebar();
@@ -90,11 +90,11 @@ export default class Sidebar extends React.Component {
 		});
 	}
 
-	preventClick (e) {
+	preventClick(e) {
 		e.preventDefault();
 	}
 
-	render () {
+	render() {
 		const CONFIG = this.props.config,
 			  STATE  = this.state;
 
@@ -145,11 +145,11 @@ export default class Sidebar extends React.Component {
 				<div className="app__sidebar__list favorites">
 					<h3><span className="fa fa-heart" /> your favorites
 						{CONFIG.data.colors.length ?
-							<a href="#" title="Erase your favorites" className="erase-favorites reset"
-							   onClick={this.onClickResetFavorites}>
+						 <a href="#" title="Erase your favorites" className="erase-favorites reset"
+							onClick={this.onClickResetFavorites}>
 								<span
 									className={classNames('fa', { 'fa-trash': !STATE.pendingReset, 'fa-check-circle': STATE.pendingReset })} />
-							</a> : undefined}
+						 </a> : undefined}
 					</h3>
 					<div className="items">{
 						CONFIG.data.colors.length

@@ -11,7 +11,7 @@ class Colors {
 	 * @constructs Colors
 	 * @param {String|Array|Object} color
 	 */
-	constructor (color = '#ff0044') {
+	constructor(color = '#ff0044') {
 		this.setColor(color);
 	}
 
@@ -19,7 +19,7 @@ class Colors {
 	 * Change the color
 	 * @param {String|Array|Object} color
 	 */
-	setColor (color) {
+	setColor(color) {
 		if (!color) {
 			throw new Error('Not a valid color');
 		}
@@ -58,7 +58,7 @@ class Colors {
 	 *
 	 * @returns {String}
 	 */
-	parseHex (hex) {
+	parseHex(hex) {
 		let color  = hex.replace('#', ''),
 			newHex = '';
 
@@ -86,7 +86,7 @@ class Colors {
 	 *
 	 * @returns {Boolean}
 	 */
-	validHex (hex) {
+	validHex(hex) {
 		return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
 	}
 
@@ -95,7 +95,7 @@ class Colors {
 	 * @param {String} hex
 	 * @returns {Object} {r: Number, g: Number, b: Number}
 	 */
-	hex2rgb (hex = this.hex) {
+	hex2rgb(hex = this.hex) {
 		hex = this.parseHex(hex);
 		if (hex.charAt(0) === '#') {
 			hex = hex.substr(1);
@@ -113,7 +113,7 @@ class Colors {
 	 * @param {String} hex
 	 * @returns {Object} {h: Number, s: Number, l: Number}
 	 */
-	hex2hsl (hex = this.hex) {
+	hex2hsl(hex = this.hex) {
 		hex = this.parseHex(hex);
 		if (hex.charAt(0) === '#') {
 			hex = hex.substr(1);
@@ -131,7 +131,7 @@ class Colors {
 	 * @param {Object} rgb
 	 * @returns {Object} {h: Number, s: Number, l: Number}
 	 */
-	rgb2hsl (rgb = this.rgb) {
+	rgb2hsl(rgb = this.rgb) {
 		let r, g, b, h, s, l, d, max, min, _ref;
 		_ref = [rgb.r, rgb.g, rgb.b];
 		r = _ref[0];
@@ -176,7 +176,7 @@ class Colors {
 	 * @param {Object} rgb
 	 * @returns {String} #ffffff
 	 */
-	rgb2hex (rgb = this.rgb) {
+	rgb2hex(rgb = this.rgb) {
 		return '#' + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
 	}
 
@@ -185,11 +185,13 @@ class Colors {
 	 * @param {Object} hsl
 	 * @returns {Object} {r: Number, g: Number, b: Number}
 	 */
-	hsl2rgb (hsl = this.hsl) {
+	hsl2rgb(hsl = this.hsl) {
 		let b, g, h, l, p, q, r, s, _ref;
-		_ref = [parseFloat(hsl.h).toFixed(5) / 360,
-				parseFloat(hsl.s).toFixed(5) / 100,
-				parseFloat(hsl.l).toFixed(5) / 100];
+		_ref = [
+			parseFloat(hsl.h).toFixed(5) / 360,
+			parseFloat(hsl.s).toFixed(5) / 100,
+			parseFloat(hsl.l).toFixed(5) / 100
+		];
 		h = _ref[0];
 		s = _ref[1];
 		l = _ref[2];
@@ -217,7 +219,7 @@ class Colors {
 	 * @param {Object} hsl
 	 * @returns {String}
 	 */
-	hsl2hex (hsl = this.hsl) {
+	hsl2hex(hsl = this.hsl) {
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
 
@@ -229,7 +231,7 @@ class Colors {
 	 * @param {Number} t
 	 * @returns {*}
 	 */
-	hue2rgb (p, q, t) {
+	hue2rgb(p, q, t) {
 		if (t < 0) {
 			t += 1;
 		}
@@ -253,7 +255,7 @@ class Colors {
 	 * @param {Object} attr
 	 * @returns {*}
 	 */
-	mod (attr) {
+	mod(attr) {
 		let hsl, out, rgb, type;
 		if ((_.intersection(_.keys(attr), ['h', 's', 'l']).length > 0) &&
 			(_.intersection(_.keys(attr), ['r', 'g', 'b']).length > 0)) {
@@ -310,7 +312,7 @@ class Colors {
 	 * @param {String} direction
 	 * @returns {Number}
 	 */
-	constrain (attr, amount, limit, direction) {
+	constrain(attr, amount, limit, direction) {
 		let val  = math.expr(attr + direction + amount),
 			test = (limit[1] >= val && val >= limit[0]);
 
@@ -332,7 +334,7 @@ class Colors {
 	 * @param {Number} amount
 	 * @returns {Number}
 	 */
-	constrainDegrees (attr, amount) {
+	constrainDegrees(attr, amount) {
 		let val;
 		val = attr + amount;
 		if (val > 360) {
@@ -348,7 +350,7 @@ class Colors {
 	 * Get Red
 	 * @returns {Number}
 	 */
-	get red () {
+	get red() {
 		return Number(this.rgb.r);
 	}
 
@@ -356,7 +358,7 @@ class Colors {
 	 * Get Green
 	 * @returns {Number}
 	 */
-	get green () {
+	get green() {
 		return Number(this.rgb.g);
 	}
 
@@ -364,7 +366,7 @@ class Colors {
 	 * Get Blue
 	 * @returns {Number}
 	 */
-	get blue () {
+	get blue() {
 		return Number(this.rgb.b);
 	}
 
@@ -372,7 +374,7 @@ class Colors {
 	 * Get Hue
 	 * @returns {Number}
 	 */
-	get hue () {
+	get hue() {
 		return Number(this.hsl.h);
 	}
 
@@ -380,7 +382,7 @@ class Colors {
 	 * Set Hue
 	 * @param {Number} value
 	 */
-	set hue (value) {
+	set hue(value) {
 		let hsl = this.mod({
 			h: value
 		});
@@ -391,7 +393,7 @@ class Colors {
 	 * Get Saturation
 	 * @returns {Number}
 	 */
-	get saturation () {
+	get saturation() {
 		return Number(this.hsl.s);
 	}
 
@@ -399,7 +401,7 @@ class Colors {
 	 * Get Lightness
 	 * @returns {Number}
 	 */
-	get lightness () {
+	get lightness() {
 		return Number(this.hsl.l);
 	}
 
@@ -408,7 +410,7 @@ class Colors {
 	 * @param {Number} percentage
 	 * @returns {String}
 	 */
-	lighten (percentage) {
+	lighten(percentage) {
 		let hsl;
 		hsl = this.mod({
 			l: this.constrain(this.lightness, percentage, [0, 100], '+')
@@ -421,7 +423,7 @@ class Colors {
 	 * @param {Number} percentage
 	 * @returns {String}
 	 */
-	darken (percentage) {
+	darken(percentage) {
 		let hsl;
 		hsl = this.mod({
 			l: this.constrain(this.lightness, percentage, [0, 100], '-')
@@ -434,7 +436,7 @@ class Colors {
 	 * @param {Number} percentage
 	 * @returns {String}
 	 */
-	saturate (percentage) {
+	saturate(percentage) {
 		let hsl;
 		hsl = this.mod({
 			s: this.constrain(this.saturation, percentage, [0, 100], '+')
@@ -447,7 +449,7 @@ class Colors {
 	 * @param {Number} percentage
 	 * @returns {String}
 	 */
-	desaturate (percentage) {
+	desaturate(percentage) {
 		let hsl;
 		hsl = this.mod({
 			s: this.constrain(this.saturation, percentage, [0, 100], '-')
@@ -460,7 +462,7 @@ class Colors {
 	 * @param {Number} degrees
 	 * @returns {String}
 	 */
-	adjustHue (degrees) {
+	adjustHue(degrees) {
 		let hsl = this.mod({
 			h: this.constrainDegrees(this.hue, +degrees)
 		});
@@ -474,7 +476,7 @@ class Colors {
 	 * @param {Boolean} hex
 	 * @returns {String}
 	 */
-	remix (opts, hex = false) {
+	remix(opts, hex = false) {
 		let model = {},
 			mod;
 
@@ -491,8 +493,8 @@ class Colors {
 	 * Generate a color scheme
 	 * @param {Array} degrees - ex: [0, 180] or [0, 120, 240]
 	 * @returns {Array} [Object]
-     */
-	schemeFromDegrees (degrees) {
+	 */
+	schemeFromDegrees(degrees) {
 		let newColors = [];
 		for (let i = 0, j = degrees.length; i < j; i++) {
 			let col = Object.assign({}, this.hsl);
@@ -506,7 +508,7 @@ class Colors {
 	 * Generate a random color
 	 * @returns {Object} {hex: String, rgb: Object, hsl: Object}
 	 */
-	random () {
+	random() {
 		let hsl = {
 			h: Math.floor(Math.random() * 360) + 1,
 			s: Math.floor(Math.random() * 90) + 10,

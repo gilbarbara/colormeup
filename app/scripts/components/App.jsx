@@ -20,7 +20,7 @@ import Footer from './Footer';
 //todo new font!
 
 class App extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
@@ -88,7 +88,7 @@ class App extends React.Component {
 		updateData: React.PropTypes.func
 	};
 
-	getChildContext () {
+	getChildContext() {
 		return {
 			addToFavorites: this.addToFavorites,
 			hideSidebar: this.hideSidebar,
@@ -99,6 +99,10 @@ class App extends React.Component {
 		};
 	}
 
+	static contextTypes = {
+		router: React.PropTypes.object
+	};
+
 	static propTypes = {
 		history: React.PropTypes.object,
 		location: React.PropTypes.object
@@ -106,19 +110,19 @@ class App extends React.Component {
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
-	componentWillMount () {
+	componentWillMount() {
 		this.loadData();
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		this.initialize();
 	}
 
-	componentWillUpdate (nextProps, nextState) {
+	componentWillUpdate(nextProps, nextState) {
 		this.scrollTop = document.body.scrollTop;
 	}
 
-	componentDidUpdate (prevProps, prevState) {
+	componentDidUpdate(prevProps, prevState) {
 		//changed(this, prevProps, prevState);
 
 		if (prevProps.location.pathname !== this.props.location.pathname) {
@@ -135,7 +139,7 @@ class App extends React.Component {
 		}
 	}
 
-	initialize () {
+	initialize() {
 		const STATE = this.state;
 		let hash         = this.getHash(),
 			color        = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null,
@@ -156,7 +160,7 @@ class App extends React.Component {
 		);
 	}
 
-	loadData () {
+	loadData() {
 		let data = Storage.getItem(this.name);
 
 		if (!data || !data.version || data.version < this.state.version) {
@@ -179,7 +183,7 @@ class App extends React.Component {
 		});
 	}
 
-	saveData (data = this.state.data) {
+	saveData(data = this.state.data) {
 		//this.log('saveData');
 
 		data.version = this.state.version;
@@ -189,7 +193,7 @@ class App extends React.Component {
 	}
 
 	@autobind
-	updateData (key, value) {
+	updateData(key, value) {
 		let data = this.state.data;
 		this.log('updateData', data);
 
@@ -201,7 +205,7 @@ class App extends React.Component {
 	}
 
 	@autobind
-	addToFavorites () {
+	addToFavorites() {
 		//this.log('addToFavorites', this.state.color, this.state.data.colors);
 
 		if (this.state.data.colors.indexOf(this.state.color) === -1) {
@@ -213,17 +217,17 @@ class App extends React.Component {
 		}
 	}
 
-	getHash () {
+	getHash() {
 		let pathname = this.props.location.pathname;
 		if (pathname.charAt(0) === '/') {
-			pathname = this.props.location.pathname.substring(1);
+			pathname = pathname.substring(1);
 		}
 
 		return deparam(pathname);
 	}
 
 	@autobind
-	setHash (opts = {}) {
+	setHash(opts = {}) {
 		let state   = this.state,
 			options = Object.assign({
 				color: state.color
@@ -243,11 +247,11 @@ class App extends React.Component {
 		 */
 
 		if (param(options) !== param(this.getHash())) {
-			this.props.history.push({ pathname: param(options) });
+			this.context.router.push('/' + param(options));
 		}
 	}
 
-	getColors (max) {
+	getColors(max) {
 		const state = this.state;
 		this.log('getColors', max);
 
@@ -259,7 +263,7 @@ class App extends React.Component {
 	}
 
 	@autobind
-	setColor (color = this.state.color) {
+	setColor(color = this.state.color) {
 		//this.log('setColor', color);
 		let state = {
 			color
@@ -282,7 +286,7 @@ class App extends React.Component {
 	}
 
 	@autobind
-	setOptions (options) {
+	setOptions(options) {
 		let state = {};
 		//this.log('setOptions', options);
 
@@ -302,13 +306,13 @@ class App extends React.Component {
 		this.setState(state);
 	}
 
-	log () {
+	log() {
 		if (location.hostname === 'localhost') {
 			console.log(...arguments);
 		}
 	}
 
-	hideSidebar (e) {
+	hideSidebar(e) {
 		if (e) {
 			e.preventDefault();
 		}
@@ -316,7 +320,7 @@ class App extends React.Component {
 		document.querySelector('.app__toggle input').click();
 	}
 
-	render () {
+	render() {
 		const state = this.state;
 		let html;
 

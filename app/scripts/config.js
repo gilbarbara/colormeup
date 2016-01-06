@@ -1,6 +1,6 @@
 module.exports = {
-    features: {
-        categories: true,
-        tags: true
-    }
+	features: {
+		categories: true,
+		tags: true
+	}
 };

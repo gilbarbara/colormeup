@@ -6,7 +6,7 @@ import Colors from '../utils/Colors';
 import Loader from './common/Loader';
 
 export default class Boxes extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 	}
 
@@ -21,7 +21,7 @@ export default class Boxes extends React.Component {
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
-	buildBoxes () {
+	buildBoxes() {
 		const CONFIG = this.props.config;
 
 		if ('rgb'.indexOf(CONFIG.type) > -1) {
@@ -34,7 +34,7 @@ export default class Boxes extends React.Component {
 		return [];
 	}
 
-	buildHSLBoxes (options) {
+	buildHSLBoxes(options) {
 		const CONFIG = this.props.config;
 		let settings = Object.assign({
 				max: (CONFIG.type === 'h' ? 360 : 100),
@@ -61,7 +61,7 @@ export default class Boxes extends React.Component {
 		return boxes;
 	}
 
-	buildRGBBoxes (options) {
+	buildRGBBoxes(options) {
 		const CONFIG = this.props.config;
 		let settings = Object.assign({
 				max: 255,
@@ -85,7 +85,7 @@ export default class Boxes extends React.Component {
 		return boxes;
 	}
 
-	buildBox (colors, max) {
+	buildBox(colors, max) {
 		let textColor = this.textLightness(colors.hsl);
 		return (
 			<a href="#" key={max + '-' + Math.random()} data-color={colors.hex}
@@ -97,13 +97,13 @@ export default class Boxes extends React.Component {
 		);
 	}
 
-	textLightness (color) {
+	textLightness(color) {
 		return this.props.config.colorObj.hsl2hex(Object.assign(color, {
 			l: (color.l + 40 > 90 ? Math.abs(50 - color.l) : color.l + 40)
 		}));
 	}
 
-	changeHSLValue (opts) {
+	changeHSLValue(opts) {
 		//this.context.log('changeValue', val, type);
 		const CONFIG = this.props.config;
 		let colors = {};
@@ -115,7 +115,7 @@ export default class Boxes extends React.Component {
 		return colors;
 	}
 
-	changeRGBValue (opts) {
+	changeRGBValue(opts) {
 		//this.context.log('changeRGBValue', val, type);
 		const CONFIG = this.props.config;
 		let colors = {};
@@ -128,7 +128,7 @@ export default class Boxes extends React.Component {
 	}
 
 	@autobind
-	onClickBox (e) {
+	onClickBox(e) {
 		e.preventDefault();
 		let el = e.currentTarget;
 
@@ -139,7 +139,7 @@ export default class Boxes extends React.Component {
 		}
 	}
 
-	render () {
+	render() {
 		return (
 			<div className="app__boxes">{this.buildBoxes()}</div>
 		);

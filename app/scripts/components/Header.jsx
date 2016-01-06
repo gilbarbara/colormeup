@@ -12,7 +12,7 @@ import { isEqual } from '../utils/Extras';
 import Loader from './common/Loader';
 
 class Header extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
@@ -24,7 +24,6 @@ class Header extends React.Component {
 
 	static contextTypes = {
 		addToFavorites: React.PropTypes.func,
-		location: React.PropTypes.object,
 		log: React.PropTypes.func,
 		setHash: React.PropTypes.func,
 		setOptions: React.PropTypes.func
@@ -36,7 +35,7 @@ class Header extends React.Component {
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
-	componentDidMount () {
+	componentDidMount() {
 		setTimeout(() => {
 			this.updateColors();
 		}, 300);
@@ -60,20 +59,20 @@ class Header extends React.Component {
 		this.updateColors();
 	}
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		document.body.removeEventListener('keypress', this.keyPressListener);
 	}
 
 	/**
 	 * @param {Object} opts
 	 */
-	changeColor (opts = {}) {
+	changeColor(opts = {}) {
 		this.context.setHash({
 			color: typeof opts.r === 'number' ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
 		});
 	}
 
-	updateColors () {
+	updateColors() {
 		var config = this.props.config;
 
 		$('.logo svg')
@@ -120,12 +119,12 @@ class Header extends React.Component {
 	}
 
 	@autobind
-	onClickToggleSidebar () {
+	onClickToggleSidebar() {
 		$('.app__sidebar, .app-overlay').toggleClass('visible');
 	}
 
 	@autobind
-	onChangeColorInput (e) {
+	onChangeColorInput(e) {
 		const CONFIG = this.props.config;
 		let value = e.target.value.replace(/[^0-9A-F]+/i, ''),
 			color = '#' + value.replace(/[^0-9A-F]+/i, '').slice(-6);
@@ -142,7 +141,7 @@ class Header extends React.Component {
 	}
 
 	@autobind
-	onChangeRangeSlider (pos, props) {
+	onChangeRangeSlider(pos, props) {
 		let value     = ['r', 'g', 'b'].indexOf(props['data-type']) > -1 ? Math.round(pos.x) : pos.x,
 			newValue  = Math.round(pos.x),
 			color     = this.props.config.colorObj.remix({ [props['data-type']]: value }),
@@ -160,7 +159,7 @@ class Header extends React.Component {
 	}
 
 	@autobind
-	onChangeRangeInput (value, props) {
+	onChangeRangeInput(value, props) {
 		let color = this.props.config.colorObj.remix({ [props['data-type']]: value });
 		//console.log('onChangeRangeInput', value, props, color);
 
@@ -168,28 +167,28 @@ class Header extends React.Component {
 	}
 
 	@autobind
-	onClickSliderMenu (e) {
+	onClickSliderMenu(e) {
 		e.preventDefault();
 
 		this.context.setOptions({ slider: e.currentTarget.dataset.type });
 	}
 
 	@autobind
-	onChangeSteps (value) {
+	onChangeSteps(value) {
 		if (value) {
 			this.context.setOptions({ steps: value });
 		}
 	}
 
 	@autobind
-	onClickTypesMenu (e) {
+	onClickTypesMenu(e) {
 		e.preventDefault();
 
 		this.context.setOptions({ type: e.currentTarget.dataset.type });
 	}
 
 	@autobind
-	onClickRandomColor (e) {
+	onClickRandomColor(e) {
 		e.preventDefault();
 		let el          = e.currentTarget,
 			randomColor = this.props.config.colorObj.random();
@@ -203,7 +202,7 @@ class Header extends React.Component {
 	}
 
 	@autobind
-	onClickSaveColor (e) {
+	onClickSaveColor(e) {
 		e.preventDefault();
 		let el     = e.currentTarget,
 			$icon  = $(el).find('.fa-heart'),
@@ -228,7 +227,7 @@ class Header extends React.Component {
 		this.context.addToFavorites();
 	}
 
-	render () {
+	render() {
 		const CONFIG = this.props.config;
 
 		let vars = {
@@ -282,8 +281,10 @@ class Header extends React.Component {
 					<div className="app__input">
 						<div className="input-group input-group-lg">
 							<span className="input-group-btn">
-							<a href="#" className="btn btn-secondary random-color" title="Randomize Color"
-							   onClick={this.onClickRandomColor}>
+							<a
+								href="#" className="btn btn-secondary random-color"
+								title="Randomize Color"
+								onClick={this.onClickRandomColor}>
 								<span className="fa fa-refresh" />
 							</a>
 							</span>
@@ -294,7 +295,10 @@ class Header extends React.Component {
 								tabIndex={1}
 								onChange={this.onChangeColorInput} />
 							<span className="input-group-btn">
-							<a href="#" className="btn btn-secondary save-color" title="Add to Favorites" onClick={this.onClickSaveColor}>
+							<a
+								href="#" className="btn btn-secondary save-color"
+								title="Add to Favorites"
+								onClick={this.onClickSaveColor}>
 								<span className="fa fa-heart" />
 							</a>
 							</span>

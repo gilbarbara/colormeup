@@ -79,11 +79,11 @@ export let getFactor = (number, divisions = 8) => {
  */
 export let expr = (str) => {
 
-	let chars = str.split(''),
+	let chars  = str.split(''),
 		parsed,
-		n = [],
-		op = [],
-		index = 0,
+		n      = [],
+		op     = [],
+		index  = 0,
 		oplast = true;
 
 	n[index] = '';

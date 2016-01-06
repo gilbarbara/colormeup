@@ -1,4 +1,5 @@
 import shallowEqual from 'fbjs/lib/shallowEqual';
+import { diffArrays, diffObjects } from './Extras';
 
 export default (that, prevProps, prevState, prevContext) => {
 	//console.log('Changed', that, prevState, prevProps, prevContext);
