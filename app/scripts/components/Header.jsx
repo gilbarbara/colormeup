@@ -36,10 +36,6 @@ class Header extends React.Component {
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
 	componentDidMount() {
-		setTimeout(() => {
-			this.updateColors();
-		}, 300);
-
 		this.keyPressListener = (e) => {
 			if (e.target.tagName === 'BODY' && e.keyCode === 32) {
 				e.preventDefault();
@@ -51,7 +47,7 @@ class Header extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
-		if (!isEqual(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
+		if (isEqual(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
 			this.setState({
 				color: nextProps.config.color
 			});
@@ -115,6 +111,29 @@ class Header extends React.Component {
 					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
 				})
 			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333'))
+		});
+	}
+
+	@autobind
+	svgLoaded() {
+		this.updateColors();
+
+		$('#color').on('click', (e) => {
+			this.context.setHash({
+				color: this.props.config.colorObj.rgb2hex($(e.target).css('fill'))
+			});
+		});
+
+		$('#me').on('click', (e) => {
+			this.context.setHash({
+				color: this.props.config.colorObj.rgb2hex($(e.target).css('fill'))
+			});
+		});
+
+		$('#up').on('click', (e) => {
+			this.context.setHash({
+				color: this.props.config.colorObj.rgb2hex($(e.target).css('fill'))
+			});
 		});
 	}
 
@@ -275,7 +294,7 @@ class Header extends React.Component {
 				 style={{ backgroundColor: CONFIG.color, borderColor: CONFIG.colorObj.darken(15) }}>
 				<div className="app__header__wrapper">
 					<div className="logo">
-						<InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} />
+						<InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} onLoad={this.svgLoaded} />
 					</div>
 
 					<div className="app__input">
