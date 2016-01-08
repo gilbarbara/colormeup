@@ -4,64 +4,66 @@
  */
 
 /**
- * Round decimal numbers
- * @method
+ * Round decimal numbers.
+ *
+ * @function
  * @param {number} number
  * @param {number} digits
  *
  * @returns {number}
  */
-export let round = (number, digits = 2) => {
-	let factor = Math.pow(10, digits);
+export const round = (number, digits = 2) => {
+	const factor = Math.pow(10, digits);
 	return Math.round(number * factor) / factor;
 };
 
 /**
- * @method
+ * @function
  * @param {number} number
  * @param {number} digits
  *
  * @returns {number}
  */
-export let ceil = (number, digits = 2) => {
-	let factor = Math.pow(10, digits);
+export const ceil = (number, digits = 2) => {
+	const factor = Math.pow(10, digits);
 	return Math.ceil(number * factor) / factor;
 };
 
 /**
- * @method
+ * @function
  * @param {number} number
  * @param {number} digits
  *
  * @returns {number}
  */
-export let floor = (number, digits = 2) => {
-	let factor = Math.pow(10, digits);
+export const floor = (number, digits = 2) => {
+	const factor = Math.pow(10, digits);
 	return Math.floor(number * factor) / factor;
 };
 
 /**
- * @method
+ * @function
  * @param {number} number
  * @param {number} factor
  *
  * @returns {number}
  */
-export let roundByFactor = (number, factor = 10000) => {
+export const roundByFactor = (number, factor = 10000) => {
 	return number - (number % factor) + (number % factor > 0 && factor);
 };
 
 /**
- * @method
+ * @function
  * @param {number} number
  * @param {number} divisions
  *
  * @returns {number}
  */
-export let getFactor = (number, divisions = 8) => {
-	let starter = 0,
-		factors = [10000, 50000, 100000, 250000, 500000, 1000000],
-		divs    = (number / factors[starter]);
+export const getFactor = (number, divisions = 8) => {
+	const factors = [10000, 50000, 100000, 250000, 500000, 1000000];
+
+	let starter = 0;
+	let divs = (number / factors[starter]);
 
 	while (divs > divisions) {
 		starter++;
@@ -72,19 +74,21 @@ export let getFactor = (number, divisions = 8) => {
 };
 
 /**
- * @method
- * @param {string} str - "10 * 2"
+ * Parse math string expressions.
+ *
+ * @function
+ * @param {string} str
  *
  * @returns {number}
  */
-export let expr = (str) => {
+export const expr = (str) => {
+	const chars = str.split('');
+	const n = [];
+	const op = [];
 
-	let chars  = str.split(''),
-		parsed,
-		n      = [],
-		op     = [],
-		index  = 0,
-		oplast = true;
+	let parsed;
+	let index = 0;
+	let oplast = true;
 
 	n[index] = '';
 
@@ -105,7 +109,7 @@ export let expr = (str) => {
 	// Calculate the expression
 	parsed = parseFloat(n[0]);
 	for (let o = 0; o < op.length; o++) {
-		let num = parseFloat(n[o + 1]);
+		const num = parseFloat(n[o + 1]);
 
 		switch (op[o]) {
 			case '+':
@@ -127,5 +131,3 @@ export let expr = (str) => {
 
 	return parsed;
 };
-
-export default { round, ceil, floor, roundByFactor, getFactor, expr };

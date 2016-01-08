@@ -4,39 +4,43 @@
  */
 
 /**
- * Get Item
- * @method
+ * Get Item.
+ *
+ * @function
  * @param {string} name
- * @returns {object}
+ * @returns {Object}
  */
-export let getItem = (name) => {
+export const getItem = (name) => {
 	return JSON.parse(localStorage.getItem(name));
 };
 
 /**
- * Set Item
- * @method
+ * Set Item.
+ *
+ * @function
  * @param {string} name
- * @param {object} value
+ * @param {Object} value
  */
-export let setItem = (name, value) => {
+export const setItem = (name, value) => {
 	localStorage.setItem(name, JSON.stringify(value));
 };
 
 /**
- * Remove Item
- * @method
+ * Remove Item.
+ *
+ * @function
  * @param {string} name
  */
-export let removeItem = (name) => {
+export const removeItem = (name) => {
 	localStorage.removeItem(name);
 };
 
 /**
- * Clear All
- * @method
+ * Clear All.
+ *
+ * @function
  */
-export let clearAll = () => {
+export const clearAll = () => {
 	localStorage.clear();
 };
 

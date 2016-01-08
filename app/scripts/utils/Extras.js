@@ -94,7 +94,7 @@ export function isEqual(a, b) {
 	const bothObjects = isObject(a) && isObject(b);
 
 	if (!bothArrays && !bothObjects) {
-		console.warn('isEqual only works with inputs with the same type. Objects or arrays.');
+		console.warn('isEqual only works with inputs with the same type. Objects or arrays.');//eslint-disable-line no-console
 		return false;
 	}
 

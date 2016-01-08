@@ -7,12 +7,12 @@ const DELAY = 500;
 
 class NumericInput extends React.Component {
 	/**
-	 * @constructor
+	 * @class
 	 * @description Set the initial state and create the "_timer" property to contain the
 	 * step timer. Then define all the private methods within the constructor.
-	 * @param {object} props
+	 * @param {Object} props
 	 */
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this._timer = null;
@@ -55,27 +55,26 @@ class NumericInput extends React.Component {
 		format: null
 	};
 
-	componentWillReceiveProps (nextProps) {
+	componentWillReceiveProps(nextProps) {
 		this.setState({
 			value: nextProps.value
 		});
 	}
 
-	/**
-	 * This is used to clear the timer if any
-	 */
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.stopTimer();
 	}
 
 	/**
-	 * Exclude the required props to pass it back
-	 * @extends this
+	 * Exclude the required props to pass it back.
+	 *
+	 * @param {Object} props
+	 * @augments this
 	 */
-	setCustomProps (props = this.props) {
+	setCustomProps(props = this.props) {
 		this.customProps = {};
 
-		let widgetProps = [
+		const widgetProps = [
 			'format',
 			'max',
 			'min',
@@ -94,14 +93,16 @@ class NumericInput extends React.Component {
 	}
 
 	/**
-	 * Convert string to number
+	 * Convert string to number.
+	 *
+	 * @private
 	 * @param {string} x
 	 * @returns {Number|String}
-	 * @private
 	 */
-	toNumber (x) {
+	toNumber(x) {
+		const q = Math.pow(10, this.props.precision);
 		let n = parseFloat(x);
-		let q = Math.pow(10, this.props.precision);
+
 		if (isNaN(n) || !isFinite(n)) {
 			n = 0;
 		}
@@ -116,11 +117,12 @@ class NumericInput extends React.Component {
 	 * This is used internally to parse any string into a number. It will
 	 * delegate to this.props.parse function if one is provided. Otherwise it
 	 * will just use parseFloat.
+	 *
 	 * @private
 	 * @param {string} x
 	 * @returns {number}
 	 */
-	parse (x) {
+	parse(x) {
 		if (typeof this.props.parse === 'function') {
 			return parseFloat(this.props.parse(x));
 		}
@@ -130,12 +132,13 @@ class NumericInput extends React.Component {
 	/**
 	 * This is used internally to format a number to it's dislay representation.
 	 * It will invoke the this.props.format function if one is provided.
+	 *
 	 * @private
-	 * @param {Number|String} n
-	 * @returns {String}
+	 * @param {number|string} n
+	 * @returns {string}
 	 */
-	format (n) {
-		let _n = this.toNumber(n).toFixed(this.props.precision);
+	format(n) {
+		const _n = this.toNumber(n).toFixed(this.props.precision);
 
 		if (this.props.format) {
 			return this.props.format(_n);
@@ -145,12 +148,13 @@ class NumericInput extends React.Component {
 	}
 
 	/**
-	 * The internal method that actualy sets the new value on the input
+	 * The internal method that actualy sets the new value on the input.
+	 *
 	 * @private
-	 * @param {Number} n
+	 * @param {number} n
 	 */
-	step (n) {
-		let _n = this.toNumber((this.state.value || 0) + this.props.step * n);
+	step(n) {
+		const _n = this.toNumber((this.state.value || 0) + this.props.step * n);
 
 		if (_n !== this.state.value) {
 			this.setState({ value: _n }, () => {
@@ -165,10 +169,11 @@ class NumericInput extends React.Component {
 	 * This gets called whenever the user edits the input value. The value will
 	 * be recreated using the current parse/format methods so the input will
 	 * appear as readonly if the user tries to type something invalid.
+	 *
 	 * @param  {element#change} e
 	 * @listens element#change
 	 */
-	onChange (e) {
+	onChange(e) {
 		this.setState({
 			value: this.parse(e.target.value)
 		}, () => {
@@ -179,11 +184,12 @@ class NumericInput extends React.Component {
 	}
 
 	/**
-	 * This binds the Up/Down arrow keys
+	 * This binds the Up/Down arrow keys.
+	 *
 	 * @param  {element#keydown} e
 	 * @listens element#keydown
 	 */
-	onKeyDown (e) {
+	onKeyDown(e) {
 		let step;
 
 		if (e.keyCode === KEYCODE_UP || e.keyCode === KEYCODE_DOWN) {
@@ -205,20 +211,17 @@ class NumericInput extends React.Component {
 		}
 	}
 
-	onClickBtn (e) {
-		let el = e.target;
+	onClickBtn(e) {
+		const el = e.target;
 
 		this[el.classList.contains('numeric-input-up') ? 'increase' : 'decrease']();
 	}
 
-	preventClick (e) {
+	preventClick(e) {
 		e.preventDefault();
 	}
 
-	/**
-	 * Stops the widget from auto-changing by clearing the timer (if any)
-	 */
-	stopTimer () {
+	stopTimer() {
 		if (this._timer) {
 			window.clearTimeout(this._timer);
 			this._timer = null;
@@ -229,10 +232,11 @@ class NumericInput extends React.Component {
 	 * Increments the value with one step and the enters a recursive calls
 	 * after DELAY. This is bound to the mousedown event on the "up" button
 	 * and will be stopped on mouseout/mouseup.
-	 * @param {Boolean} _recursive The method is passing this to itself while it is in recursive mode.
-	 * @param {Boolean} doFocus
+	 *
+	 * @param {boolean} _recursive - The method is passing this to itself while it is in recursive mode.
+	 * @param {boolean} doFocus
 	 */
-	increase (_recursive = false, doFocus = true) {
+	increase(_recursive = false, doFocus = true) {
 		this.stopTimer();
 		this.step(1);
 
@@ -253,10 +257,11 @@ class NumericInput extends React.Component {
 	 * Decrements the value with one step and the enters a recursive calls
 	 * after DELAY. This is bound to the mousedown event on the "down" button
 	 * and will be stopped on mouseout/mouseup.
-	 * @param {Boolean} _recursive The method is passing this to itself while it is in recursive mode.
-	 * @param {Boolean} doFocus
+	 *
+	 * @param {boolean} _recursive - The method is passing this to itself while it is in recursive mode.
+	 * @param {boolean} doFocus
 	 */
-	decrease (_recursive = false, doFocus = true) {
+	decrease(_recursive = false, doFocus = true) {
 		this.stopTimer();
 		this.step(-1);
 
@@ -274,15 +279,16 @@ class NumericInput extends React.Component {
 	}
 
 	/**
-	 * Renders an input wrapped in relative span and up/down buttons
+	 * Renders an input wrapped in relative span and up/down buttons.
+	 *
 	 * @returns {ReactElement}
 	 */
-	render () {
+	render() {
 		const PROPS = this.props;
-		let attrs,
-			inputProps = {
-				ref: 'input'
-			};
+		const inputProps = {
+			ref: 'input'
+		};
+		let attrs;
 
 		this.setCustomProps();
 

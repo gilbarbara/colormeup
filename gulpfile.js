@@ -1,3 +1,4 @@
+/*eslint-disable no-var, func-names, indent, prefer-arrow-callback, object-shorthand, one-var,  require-jsdoc/require-jsdoc  */
 var gulp                  = require('gulp'),
 	$                     = require('gulp-load-plugins')(),
 	browserify            = require('browserify'),
@@ -31,14 +32,14 @@ var isProduction = function () {
 
 // Functions
 
-function watchifyTask (options) {
+function watchifyTask(options) {
 	var bundler, rebundle, tap, iteration = 0;
 	bundler = browserify({
 		entries: path.join(__dirname, '/app/scripts/main.js'),
 		basedir: __dirname,
 		insertGlobals: options.watch,
 		cache: {}, // required for watchify
-		//debug: options.watch,
+		// debug: options.watch,
 		packageCache: {}, // required for watchify
 		fullPaths: options.watch,
 		extensions: ['.jsx']
@@ -109,7 +110,7 @@ gulp.task('scripts', function (cb) {
 gulp.task('scripts:lint', function () {
 	return gulp.src('app/scripts/**/*')
 		.pipe($.eslint({
-			plugins: ['react']
+			plugins: ['react', 'jsdoc', 'require-jsdoc']
 		}))
 		.pipe($.eslint.format())
 		.pipe($.eslint.failOnError());
@@ -225,7 +226,7 @@ gulp.task('docs', function (cb) {
 		});
 });
 
-gulp.task('deploy', ['build'], function() {
+gulp.task('deploy', ['build'], function () {
 	return gulp.src('dist/**', {
 			dot: true
 		})

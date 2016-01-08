@@ -2,8 +2,8 @@ import shallowEqual from 'fbjs/lib/shallowEqual';
 import { diffArrays, diffObjects } from './Extras';
 
 export default (that, prevProps, prevState, prevContext) => {
-	//console.log('Changed', that, prevState, prevProps, prevContext);
-	let diffs = {
+	// console.log('Changed', that, prevState, prevProps, prevContext);
+	const diffs = {
 		state: [],
 		props: [],
 		context: []
@@ -39,7 +39,7 @@ export default (that, prevProps, prevState, prevContext) => {
 				}
 
 				if (prevContext[d].prototype !== that.context[d].prototype) {
-					console.log(prevContext[d]);
+					console.log(prevContext[d]); //eslint-disable-line no-console
 				}
 
 				diffs.context.push({ key: d, prev: prevContext[d], actual: that.context[d] });
@@ -51,10 +51,10 @@ export default (that, prevProps, prevState, prevContext) => {
 		if (diffs[d].length) {
 			diffs[d].forEach(e => {
 				if (e.key) {
-					console.log(e.key + '\n    Actual: ' + e.actual + '\n    Prev: ' + e.prev);
+					console.log(e.key + '\n    Actual: ' + e.actual + '\n    Prev: ' + e.prev); //eslint-disable-line no-console
 				}
 				else {
-					console.log('*** ' + e + ' ***');
+					console.log('*** ' + e + ' ***'); //eslint-disable-line no-console
 				}
 			});
 		}

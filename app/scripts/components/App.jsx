@@ -3,8 +3,6 @@ import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
 
-import $ from 'jquery';
-
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
 import { param, deparam } from '../utils/Extras';
@@ -16,8 +14,8 @@ import Header from './Header';
 import Boxes from './Boxes';
 import Footer from './Footer';
 
-//todo re-add steps and type to params?
-//todo new font!
+// todo re-add steps and type to params?
+// todo new font!
 
 class App extends React.Component {
 	constructor(props) {
@@ -79,6 +77,10 @@ class App extends React.Component {
 		};
 	}
 
+	static contextTypes = {
+		router: React.PropTypes.object
+	};
+
 	static childContextTypes = {
 		addToFavorites: React.PropTypes.func,
 		hideSidebar: React.PropTypes.func,
@@ -99,14 +101,10 @@ class App extends React.Component {
 		};
 	}
 
-	static contextTypes = {
-		router: React.PropTypes.object
-	};
-
 	static propTypes = {
 		history: React.PropTypes.object,
 		location: React.PropTypes.object
-	}
+	};
 
 	shouldComponentUpdate = shouldPureComponentUpdate;
 
@@ -118,16 +116,16 @@ class App extends React.Component {
 		this.initialize();
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	componentWillUpdate() {
 		this.scrollTop = document.body.scrollTop;
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		//changed(this, prevProps, prevState);
+		 // changed(this, prevProps, prevState);
 
 		if (prevProps.location.pathname !== this.props.location.pathname) {
-			let hash = this.getHash();
-			//this.log('hashchange', hash);
+			const hash = this.getHash();
+			// this.log('hashchange', hash);
 
 			if (hash.color) {
 				this.setColor('#' + hash.color);
@@ -141,23 +139,22 @@ class App extends React.Component {
 
 	initialize() {
 		const STATE = this.state;
-		let hash         = this.getHash(),
-			color        = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null,
-			defaultColor = STATE.defaultColors[Math.floor(Math.random() * STATE.defaultColors.length - 1) + 1];
+		const hash = this.getHash();
+		const color = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null;
+		const defaultColor = STATE.defaultColors[Math.floor(Math.random() * STATE.defaultColors.length - 1) + 1];
 
 		this.setState({
-				color: color || defaultColor
-			}, () => {
-				this.log('initialize', this.state);
-				this.setColor();
+			color: color || defaultColor
+		}, () => {
+			this.log('initialize', this.state);
+			this.setColor();
 
-				if (!color) {
-					this.setHash({
-						color: defaultColor
-					});
-				}
+			if (!color) {
+				this.setHash({
+					color: defaultColor
+				});
 			}
-		);
+		});
 	}
 
 	loadData() {
@@ -184,18 +181,20 @@ class App extends React.Component {
 	}
 
 	saveData(data = this.state.data) {
-		//this.log('saveData');
+		// this.log('saveData');
+		const newData = {
+			...data
+		};
 
-		data.version = this.state.version;
-		data.updated = Math.floor(Date.now() / 1000);
+		newData.version = this.state.version;
+		newData.updated = Math.floor(Date.now() / 1000);
 
-		Storage.setItem(this.name, data);
+		Storage.setItem(this.name, newData);
 	}
 
 	@autobind
 	updateData(key, value) {
-		let data = this.state.data;
-		this.log('updateData', data);
+		// this.log('updateData', data);
 
 		this.setState(reactUpdate(this.state, {
 			data: { [key]: { $set: value } }
@@ -206,7 +205,7 @@ class App extends React.Component {
 
 	@autobind
 	addToFavorites() {
-		//this.log('addToFavorites', this.state.color, this.state.data.colors);
+		// this.log('addToFavorites', this.state.color, this.state.data.colors);
 
 		if (this.state.data.colors.indexOf(this.state.color) === -1) {
 			this.setState(reactUpdate(this.state, {
@@ -219,6 +218,7 @@ class App extends React.Component {
 
 	getHash() {
 		let pathname = this.props.location.pathname;
+
 		if (pathname.charAt(0) === '/') {
 			pathname = pathname.substring(1);
 		}
@@ -228,14 +228,13 @@ class App extends React.Component {
 
 	@autobind
 	setHash(opts = {}) {
-		let state   = this.state,
-			options = Object.assign({
-				color: state.color
-			}, opts);
+		const state = this.state;
+		const options = Object.assign({
+			color: state.color
+		}, opts);
 
 		options.color = options.color.replace('#', '');
-
-		//this.log('setHash', options, opts);
+		// this.log('setHash', options, opts);
 
 		/*		if (state.order !== 'desc') {
 		 options.order = state.order;
@@ -252,20 +251,27 @@ class App extends React.Component {
 	}
 
 	getColors(max) {
-		const state = this.state;
-		this.log('getColors', max);
+		// this.log('getColors', max);
 
-		var colors = state.data.colors.length ? state.data.colors : [],
-			single = colors[Math.floor(Math.random() * colors.length)],
-			range  = colors.splice(0, max);
+		const colors = this.state.data.colors.length ? this.state.data.colors : [];
+		const single = colors[Math.floor(Math.random() * colors.length)];
+		const range = colors.splice(0, max);
 
-		return (!max ? colors : (max === 1 ? single : range));
+		if (!max) {
+			return colors;
+		}
+
+		if (max === 1) {
+			return single;
+		}
+
+		return range;
 	}
 
 	@autobind
 	setColor(color = this.state.color) {
-		//this.log('setColor', color);
-		let state = {
+		// this.log('setColor', color);
+		const state = {
 			color
 		};
 
@@ -287,18 +293,21 @@ class App extends React.Component {
 
 	@autobind
 	setOptions(options) {
-		let state = {};
-		//this.log('setOptions', options);
+		const state = {};
+		// this.log('setOptions', options);
 
 		if (options.color) {
 			state.color = options.color;
 		}
+
 		if (options.type) {
 			state.type = options.type;
 		}
+
 		if (options.steps) {
 			state.steps = options.steps;
 		}
+
 		if (options.slider) {
 			state.slider = options.slider;
 		}
@@ -308,7 +317,7 @@ class App extends React.Component {
 
 	log() {
 		if (location.hostname === 'localhost') {
-			console.log(...arguments);
+			console.log(...arguments); //eslint-disable-line no-console
 		}
 	}
 

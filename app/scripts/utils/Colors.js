@@ -1,5 +1,7 @@
-import _ from 'lodash';
-import math from './Math';
+import _intersection from 'lodash/array/intersection';
+import _pick from 'lodash/object/pick';
+import _isEmpty from 'lodash/lang/isEmpty';
+import { expr } from './Math';
 
 /**
  * Colors
@@ -9,15 +11,16 @@ import math from './Math';
 class Colors {
 	/**
 	 * @constructs Colors
-	 * @param {String|Array|Object} color
+	 * @param {string|Array|Object} color
 	 */
 	constructor(color = '#ff0044') {
 		this.setColor(color);
 	}
 
 	/**
-	 * Change the color
-	 * @param {String|Array|Object} color
+	 * Change the main color.
+	 *
+	 * @param {string|Array|Object} color
 	 */
 	setColor(color) {
 		if (!color) {
@@ -52,9 +55,15 @@ class Colors {
 		}
 	}
 
+	/**
+	 * Parse CSS rgb value.
+	 *
+	 * @param {string} rgb
+	 * @returns {Object}
+	 */
 	parseRGB(rgb) {
 		const isString = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-		if ((isString && isString.length === 4)) {
+		if (isString && isString.length === 4) {
 			return {
 				r: parseInt(isString[1], 10),
 				g: parseInt(isString[2], 10),
@@ -66,14 +75,15 @@ class Colors {
 	}
 
 	/**
-	 * Parse HEX color
-	 * @param {String} hex
+	 * Parse HEX color.
 	 *
-	 * @returns {String}
+	 * @param {string} hex
+	 *
+	 * @returns {string}
 	 */
 	parseHex(hex) {
-		let color  = hex.replace('#', ''),
-			newHex = '';
+		const color = hex.replace('#', '');
+		let newHex = '';
 
 		if (color.length === 3) {
 			color.split('').forEach(d => {
@@ -94,55 +104,61 @@ class Colors {
 	}
 
 	/**
-	 * Validate HEX color
-	 * @param {String} hex
+	 * Validate HEX color.
 	 *
-	 * @returns {Boolean}
+	 * @param {string} hex
+	 *
+	 * @returns {boolean}
 	 */
 	validHex(hex) {
 		return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
 	}
 
 	/**
-	 * Convert a hex string to RGB object
-	 * @param {String} hex
-	 * @returns {Object} {r: Number, g: Number, b: Number}
+	 * Convert a hex string to RGB object.
+	 *
+	 * @param {string} hex
+	 * @returns {{r: number, g: number, b: number}}
 	 */
 	hex2rgb(hex = this.hex) {
-		hex = this.parseHex(hex);
-		if (hex.charAt(0) === '#') {
-			hex = hex.substr(1);
+		let newHex = this.parseHex(hex);
+
+		if (newHex.charAt(0) === '#') {
+			newHex = hex.substr(1);
 		}
 
 		return {
-			r: parseInt(String(hex.charAt(0)) + hex.charAt(1), 16),
-			g: parseInt(String(hex.charAt(2)) + hex.charAt(3), 16),
-			b: parseInt(String(hex.charAt(4)) + hex.charAt(5), 16)
+			r: parseInt(String(newHex.charAt(0)) + newHex.charAt(1), 16),
+			g: parseInt(String(newHex.charAt(2)) + newHex.charAt(3), 16),
+			b: parseInt(String(newHex.charAt(4)) + newHex.charAt(5), 16)
 		};
 	}
 
 	/**
-	 * Convert a hex string to HSL object
-	 * @param {String} hex
-	 * @returns {Object} {h: Number, s: Number, l: Number}
+	 * Convert a hex string to HSL object.
+	 *
+	 * @param {string} hex
+	 * @returns {{h: number, s: number, l: number}}
 	 */
 	hex2hsl(hex = this.hex) {
-		hex = this.parseHex(hex);
-		if (hex.charAt(0) === '#') {
-			hex = hex.substr(1);
+		let newHex = this.parseHex(hex);
+
+		if (newHex.charAt(0) === '#') {
+			newHex = hex.substr(1);
 		}
 
 		return this.rgb2hsl({
-			r: parseInt(String(hex.charAt(0)) + hex.charAt(1), 16),
-			g: parseInt(String(hex.charAt(2)) + hex.charAt(3), 16),
-			b: parseInt(String(hex.charAt(4)) + hex.charAt(5), 16)
+			r: parseInt(String(newHex.charAt(0)) + newHex.charAt(1), 16),
+			g: parseInt(String(newHex.charAt(2)) + newHex.charAt(3), 16),
+			b: parseInt(String(newHex.charAt(4)) + newHex.charAt(5), 16)
 		});
 	}
 
 	/**
-	 * Convert a RGB object to HSL
+	 * Convert a RGB object to HSL.
+	 *
 	 * @param {Object|string} rgb
-	 * @returns {Object} {h: Number, s: Number, l: Number}
+	 * @returns {{h: number, s: number, l: number}}
 	 */
 	rgb2hsl(rgb = this.rgb) {
 		let newRGB = rgb;
@@ -152,35 +168,47 @@ class Colors {
 		}
 
 		const arr = [newRGB.r, newRGB.g, newRGB.b];
-		let r = arr[0] / 255;
-		let g = arr[1] / 255;
-		let b = arr[2] / 255;
+		const r = arr[0] / 255;
+		const g = arr[1] / 255;
+		const b = arr[2] / 255;
 
-		let min = Math.min(r, g, b);
-		let max = Math.max(r, g, b);
-		let d = max - min;
+		const min = Math.min(r, g, b);
+		const max = Math.max(r, g, b);
+		const d = max - min;
 
-		let h, s, l;
+		let h;
+		let s;
+		let l;
 
-		h = (function () {
-			switch (max) {
-				case min:
-					return 0;
-				case r:
-					return 60 * (g - b) / d;
-				case g:
-					return 60 * (b - r) / d + 120;
-				case b:
-					return 60 * (r - g) / d + 240;
-				default:
-					break;
-			}
-		}());
+		switch (max) {
+			case min:
+				h = 0;
+				break;
+			case r:
+				h = 60 * (g - b) / d;
+				break;
+			case g:
+				h = 60 * (b - r) / d + 120;
+				break;
+			case b:
+				h = 60 * (r - g) / d + 240;
+				break;
+			default:
+				break;
+		}
+
 		if (h < 0) {
 			h = 360 + h;
 		}
+
 		l = (max + min) / 2.0;
-		s = max === min ? 0 : l < 0.5 ? d / (2 * l) : d / (2 - 2 * l);
+
+		if (min === max) {
+			s = 0;
+		}
+		else {
+			s = l < 0.5 ? d / (2 * l) : d / (2 - 2 * l);
+		}
 
 		return {
 			h: Math.abs(+((h % 360).toFixed(5))),
@@ -190,10 +218,11 @@ class Colors {
 	}
 
 	/**
-	 * Convert a RGA object to hex
-	 * @public
+	 * Convert a RGA object to hex.
+	 *
 	 * @param {Object|string} rgb
-	 * @returns {String} #ffffff
+	 *
+	 * @returns {string}
 	 */
 	rgb2hex(rgb = this.rgb) {
 		let newRGB = rgb;
@@ -206,20 +235,26 @@ class Colors {
 	}
 
 	/**
-	 * Convert a HSL object to RGB
+	 * Convert a HSL object to RGB.
+	 *
 	 * @param {Object} hsl
-	 * @returns {Object} {r: Number, g: Number, b: Number}
+	 * @returns {{r: number, g: number, b: number}}
 	 */
 	hsl2rgb(hsl = this.hsl) {
-		let b, g, h, l, p, q, r, s, _ref;
-		_ref = [
+		const arr = [
 			parseFloat(hsl.h).toFixed(5) / 360,
 			parseFloat(hsl.s).toFixed(5) / 100,
 			parseFloat(hsl.l).toFixed(5) / 100
 		];
-		h = _ref[0];
-		s = _ref[1];
-		l = _ref[2];
+		const h = arr[0];
+		const s = arr[1];
+		const l = arr[2];
+
+		let r;
+		let g;
+		let b;
+		let p;
+		let q;
 
 		if (s === 0) {
 			r = g = b = l;
@@ -240,83 +275,99 @@ class Colors {
 	}
 
 	/**
-	 * hsl2hex
+	 * Convert a HSL object to HEX.
+	 *
 	 * @param {Object} hsl
-	 * @returns {String}
+	 * @returns {string}
 	 */
 	hsl2hex(hsl = this.hsl) {
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
 
 	/**
-	 * hue2rgb
-	 * @method
-	 * @param {Number} p
-	 * @param {Number} q
-	 * @param {Number} t
+	 * @param {number} p
+	 * @param {number} q
+	 * @param {number} t
+	 *
 	 * @returns {*}
 	 */
 	hue2rgb(p, q, t) {
-		if (t < 0) {
-			t += 1;
+		let newT = t;
+
+		if (newT < 0) {
+			newT += 1;
 		}
-		if (t > 1) {
-			t -= 1;
+
+		if (newT > 1) {
+			newT -= 1;
 		}
-		if (t < 1 / 6) {
+
+		if (newT < 1 / 6) {
 			return p + (q - p) * 6 * t;
 		}
-		if (t < 1 / 2) {
+
+		if (newT < 1 / 2) {
 			return q;
 		}
-		if (t < 2 / 3) {
+
+		if (newT < 2 / 3) {
 			return p + (q - p) * (2 / 3 - t) * 6;
 		}
+
 		return p;
 	}
 
 	/**
-	 * mod
+	 * Mod.
+	 *
 	 * @param {Object} attr
 	 * @returns {*}
 	 */
 	mod(attr) {
-		let hsl, out, rgb, type;
-		if ((_.intersection(_.keys(attr), ['h', 's', 'l']).length > 0) &&
-			(_.intersection(_.keys(attr), ['r', 'g', 'b']).length > 0)) {
-			throw new Error('Only use a single color model');
+		const newAttr = attr;
+		const isRGB = _intersection(Object.keys(newAttr), ['h', 's', 'l']).length;
+		const isHSL = _intersection(Object.keys(newAttr), ['r', 'g', 'b']).length;
+
+		let hsl;
+		let rgb;
+		let out;
+		let type;
+
+		if (isRGB && isHSL) {
+			console.warn('Only use a single color model'); //eslint-disable-line no-console
+			return false;
 		}
 
-		if (_.intersection(_.keys(attr), ['r', 'g', 'b']).length > 0) {
+		if (isRGB) {
 			type = 'rgb';
 		}
-		else if (_.intersection(_.keys(attr), ['h', 's', 'l']).length > 0) {
+		else if (isHSL) {
 			type = 'hsl';
 		}
 		else {
 			return null;
 		}
 
-		_.each(attr, function (val, key, list) {
-			if (val === null) {
-				return delete list[key];
+		Object.keys(newAttr).forEach(key => {
+			if (newAttr[key] === null) {
+				return delete newAttr[key];
 			}
 		});
 
 		switch (type) {
 			case 'rgb':
-				rgb = _.pick(attr, 'r', 'g', 'b');
-				if (_.isEmpty(rgb) === false) {
-					out = _.extend(_.clone(this.rgb), rgb);
+				rgb = _pick(newAttr, 'r', 'g', 'b');
+				if (_isEmpty(rgb) === false) {
+					out = Object.assign({}, this.rgb, rgb);
 				}
 				else {
 					out = this.rgb;
 				}
 				break;
 			case 'hsl':
-				hsl = _.pick(attr, 'h', 's', 'l');
-				if (_.isEmpty(hsl) === false) {
-					out = _.extend(_.clone(this.hsl), hsl);
+				hsl = _pick(newAttr, 'h', 's', 'l');
+				if (_isEmpty(hsl) === false) {
+					out = Object.assign({}, this.hsl, hsl);
 				}
 				else {
 					out = this.hsl;
@@ -325,26 +376,28 @@ class Colors {
 			default:
 				break;
 		}
+
 		return out;
 	}
 
 	/**
-	 * constrain
-	 * @method
-	 * @param {Number} attr
-	 * @param {Number} amount
+	 * Constrain.
+	 *
+	 * @param {number} attr
+	 * @param {number} amount
 	 * @param {Array} limit
-	 * @param {String} direction
-	 * @returns {Number}
+	 * @param {string} direction
+	 * @returns {number}
 	 */
 	constrain(attr, amount, limit, direction) {
-		let val  = math.expr(attr + direction + amount),
-			test = (limit[1] >= val && val >= limit[0]);
+		let val = expr(attr + direction + amount);
+		const test = (limit[1] >= val && val >= limit[0]);
 
 		if (!test) {
 			if (val < limit[0]) {
 				val = limit[0];
 			}
+
 			if (val > limit[1]) {
 				val = limit[1];
 			}
@@ -354,141 +407,130 @@ class Colors {
 	}
 
 	/**
-	 * @method
-	 * @param {Number} attr
-	 * @param {Number} amount
-	 * @returns {Number}
+	 * @param {number} attr
+	 * @param {number} amount
+	 * @returns {number}
 	 */
 	constrainDegrees(attr, amount) {
-		let val;
-		val = attr + amount;
+		let val = attr + amount;
+
 		if (val > 360) {
 			val -= 360;
 		}
+
 		if (val < 0) {
 			val += 360;
 		}
+
 		return Math.abs(val);
 	}
 
 	/**
-	 * Get Red
-	 * @returns {Number}
+	 * @type {number}
 	 */
 	get red() {
 		return Number(this.rgb.r);
 	}
 
 	/**
-	 * Get Green
-	 * @returns {Number}
+	 * @type {number}
 	 */
 	get green() {
 		return Number(this.rgb.g);
 	}
 
 	/**
-	 * Get Blue
-	 * @returns {Number}
+	 * @type {number}
 	 */
 	get blue() {
 		return Number(this.rgb.b);
 	}
 
 	/**
-	 * Get Hue
-	 * @returns {Number}
+	 * @type {number}
 	 */
 	get hue() {
 		return Number(this.hsl.h);
 	}
 
 	/**
-	 * Set Hue
-	 * @param {Number} value
-	 */
-	set hue(value) {
-		let hsl = this.mod({
-			h: value
-		});
-		this.hex = this.rgb2hex(this.hsl2rgb(hsl));
-	}
-
-	/**
-	 * Get Saturation
-	 * @returns {Number}
+	 * @type {number}
 	 */
 	get saturation() {
 		return Number(this.hsl.s);
 	}
 
 	/**
-	 * Get Lightness
-	 * @returns {Number}
+	 * @type {number}
 	 */
 	get lightness() {
 		return Number(this.hsl.l);
 	}
 
 	/**
-	 * Make the color lighter
-	 * @param {Number} percentage
-	 * @returns {String}
+	 * Make the color lighter.
+	 *
+	 * @param {number} percentage
+	 * @returns {string}
 	 */
 	lighten(percentage) {
-		let hsl;
-		hsl = this.mod({
+		const hsl = this.mod({
 			l: this.constrain(this.lightness, percentage, [0, 100], '+')
 		});
+
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
 
 	/**
-	 * Make the color darker
-	 * @param {Number} percentage
-	 * @returns {String}
+	 * Make the color darker.
+	 *
+	 * @param {number} percentage
+	 * @returns {string}
 	 */
 	darken(percentage) {
-		let hsl;
-		hsl = this.mod({
+		const hsl = this.mod({
 			l: this.constrain(this.lightness, percentage, [0, 100], '-')
 		});
+
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
 
 	/**
-	 * Increase saturation
-	 * @param {Number} percentage
-	 * @returns {String}
+	 * Increase saturation.
+	 *
+	 * @param {number} percentage
+	 * @returns {string}
 	 */
 	saturate(percentage) {
-		let hsl;
-		hsl = this.mod({
+		const hsl = this.mod({
 			s: this.constrain(this.saturation, percentage, [0, 100], '+')
 		});
+
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
 
 	/**
-	 * Descrease saturation
-	 * @param {Number} percentage
-	 * @returns {String}
+	 * Descrease saturation.
+	 *
+	 * @param {number} percentage
+	 * @returns {string}
 	 */
 	desaturate(percentage) {
-		let hsl;
-		hsl = this.mod({
+		const hsl = this.mod({
 			s: this.constrain(this.saturation, percentage, [0, 100], '-')
 		});
+
 		return this.rgb2hex(this.hsl2rgb(hsl));
 	}
 
 	/**
-	 * Adjust the color hue
-	 * @param {Number} degrees
-	 * @returns {String}
+	 * Adjust the color hue.
+	 *
+	 * @param {number} degrees
+	 * @returns {string}
 	 */
 	adjustHue(degrees) {
-		let hsl = this.mod({
+		const hsl = this.mod({
 			h: this.constrainDegrees(this.hue, +degrees)
 		});
 
@@ -496,14 +538,16 @@ class Colors {
 	}
 
 	/**
-	 * Alter color values
+	 * Alter color values.
+	 *
 	 * @param {Object} opts
-	 * @param {Boolean} hex
-	 * @returns {String}
+	 * @param {boolean} hex
+	 *
+	 * @returns {string}
 	 */
 	remix(opts, hex = false) {
-		let model = {},
-			mod;
+		const model = {};
+		let mod;
 
 		Object.keys(opts).forEach(o => {
 			model[o] = opts[o];
@@ -511,18 +555,23 @@ class Colors {
 
 		mod = this.mod(model);
 
-		return hex ? (mod.r ? this.rgb2hex(mod) : this.hsl2hex(mod)) : mod;
+		if (hex) {
+			return mod.r ? this.rgb2hex(mod) : this.hsl2hex(mod);
+		}
+
+		return mod;
 	}
 
 	/**
-	 * Generate a color scheme
-	 * @param {Array} degrees - ex: [0, 180] or [0, 120, 240]
-	 * @returns {Array} [Object]
+	 * Generate a color scheme.
+	 *
+	 * @param {Array} degrees - Ex: [0, 180] or [0, 120, 240].
+	 * @returns {Array}
 	 */
 	schemeFromDegrees(degrees) {
-		let newColors = [];
+		const newColors = [];
 		for (let i = 0, j = degrees.length; i < j; i++) {
-			let col = Object.assign({}, this.hsl);
+			const col = Object.assign({}, this.hsl);
 			col.h = (col.h + degrees[i]) % 360;
 			newColors.push(col);
 		}
@@ -530,11 +579,12 @@ class Colors {
 	}
 
 	/**
-	 * Generate a random color
-	 * @returns {Object} {hex: String, rgb: Object, hsl: Object}
+	 * Generate a random color.
+	 *
+	 * @returns {{hex: string, rgb: Object, hsl: Object}}
 	 */
 	random() {
-		let hsl = {
+		const hsl = {
 			h: Math.floor(Math.random() * 360) + 1,
 			s: Math.floor(Math.random() * 90) + 10,
 			l: Math.floor(Math.random() * 80) + 10

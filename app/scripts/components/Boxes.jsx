@@ -2,8 +2,6 @@ import React from 'react';
 import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
-import Colors from '../utils/Colors';
-import Loader from './common/Loader';
 
 export default class Boxes extends React.Component {
 	constructor(props) {
@@ -36,13 +34,14 @@ export default class Boxes extends React.Component {
 
 	buildHSLBoxes(options) {
 		const CONFIG = this.props.config;
-		let settings = Object.assign({
-				max: (CONFIG.type === 'h' ? 360 : 100),
-				steps: CONFIG.steps
-			}, options),
-			rate     = settings.max / settings.steps,
-			value    = CONFIG.colorObj.hsl[CONFIG.type],
-			boxes    = [];
+		const settings = Object.assign({
+			max: (CONFIG.type === 'h' ? 360 : 100),
+			steps: CONFIG.steps
+		}, options);
+		const rate = settings.max / settings.steps;
+		const boxes = [];
+
+		let value = CONFIG.colorObj.hsl[CONFIG.type];
 
 		if (CONFIG.type !== 'h') {
 			while (value < settings.max) {
@@ -51,7 +50,7 @@ export default class Boxes extends React.Component {
 			value -= rate;
 		}
 
-		//this.context.log('buildHSLBoxes', 'type:', CONFIG.type, CONFIG.color, CONFIG.colorObj.hsl);
+		// this.context.log('buildHSLBoxes', 'type:', CONFIG.type, CONFIG.color, CONFIG.colorObj.hsl);
 
 		for (let i = 0; i < settings.steps; i++) {
 			boxes.push(this.buildBox(this.changeHSLValue({ [CONFIG.type]: value < 0 ? settings.max + value : value })));
@@ -63,20 +62,20 @@ export default class Boxes extends React.Component {
 
 	buildRGBBoxes(options) {
 		const CONFIG = this.props.config;
-		let settings = Object.assign({
-				max: 255,
-				steps: CONFIG.steps
-			}, options),
-			rate     = settings.max / settings.steps,
-			value    = CONFIG.colorObj.rgb[CONFIG.type],
-			boxes    = [];
+		const settings = Object.assign({
+			max: 255,
+			steps: CONFIG.steps
+		}, options);
+		const rate = settings.max / settings.steps;
+		const boxes = [];
+		let value = CONFIG.colorObj.rgb[CONFIG.type];
 
 		while (value < settings.max) {
 			value += rate;
 		}
 		value -= rate;
 
-		//this.context.log('buildRGBBoxes', CONFIG.type, CONFIG.color, CONFIG.colorObj.rgb);
+		// this.context.log('buildRGBBoxes', CONFIG.type, CONFIG.color, CONFIG.colorObj.rgb);
 
 		for (let i = 0; i < settings.steps; i++) {
 			boxes.push(this.buildBox(this.changeRGBValue({ [CONFIG.type]: Math.round(value) })));
@@ -86,10 +85,11 @@ export default class Boxes extends React.Component {
 	}
 
 	buildBox(colors, max) {
-		let textColor = this.textLightness(colors.hsl);
+		const textColor = this.textLightness(colors.hsl);
 		return (
-			<a href="#" key={max + '-' + Math.random()} data-color={colors.hex}
-			   style={{ backgroundColor: colors.hex }} onClick={this.onClickBox}>
+			<a
+				href="#" key={max + '-' + Math.random()} data-color={colors.hex}
+				style={{ backgroundColor: colors.hex }} onClick={this.onClickBox}>
 				<span className="app__box" style={{ color: textColor }}>
 					{colors.hex}
 				</span>
@@ -104,9 +104,9 @@ export default class Boxes extends React.Component {
 	}
 
 	changeHSLValue(opts) {
-		//this.context.log('changeValue', val, type);
+		// this.context.log('changeValue', val, type);
 		const CONFIG = this.props.config;
-		let colors = {};
+		const colors = {};
 
 		colors.hsl = Object.assign({}, CONFIG.colorObj.hsl, opts);
 		colors.rgb = CONFIG.colorObj.hsl2rgb(colors.hsl);
@@ -116,9 +116,9 @@ export default class Boxes extends React.Component {
 	}
 
 	changeRGBValue(opts) {
-		//this.context.log('changeRGBValue', val, type);
+		// this.context.log('changeRGBValue', val, type);
 		const CONFIG = this.props.config;
-		let colors = {};
+		const colors = {};
 
 		colors.rgb = Object.assign({}, CONFIG.colorObj.rgb, opts);
 		colors.hsl = CONFIG.colorObj.rgb2hsl(colors.rgb);
@@ -130,7 +130,7 @@ export default class Boxes extends React.Component {
 	@autobind
 	onClickBox(e) {
 		e.preventDefault();
-		let el = e.currentTarget;
+		const el = e.currentTarget;
 
 		this.context.setHash({ color: el.dataset.color });
 

@@ -7,9 +7,7 @@ import NumericInput from './common/NumericInput';
 
 import $ from 'jquery';
 
-import math from '../utils/Math';
 import { isEqual } from '../utils/Extras';
-import Loader from './common/Loader';
 
 class Header extends React.Component {
 	constructor(props) {
@@ -69,39 +67,42 @@ class Header extends React.Component {
 	}
 
 	updateColors() {
-		var config = this.props.config;
+		const config = this.props.config;
 
 		$('.logo svg')
-			.find('#color').css({
-			fill: (config.colorObj.saturation > 8 ? (
-				config.colorObj.hsl2hex({
-					h: Math.abs(config.colorObj.hue + 90),
-					s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
-				})
-			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
-			fillOpacity: (config.colorObj.saturation < 10 ? 0.6 : 1)
-		}).end()
-			.find('#me').css({
-			fill: (config.colorObj.saturation > 8 ? (
-				config.colorObj.hsl2hex({
-					h: Math.abs(config.colorObj.hue + 180),
-					s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
-				})
-			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
-			fillOpacity: (config.colorObj.saturation < 10 ? 0.4 : 1)
-		}).end()
-			.find('#up').css({
-			fill: (config.colorObj.saturation > 8 ? (
-				config.colorObj.hsl2hex({
-					h: Math.abs(config.colorObj.hue + 270),
-					s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
-				})
-			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
-			fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
-		}).end();
+			.find('#color')
+			.css({
+				fill: (config.colorObj.saturation > 8 ? (
+					config.colorObj.hsl2hex({
+						h: Math.abs(config.colorObj.hue + 90),
+						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+					})
+				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				fillOpacity: (config.colorObj.saturation < 10 ? 0.6 : 1)
+			}).end()
+			.find('#me')
+			.css({
+				fill: (config.colorObj.saturation > 8 ? (
+					config.colorObj.hsl2hex({
+						h: Math.abs(config.colorObj.hue + 180),
+						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+					})
+				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				fillOpacity: (config.colorObj.saturation < 10 ? 0.4 : 1)
+			}).end()
+			.find('#up')
+			.css({
+				fill: (config.colorObj.saturation > 8 ? (
+					config.colorObj.hsl2hex({
+						h: Math.abs(config.colorObj.hue + 270),
+						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
+						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+					})
+				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
+			}).end();
 
 		$('.navigation-toggle-icon').css({
 			color: (config.colorObj.saturation > 8 ? (
@@ -145,10 +146,10 @@ class Header extends React.Component {
 	@autobind
 	onChangeColorInput(e) {
 		const CONFIG = this.props.config;
-		let value = e.target.value.replace(/[^0-9A-F]+/i, ''),
-			color = '#' + value.replace(/[^0-9A-F]+/i, '').slice(-6);
+		const value = e.target.value.replace(/[^0-9A-F]+/i, '');
+		const color = '#' + value.replace(/[^0-9A-F]+/i, '').slice(-6);
 
-		//console.log('onChangeColorInput', newValue);
+		// console.log('onChangeColorInput', newValue);
 
 		this.setState({
 			color
@@ -161,15 +162,16 @@ class Header extends React.Component {
 
 	@autobind
 	onChangeRangeSlider(pos, props) {
-		let value     = ['r', 'g', 'b'].indexOf(props['data-type']) > -1 ? Math.round(pos.x) : pos.x,
-			newValue  = Math.round(pos.x),
-			color     = this.props.config.colorObj.remix({ [props['data-type']]: value }),
-			lastValue = this.state.lastSliderValue;
+		const value = ['r', 'g', 'b'].indexOf(props['data-type']) > -1 ? Math.round(pos.x) : pos.x;
+		const newValue = Math.round(pos.x);
+		const color = this.props.config.colorObj.remix({ [props['data-type']]: value });
+		const lastValue = this.state.lastSliderValue;
+		const lastSliderValue = lastValue !== newValue ? newValue : lastValue;
 
-		//console.log('onChangeRangeSlider', value, newValue props);
+		// console.log('onChangeRangeSlider', value, newValue props);
 
 		this.setState({
-			lastSliderValue: lastValue === undefined ? newValue : (lastValue !== newValue ? newValue : lastValue)
+			lastSliderValue: lastValue === undefined ? newValue : lastSliderValue
 		}, () => {
 			if (lastValue !== this.state.lastSliderValue) {
 				this.changeColor(color);
@@ -179,8 +181,8 @@ class Header extends React.Component {
 
 	@autobind
 	onChangeRangeInput(value, props) {
-		let color = this.props.config.colorObj.remix({ [props['data-type']]: value });
-		//console.log('onChangeRangeInput', value, props, color);
+		const color = this.props.config.colorObj.remix({ [props['data-type']]: value });
+		// console.log('onChangeRangeInput', value, props, color);
 
 		this.changeColor(color);
 	}
@@ -209,8 +211,8 @@ class Header extends React.Component {
 	@autobind
 	onClickRandomColor(e) {
 		e.preventDefault();
-		let el          = e.currentTarget,
-			randomColor = this.props.config.colorObj.random();
+		const el = e.currentTarget;
+		const randomColor = this.props.config.colorObj.random();
 
 		$(el).addClass('rotate');
 		setTimeout(() => {
@@ -223,12 +225,11 @@ class Header extends React.Component {
 	@autobind
 	onClickSaveColor(e) {
 		e.preventDefault();
-		let el     = e.currentTarget,
-			$icon  = $(el).find('.fa-heart'),
-			offset = $icon.offset();
+		const el = e.currentTarget;
+		const $icon = $(el).find('.fa-heart');
+		const offset = $icon.offset();
 
-		$($icon
-			.clone()
+		$($icon.clone()
 			.css({
 				fontSize: $icon.css('font-size'),
 				position: 'absolute',
@@ -249,7 +250,7 @@ class Header extends React.Component {
 	render() {
 		const CONFIG = this.props.config;
 
-		let vars = {
+		const vars = {
 			keys: [
 				CONFIG.slider === 'hsl' ? 'h' : 'r',
 				CONFIG.slider === 'hsl' ? 's' : 'g',
