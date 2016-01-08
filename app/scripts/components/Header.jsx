@@ -68,50 +68,51 @@ class Header extends React.Component {
 
 	updateColors() {
 		const config = this.props.config;
+		const backupColor = config.colorObj.lightness < 30 ? '#FFF' : '#333';
 
 		$('.logo svg')
 			.find('#color')
 			.css({
 				fill: (config.colorObj.saturation > 8 ? (
 					config.colorObj.hsl2hex({
-						h: Math.abs(config.colorObj.hue + 90),
+						h: (config.colorObj.hue + 90) % 360,
 						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
 						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
 					})
-				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				) : backupColor),
 				fillOpacity: (config.colorObj.saturation < 10 ? 0.6 : 1)
 			}).end()
 			.find('#me')
 			.css({
 				fill: (config.colorObj.saturation > 8 ? (
 					config.colorObj.hsl2hex({
-						h: Math.abs(config.colorObj.hue + 180),
+						h: (config.colorObj.hue + 180) % 360,
 						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
 						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
 					})
-				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				) : backupColor),
 				fillOpacity: (config.colorObj.saturation < 10 ? 0.4 : 1)
 			}).end()
 			.find('#up')
 			.css({
 				fill: (config.colorObj.saturation > 8 ? (
 					config.colorObj.hsl2hex({
-						h: Math.abs(config.colorObj.hue + 270),
+						h: (config.colorObj.hue + 270) % 360,
 						s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
 						l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
 					})
-				) : (config.colorObj.lightness < 30 ? '#FFF' : '#333')),
+				) : backupColor),
 				fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
 			}).end();
 
 		$('.navigation-toggle-icon').css({
 			color: (config.colorObj.saturation > 8 ? (
 				config.colorObj.hsl2hex({
-					h: Math.abs(config.colorObj.hue + 90),
+					h: (config.colorObj.hue + 90) % 360,
 					s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
 					l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
 				})
-			) : (config.colorObj.lightness < 30 ? '#FFF' : '#333'))
+			) : backupColor)
 		});
 	}
 
