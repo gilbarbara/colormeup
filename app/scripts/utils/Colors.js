@@ -168,10 +168,9 @@ class Colors {
 			newRGB = this.parseRGB(rgb);
 		}
 
-		const arr = [newRGB.r, newRGB.g, newRGB.b];
-		const r = arr[0] / 255;
-		const g = arr[1] / 255;
-		const b = arr[2] / 255;
+		const r = newRGB.r / 255;
+		const g = newRGB.g / 255;
+		const b = newRGB.b / 255;
 
 		const min = Math.min(r, g, b);
 		const max = Math.max(r, g, b);
@@ -212,9 +211,9 @@ class Colors {
 		}
 
 		return {
-			h: Math.abs(+((h % 360).toFixed(5))),
-			s: +((s * 100).toFixed(5)),
-			l: +((l * 100).toFixed(5))
+			h: Math.abs(+((h % 360).toFixed(2))),
+			s: +((s * 100).toFixed(2)),
+			l: +((l * 100).toFixed(2))
 		};
 	}
 
@@ -242,14 +241,9 @@ class Colors {
 	 * @returns {{r: number, g: number, b: number}}
 	 */
 	hsl2rgb(hsl = this.hsl) {
-		const arr = [
-			parseFloat(hsl.h).toFixed(5) / 360,
-			parseFloat(hsl.s).toFixed(5) / 100,
-			parseFloat(hsl.l).toFixed(5) / 100
-		];
-		const h = arr[0];
-		const s = arr[1];
-		const l = arr[2];
+		const h = parseFloat(hsl.h).toFixed(2) / 360;
+		const s = parseFloat(hsl.s).toFixed(2) / 100;
+		const l = parseFloat(hsl.l).toFixed(2) / 100;
 
 		let r;
 		let g;
@@ -304,7 +298,7 @@ class Colors {
 		}
 
 		if (newT < 1 / 6) {
-			return p + (q - p) * 6 * t;
+			return p + (q - p) * 6 * newT;
 		}
 
 		if (newT < 1 / 2) {
@@ -312,7 +306,7 @@ class Colors {
 		}
 
 		if (newT < 2 / 3) {
-			return p + (q - p) * (2 / 3 - t) * 6;
+			return p + (q - p) * (2 / 3 - newT) * 6;
 		}
 
 		return p;
