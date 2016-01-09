@@ -44,8 +44,8 @@ class Header extends React.Component {
 		document.addEventListener('keypress', this.keyPressListener);
 	}
 
-	componentWillReceiveProps(nextProps, nextContext) {
-		if (isEqual(nextContext, this.context) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
+	componentWillReceiveProps(nextProps) {
+		if (!isEqual(nextProps, this.props) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
 			this.setState({
 				color: nextProps.config.color
 			});
@@ -152,13 +152,13 @@ class Header extends React.Component {
 		const value = e.target.value.replace(/[^0-9A-F]+/i, '');
 		const color = '#' + value.replace(/[^0-9A-F]+/i, '').slice(-6);
 
-		// console.log('onChangeColorInput', newValue);
+		// console.log('onChangeColorInput', color);
 
 		this.setState({
 			color
 		}, () => {
 			if (CONFIG.colorObj.validHex(this.state.color)) {
-				this.changeColor(CONFIG.colorObj.hex2hsl(this.state.color));
+				this.changeColor(CONFIG.colorObj.hex2hsl(CONFIG.colorObj.parseHex(this.state.color)));
 			}
 		});
 	}
