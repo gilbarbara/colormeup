@@ -61,6 +61,8 @@ class Header extends React.Component {
 	 * @param {Object} opts
 	 */
 	changeColor(opts = {}) {
+		// console.log('changeColor', opts);
+
 		this.context.setHash({
 			color: typeof opts.r === 'number' ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
 		});
@@ -165,11 +167,11 @@ class Header extends React.Component {
 	onChangeRangeSlider(pos, props) {
 		const value = ['r', 'g', 'b'].indexOf(props['data-type']) > -1 ? Math.round(pos.x) : pos.x;
 		const newValue = Math.round(pos.x);
-		const color = this.props.config.colorObj.remix({ [props['data-type']]: value });
 		const lastValue = this.state.lastSliderValue;
 		const lastSliderValue = lastValue !== newValue ? newValue : lastValue;
+		const color = this.props.config.colorObj.remix({ [props['data-type']]: value });
 
-		// console.log('onChangeRangeSlider', value, newValue props);
+		// console.log('onChangeRangeSlider', value, newValue, lastValue, color);
 
 		this.setState({
 			lastSliderValue: lastValue === undefined ? newValue : lastSliderValue
@@ -289,7 +291,7 @@ class Header extends React.Component {
 			}
 		];
 
-		//console.log(CONFIG.colorObj.hue, CONFIG.colorObj.saturation, CONFIG.colorObj.lightness);
+		// console.log(CONFIG.colorObj.hue, CONFIG.colorObj.saturation, CONFIG.colorObj.lightness);
 
 		return (
 			<div className="app__header"

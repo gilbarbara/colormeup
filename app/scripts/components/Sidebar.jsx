@@ -97,7 +97,7 @@ export default class Sidebar extends React.Component {
 		const STATE = this.state;
 
 		const currentColor = CONFIG.colorObj.hsl2hex({
-			h: Math.abs(CONFIG.colorObj.hue + 90),
+			h: (CONFIG.colorObj.hue + 90) % 360,
 			s: (CONFIG.colorObj.saturation < 30 ? Math.abs(CONFIG.colorObj.saturation + 30) : CONFIG.colorObj.saturation),
 			l: (CONFIG.colorObj.lightness < 35 ? CONFIG.colorObj.lightness + 20 : CONFIG.colorObj.lightness)
 		});
