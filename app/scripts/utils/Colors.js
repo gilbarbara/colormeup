@@ -24,7 +24,8 @@ class Colors {
 	 */
 	setColor(color) {
 		if (!color) {
-			throw new Error('Not a valid color');
+			console.warn('Not a valid color'); //eslint-disable-line no-console
+			return false;
 		}
 
 		if (color instanceof Array) {
@@ -34,7 +35,7 @@ class Colors {
 				b: color[2]
 			};
 			this.hex = this.rgb2hex();
-			this.hsl = this.rgb2hsl(this.rgb);
+			this.hsl = this.rgb2hsl();
 		}
 		else if (color.constructor === {}.constructor) {
 			if (color.h) {
@@ -325,8 +326,8 @@ class Colors {
 	 */
 	mod(attr) {
 		const newAttr = attr;
-		const isRGB = _intersection(Object.keys(newAttr), ['h', 's', 'l']).length;
-		const isHSL = _intersection(Object.keys(newAttr), ['r', 'g', 'b']).length;
+		const isHSL = _intersection(Object.keys(newAttr), ['h', 's', 'l']).length;
+		const isRGB = _intersection(Object.keys(newAttr), ['r', 'g', 'b']).length;
 
 		let hsl;
 		let rgb;
