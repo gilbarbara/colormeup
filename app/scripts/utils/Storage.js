@@ -11,7 +11,7 @@
  * @returns {Object}
  */
 export const getItem = (name) => {
-	return JSON.parse(localStorage.getItem(name));
+  return JSON.parse(localStorage.getItem(name));
 };
 
 /**
@@ -22,7 +22,7 @@ export const getItem = (name) => {
  * @param {Object} value
  */
 export const setItem = (name, value) => {
-	localStorage.setItem(name, JSON.stringify(value));
+  localStorage.setItem(name, JSON.stringify(value));
 };
 
 /**
@@ -32,7 +32,7 @@ export const setItem = (name, value) => {
  * @param {string} name
  */
 export const removeItem = (name) => {
-	localStorage.removeItem(name);
+  localStorage.removeItem(name);
 };
 
 /**
@@ -41,7 +41,7 @@ export const removeItem = (name) => {
  * @function
  */
 export const clearAll = () => {
-	localStorage.clear();
+  localStorage.clear();
 };
 
 export default { getItem, setItem, removeItem, clearAll };

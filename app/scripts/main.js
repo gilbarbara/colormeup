@@ -18,11 +18,11 @@ import NotFound from './components/common/NotFound';
  */
 
 const routes = (
-	<Route path="/" component={App}>
-		<Route path="*" component={NotFound} />
-	</Route>
+  <Route path="/" component={App}>
+    <Route path="*" component={NotFound} />
+  </Route>
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-	ReactDOM.render(<Router history={browserHistory}>{routes}</Router>, document.getElementById('react'));
+  ReactDOM.render(<Router history={browserHistory}>{routes}</Router>, document.getElementById('react'));
 });
