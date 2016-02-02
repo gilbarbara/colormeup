@@ -19,18 +19,19 @@
   "dependencies": {
     "classlist-polyfill": "^1.0",
     "classnames": "^2.2",
-    "core-decorators": "^0.9",
+    "core-decorators": "^0.11",
     "core-js": "^2.0",
-    "lodash": "^3.10",
+    "lodash": "^4.1",
     "mobile-detect": "^1.3",
+    "modernizr": "^3.3",
     "react": "^0.14",
     "react-addons-update": "^0.14",
     "react-dom": "^0.14",
     "react-inlinesvg": "^0.4",
     "react-input-slider": "gilbarbara/react-input-slider",
     "react-pure-render": "^1.0",
-    "react-router": "^2.0.0-rc4",
-    "whatwg-fetch": "^0.10"
+    "react-router": "^2.0.0-rc5",
+    "whatwg-fetch": "^0.11"
   },
   "devDependencies": {
     "babel-core": "^6.4",
@@ -40,11 +41,11 @@
     "babel-preset-es2015": "^6.3",
     "babel-preset-react": "^6.3",
     "babel-preset-stage-1": "^6.3",
+    "babel-register": "^6.4.3",
     "babelify": "^7.2",
     "browser-sync": "^2.11",
-    "browserify": "^12.0",
+    "browserify": "^13.0",
     "browserify-shim": "^3.8",
-    "chai": "^3.4",
     "connect-history-api-fallback": "1.1",
     "debowerify": "^1.3",
     "del": "^2.2",
@@ -52,6 +53,7 @@
     "eslint-config-airbnb": "^4.0",
     "eslint-plugin-jsdoc": "^2.2",
     "eslint-plugin-react": "^3.16",
+    "expect": "^1.14.0",
     "gulp": "^3.9",
     "gulp-autoprefixer": "^3.0",
     "gulp-cache": "^0.4",
@@ -76,14 +78,10 @@
     "gulp-useref": "^3.0",
     "gulp-util": "^3.0",
     "merge-stream": "^1.0",
-    "modernizr": "^3.2",
     "run-sequence": "^1.1",
-    "sandboxed-module": "^2.0",
-    "sinon": "^1.17",
-    "sinon-chai": "^2.8",
     "vinyl-buffer": "^1.0",
     "vinyl-source-stream": "^1.1",
-    "watchify": "^3.6"
+    "watchify": "^3.7"
   },
   "babel": {
     "presets": [
@@ -119,9 +117,11 @@
     "start": "gulp serve",
     "lint": "gulp lint",
     "build": "gulp build",
-    "test": "gulp mocha"
+    "test": "gulp mocha",
+    "test-watch": "./node_modules/.bin/_mocha --watch --compilers js:babel-register $(find app/scripts/__tests__ -name *.spec.js)"
   },
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=5.0.0",
+    "npm": ">=3.0.0"
   }
 }
