@@ -24,27 +24,34 @@ class Colors {
    */
   setColor(color) {
     if (!color) {
-      console.warn('Not a valid color'); //eslint-disable-line no-console
-      return false;
+      throw new Error('Not a valid color');
     }
 
-    if (color instanceof Array) {
+    if (color instanceof Array && color.length === 3) {
       this.rgb = {
-        r: color[0],
-        g: color[1],
-        b: color[2]
+        r: this.bound(color[0], 'r'),
+        g: this.bound(color[1], 'g'),
+        b: this.bound(color[2], 'b')
       };
+
       this.hex = this.rgb2hex();
       this.hsl = this.rgb2hsl();
     }
-    else if (color.constructor === {}.constructor) {
-      if (color.h) {
-        this.hsl = color;
+    else if (color === Object(color)) {
+      if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('l')) {
+        this.hsl = {
+          h: this.bound(color.h, 'h'),
+          s: this.bound(color.s, 's'),
+          l: this.bound(color.l, 'l')
+        };
         this.rgb = this.hsl2rgb();
       }
-      else if (color.r) {
+      else if (color.hasOwnProperty('r') && color.hasOwnProperty('g') && color.hasOwnProperty('b')) {
         this.rgb = color;
         this.hsl = this.rgb2hsl();
+      }
+      else {
+        throw new Error('Not a valid object');
       }
 
       this.hex = this.hsl2hex();
@@ -54,65 +61,9 @@ class Colors {
       this.rgb = this.hex2rgb();
       this.hsl = this.rgb2hsl();
     }
-  }
-
-  /**
-   * Parse CSS rgb value.
-   *
-   * @param {string} rgb
-   * @returns {Object}
-   */
-  parseRGB(rgb) {
-    const isString = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-    if (isString && isString.length === 4) {
-      return {
-        r: parseInt(isString[1], 10),
-        g: parseInt(isString[2], 10),
-        b: parseInt(isString[3], 10)
-      };
-    }
-
-    return false;
-  }
-
-  /**
-   * Parse HEX color.
-   *
-   * @param {string} hex
-   *
-   * @returns {string}
-   */
-  parseHex(hex) {
-    const color = hex.replace('#', '');
-    let newHex = '';
-
-    if (color.length === 3) {
-      color.split('').forEach(d => {
-        newHex += d + d;
-      });
-    }
     else {
-      newHex = color;
+      throw new Error('Input not valid');
     }
-
-    newHex = '#' + newHex;
-
-    if (!this.validHex(newHex)) {
-      throw new Error('Not a valid color');
-    }
-
-    return newHex;
-  }
-
-  /**
-   * Validate HEX color.
-   *
-   * @param {string} hex
-   *
-   * @returns {boolean}
-   */
-  validHex(hex) {
-    return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
   }
 
   /**
@@ -122,11 +73,7 @@ class Colors {
    * @returns {{r: number, g: number, b: number}}
    */
   hex2rgb(hex = this.hex) {
-    let newHex = this.parseHex(hex);
-
-    if (newHex.charAt(0) === '#') {
-      newHex = hex.substr(1);
-    }
+    const newHex = this.parseHex(hex).substr(1);
 
     return {
       r: parseInt(String(newHex.charAt(0)) + newHex.charAt(1), 16),
@@ -142,11 +89,7 @@ class Colors {
    * @returns {{h: number, s: number, l: number}}
    */
   hex2hsl(hex = this.hex) {
-    let newHex = this.parseHex(hex);
-
-    if (newHex.charAt(0) === '#') {
-      newHex = hex.substr(1);
-    }
+    const newHex = this.parseHex(hex).substr(1);
 
     return this.rgb2hsl({
       r: parseInt(String(newHex.charAt(0)) + newHex.charAt(1), 16),
@@ -168,9 +111,13 @@ class Colors {
       newRGB = this.parseRGB(rgb);
     }
 
-    const r = newRGB.r / 255;
-    const g = newRGB.g / 255;
-    const b = newRGB.b / 255;
+    if (!newRGB.hasOwnProperty('r') || !newRGB.hasOwnProperty('g') || !newRGB.hasOwnProperty('b')) {
+      throw new Error('hex2hsl::invalid object');
+    }
+
+    const r = this.bound(newRGB.r, 'r') / 255;
+    const g = this.bound(newRGB.g, 'g') / 255;
+    const b = this.bound(newRGB.b, 'b') / 255;
 
     const min = Math.min(r, g, b);
     const max = Math.max(r, g, b);
@@ -196,7 +143,6 @@ class Colors {
       default:
         break;
     }
-
     if (h < 0) {
       h = 360 + h;
     }
@@ -231,19 +177,33 @@ class Colors {
       newRGB = this.parseRGB(rgb);
     }
 
-    return '#' + ((1 << 24) + (newRGB.r << 16) + (newRGB.g << 8) + newRGB.b).toString(16).slice(1);
+    if (!newRGB.hasOwnProperty('r') || !newRGB.hasOwnProperty('g') || !newRGB.hasOwnProperty('b')) {
+      throw new Error('rgb2hex::invalid object');
+    }
+
+    return `#${((1 << 24) + (newRGB.r << 16) + (newRGB.g << 8) + newRGB.b).toString(16).slice(1)}`;
   }
 
   /**
    * Convert a HSL object to RGB.
    *
-   * @param {Object} hsl
+   * @param {Object|string} hsl
    * @returns {{r: number, g: number, b: number}}
    */
   hsl2rgb(hsl = this.hsl) {
-    const h = parseFloat(hsl.h).toFixed(2) / 360;
-    const s = parseFloat(hsl.s).toFixed(2) / 100;
-    const l = parseFloat(hsl.l).toFixed(2) / 100;
+    let newHSL = hsl;
+
+    if (typeof hsl === 'string') {
+      newHSL = this.parseHSL(hsl);
+    }
+
+    if (!newHSL.hasOwnProperty('h') || !newHSL.hasOwnProperty('s') || !newHSL.hasOwnProperty('l')) {
+      throw new Error('hsl2rgb::invalid object');
+    }
+
+    const h = parseFloat(newHSL.h).toFixed(2) / 360;
+    const s = parseFloat(newHSL.s).toFixed(2) / 100;
+    const l = parseFloat(newHSL.l).toFixed(2) / 100;
 
     let r;
     let g;
@@ -329,8 +289,7 @@ class Colors {
     let type;
 
     if (isRGB && isHSL) {
-      console.warn('Only use a single color model'); //eslint-disable-line no-console
-      return false;
+      throw new Error('Only use a single color model');
     }
 
     if (isRGB) {
@@ -555,6 +514,108 @@ class Colors {
     }
 
     return mod;
+  }
+
+  /**
+   * Parse HEX color.
+   *
+   * @param {string} hex
+   *
+   * @returns {string}
+   */
+  parseHex(hex) {
+    const color = hex.replace('#', '');
+    let newHex = '';
+
+    if (color.length === 3) {
+      color.split('').forEach(d => {
+        newHex += d + d;
+      });
+    }
+    else {
+      newHex = color;
+    }
+
+    newHex = `#${newHex}`;
+
+    if (!this.validHex(newHex)) {
+      throw new Error('Not a valid color');
+    }
+
+    return newHex;
+  }
+
+  /**
+   * Parse CSS rgb value.
+   *
+   * @param {string} rgb
+   * @returns {Object}
+   */
+  parseRGB(rgb) {
+    const matches = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+    if (matches && matches.length === 4) {
+      return {
+        r: parseInt(matches[1], 10),
+        g: parseInt(matches[2], 10),
+        b: parseInt(matches[3], 10)
+      };
+    }
+
+    throw new Error('Not a valid color');
+  }
+
+  /**
+   * Parse CSS hsl value.
+   *
+   * @param {string} hsl
+   * @returns {Object}
+   */
+  parseHSL(hsl) {
+    const matches = hsl.match(/^hsla?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+    if (matches && matches.length === 4) {
+      return {
+        h: parseInt(matches[1], 10),
+        s: parseInt(matches[2], 10),
+        l: parseInt(matches[3], 10)
+      };
+    }
+
+    throw new Error('Not a valid color');
+  }
+
+  /**
+   * Validate HEX color.
+   *
+   * @param {string} hex
+   *
+   * @returns {boolean}
+   */
+  validHex(hex) {
+    return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
+  }
+
+  /**
+   * Limit values per type.
+   *
+   * @param {number} value
+   * @param {string} type
+   * @returns {number}
+   */
+  bound(value, type) {
+    if (typeof value !== 'number') {
+      throw new Error('not a number');
+    }
+    if (['r', 'g', 'b'].indexOf(type) > -1) {
+      return Math.max(Math.min(value, 255), 0);
+    }
+    else if (['s', 'l'].indexOf(type) > -1) {
+      return Math.max(Math.min(value, 100), 0);
+    }
+    else if (type === 'h') {
+      return Math.max(Math.min(value, 360), 0);
+    }
+
+    throw new Error('invalid type');
   }
 
   /**
