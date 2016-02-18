@@ -108,7 +108,7 @@ gulp.task('scripts', function(cb) {
   });
 });
 
-gulp.task('scripts:lint', function() {
+gulp.task('lint', function() {
   return gulp.src('app/scripts/**/*')
     .pipe($.eslint({
       plugins: ['react', 'jsdoc']
@@ -269,7 +269,7 @@ gulp.task('serve', ['assets'], function() {
 
 gulp.task('build', ['clean'], function(cb) {
   process.env.NODE_ENV = 'production';
-  runSequence('scripts:lint', 'assets', ['bundle', 'media'], 'sizer', cb);
+  runSequence('lint', 'assets', ['bundle', 'media'], 'sizer', cb);
 });
 
 gulp.task('default', ['serve']);
