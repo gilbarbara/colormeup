@@ -105,8 +105,8 @@ export default class Sidebar extends React.Component {
 
     const vars = {
       hex: CONFIG.color,
-      hsl: 'hsl(' + Math.round(CONFIG.colorObj.hue) + ', ' + Math.round(CONFIG.colorObj.saturation) + '%, ' + Math.round(CONFIG.colorObj.lightness) + '%)',
-      rgb: 'rgb(' + CONFIG.colorObj.red + ', ' + CONFIG.colorObj.green + ', ' + CONFIG.colorObj.blue + ')',
+      hsl: `hsl(${Math.round(CONFIG.colorObj.hue)}, ${Math.round(CONFIG.colorObj.saturation)}%,  ${Math.round(CONFIG.colorObj.lightness)}%)`,
+      rgb: `rgb(${CONFIG.colorObj.red}, ${CONFIG.colorObj.green}, ${CONFIG.colorObj.blue}')`,
       currentColor: (CONFIG.colorObj.saturation > 8 ? currentColor : backupColor)
     };
 
@@ -126,15 +126,16 @@ export default class Sidebar extends React.Component {
             </a>
           </h3>
           <div className="items">{
-            CONFIG.defaultColors.map((d, i) => {
-              return (
-                <a
-                  key={i}
-                  href="#"
-                  data-color={d}
-                  style={{ backgroundColor: d }}
-                  onClick={this.onClickColor} />);
-            })
+            CONFIG.defaultColors.map((d, i) =>
+              (
+              <a
+                key={i}
+                href="#"
+                data-color={d}
+                style={{ backgroundColor: d }}
+                onClick={this.onClickColor} />
+              )
+            )
           }</div>
         </div>
       );
@@ -150,13 +151,13 @@ export default class Sidebar extends React.Component {
     }
 
     if (CONFIG.data.colors.length) {
-      output.favorites = CONFIG.data.colors.map((d, i) => {
-        return (
+      output.favorites = CONFIG.data.colors.map((d, i) =>
+        (
           <a
             key={i} href="#" data-color={d}
             style={{ backgroundColor: d }} onClick={this.onClickColor} />
-        );
-      });
+        )
+      );
     }
 
     return (

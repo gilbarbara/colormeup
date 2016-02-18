@@ -6,7 +6,6 @@ import { autobind } from 'core-decorators';
 import Colors from '../utils/Colors';
 import Storage from '../utils/Storage';
 import { param, deparam } from '../utils/Extras';
-import changed from '../utils/Changed';
 
 import Loader from './common/Loader';
 import Sidebar from './Sidebar';
@@ -120,15 +119,12 @@ class App extends React.Component {
     this.scrollTop = document.body.scrollTop;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // changed(this, prevProps, prevState);
-
+  componentDidUpdate(prevProps) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
       const hash = this.getHash();
-      // this.log('hashchange', hash);
 
       if (hash.color) {
-        this.setColor('#' + hash.color);
+        this.setColor(`#${hash.color}`);
       }
     }
 
@@ -140,7 +136,7 @@ class App extends React.Component {
   initialize() {
     const STATE = this.state;
     const hash = this.getHash();
-    const color = Colors.prototype.validHex('#' + hash.color) ? '#' + hash.color : null;
+    const color = Colors.prototype.validHex(`#${hash.color}`) ? `#${hash.color}` : null;
     const defaultColor = STATE.defaultColors[Math.floor(Math.random() * STATE.defaultColors.length - 1) + 1];
 
     this.setState({
@@ -246,7 +242,7 @@ class App extends React.Component {
      */
 
     if (param(options) !== param(this.getHash())) {
-      this.context.router.push('/' + param(options));
+      this.context.router.push(`/${param(options)}`);
     }
   }
 

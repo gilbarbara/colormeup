@@ -1,5 +1,4 @@
 import React from 'react';
-import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
 
@@ -88,7 +87,7 @@ export default class Boxes extends React.Component {
     const textColor = this.textLightness(colors.hsl);
     return (
       <a
-        href="#" key={max + '-' + Math.random()} data-color={colors.hex}
+        href="#" key={`${max}-${Math.random()}`} data-color={colors.hex}
         style={{ backgroundColor: colors.hex }} onClick={this.onClickBox}>
 				<span className="app__box" style={{ color: textColor }}>
 					{colors.hex}

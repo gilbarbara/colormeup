@@ -76,7 +76,7 @@
     "jsdoc/check-types": 1,
     "jsdoc/newline-after-description": 1,
     "jsdoc/require-description-complete-sentence": 0,
-    "jsdoc/require-hyphen-before-description": 1,
+    "jsdoc/require-hyphen-before-param-description": 1,
     // React
     "jsx-quotes": 1,
     "react/jsx-closing-bracket-location": [1, "after-props"],

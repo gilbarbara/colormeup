@@ -1,5 +1,4 @@
 import shallowEqual from 'fbjs/lib/shallowEqual';
-import { diffArrays, diffObjects } from './Extras';
 
 export default (that, prevProps, prevState, prevContext) => {
   // console.log('Changed', that, prevState, prevProps, prevContext);
@@ -51,10 +50,10 @@ export default (that, prevProps, prevState, prevContext) => {
     if (diffs[d].length) {
       diffs[d].forEach(e => {
         if (e.key) {
-          console.log(e.key + '\n    Actual: ' + e.actual + '\n    Prev: ' + e.prev); //eslint-disable-line no-console
+          console.log(`{e.key}\n    Actual: ${e.actual}\n    Prev: ${e.prev}`); //eslint-disable-line no-console
         }
         else {
-          console.log('*** ' + e + ' ***'); //eslint-disable-line no-console
+          console.log(`*** ${e} ***`); //eslint-disable-line no-console
         }
       });
     }

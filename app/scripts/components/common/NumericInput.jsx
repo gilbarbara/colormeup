@@ -335,7 +335,7 @@ class NumericInput extends React.Component {
 
     if (PROPS.name) {
       attrs.input.classNames.push(PROPS.name);
-      attrs.wrap.classNames.push(PROPS.name + '-wrap');
+      attrs.wrap.classNames.push(`${PROPS.name}-wrap`);
     }
 
     if (attrs.input.readOnly) {

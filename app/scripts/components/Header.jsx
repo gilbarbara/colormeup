@@ -150,9 +150,7 @@ class Header extends React.Component {
   onChangeColorInput(e) {
     const CONFIG = this.props.config;
     const value = e.target.value.replace(/[^0-9A-F]+/i, '');
-    const color = '#' + value.replace(/[^0-9A-F]+/i, '').slice(-6);
-
-    // console.log('onChangeColorInput', color);
+    const color = `#${value.replace(/[^0-9A-F]+/i, '').slice(-6)}`;
 
     this.setState({
       color
@@ -337,8 +335,8 @@ class Header extends React.Component {
                 <a href="#" data-type="rgb" onClick={this.onClickSliderMenu}>RGB</a></li>
             </ul>
             <div className="app__sliders__list">
-              {vars.sliders.map((slider, i) => {
-                return (
+              {vars.sliders.map((slider, i) =>
+                (
                   <div key={i} className="slider-wrapper">
                     <span className="range-name">{slider.name}</span>
                     <InputSlider
@@ -357,49 +355,49 @@ class Header extends React.Component {
                       tabIndex={++this.tabIndex}
                       onChange={this.onChangeRangeInput} />
                   </div>
-                );
-              })}
+                )
+              )}
             </div>
           </div>
 
           <div className="app__info">
-            {Object.keys(vars.types).map((t, i) => {
-              return (
+            {Object.keys(vars.types).map((t, i) =>
+              (
                 <div key={i} className={t}>
-                  {vars.types[t].map((it, j) => {
-                    return (
+                  {vars.types[t].map((it, j) =>
+                    (
                       <div key={j} className="color-value">
                         <div
-                          className={'color-' + it.key}>{Math.round(CONFIG.colorObj[it.name.toLowerCase()])}</div>
+                          className={`color-${it.key}`}>{Math.round(CONFIG.colorObj[it.name.toLowerCase()])}</div>
                         {it.name.toLowerCase()}
                       </div>
-                    );
-                  })}
+                    )
+                  )}
                 </div>
-              );
-            })}
+              )
+            )}
           </div>
 
           <div className="app__type">
-            {Object.keys(vars.types).map((t, i) => {
-              return (
+            {Object.keys(vars.types).map((t, i) =>
+              (
                 <div key={i} className={t}>
                   <div className="btn-group" role="group" aria-label={t}>
-                    {vars.types[t].map((it, j) => {
-                      return (
+                    {vars.types[t].map((it, j) =>
+                      (
                         <a
                           key={j} href="#"
-                          className={'btn btn-' + (CONFIG.type === it.key ? 'selected' : 'secondary')}
+                          className={`btn btn-${(CONFIG.type === it.key ? 'selected' : 'secondary')}`}
                           data-type={it.key}
                           onClick={this.onClickTypesMenu}>
                           {it.name}
                         </a>
-                      );
-                    })}
+                      )
+                    )}
                   </div>
                 </div>
-              );
-            })}
+              )
+            )}
             <div className="steps">
               <span className="fa fa-th" />
               <NumericInput
