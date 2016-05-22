@@ -3,15 +3,15 @@ import reactUpdate from 'react-addons-update';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
 
-import Colors from '../utils/Colors';
-import Storage from '../utils/Storage';
-import { param, deparam } from '../utils/Extras';
+import Colors from 'utils/Colors';
+import Storage from 'utils/Storage';
+import { param, deparam } from 'utils/Extras';
 
-import Loader from './common/Loader';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import Boxes from './Boxes';
-import Footer from './Footer';
+import Loader from 'components/Loader';
+import Sidebar from 'components/Sidebar';
+import Header from 'components/Header';
+import Boxes from 'components/Boxes';
+import Footer from 'components/Footer';
 
 // todo re-add steps and type to params?
 // todo new font!
@@ -311,9 +311,9 @@ class App extends React.Component {
     this.setState(state);
   }
 
-  log() {
+  log(...args) {
     if (location.hostname === 'localhost') {
-      console.log(...arguments); //eslint-disable-line no-console
+      console.log(args); //eslint-disable-line no-console
     }
   }
 

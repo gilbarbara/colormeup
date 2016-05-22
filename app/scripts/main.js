@@ -1,6 +1,5 @@
 // Polyfills
-import 'core-js/modules/es6.promise';
-import 'core-js/modules/es6.object.assign';
+import 'core-js/shim';
 import 'whatwg-fetch';
 import 'classlist-polyfill';
 
@@ -8,8 +7,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
-import App from './components/App';
-import NotFound from './components/common/NotFound';
+import 'expose?$!expose?jQuery!jquery';
+import 'expose?ZeroClipboard!zeroclipboard';
+
+import '../styles/main.scss';
+import '../media/og-image.png';
+
+import App from './containers/App';
+import NotFound from './containers/NotFound';
 
 /**
  * Main

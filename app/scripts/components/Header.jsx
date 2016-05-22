@@ -3,11 +3,9 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
 import InlineSVG from 'react-inlinesvg';
 import InputSlider from 'react-input-slider';
-import NumericInput from './common/NumericInput';
+import NumericInput from 'components/NumericInput';
 
-import $ from 'jquery';
-
-import { isEqual } from '../utils/Extras';
+import { isEqual } from 'utils/Extras';
 
 class Header extends React.Component {
   constructor(props) {
@@ -83,7 +81,8 @@ class Header extends React.Component {
           })
         ) : backupColor),
         fillOpacity: (config.colorObj.saturation < 10 ? 0.6 : 1)
-      }).end()
+      })
+      .end()
       .find('#me')
       .css({
         fill: (config.colorObj.saturation > 8 ? (
@@ -94,7 +93,8 @@ class Header extends React.Component {
           })
         ) : backupColor),
         fillOpacity: (config.colorObj.saturation < 10 ? 0.4 : 1)
-      }).end()
+      })
+      .end()
       .find('#up')
       .css({
         fill: (config.colorObj.saturation > 8 ? (
@@ -105,7 +105,8 @@ class Header extends React.Component {
           })
         ) : backupColor),
         fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
-      }).end();
+      })
+      .end();
 
     $('.navigation-toggle-icon').css({
       color: (config.colorObj.saturation > 8 ? (
@@ -260,7 +261,7 @@ class Header extends React.Component {
       types: {}
     };
 
-    Object.keys(CONFIG.types).map(t => {
+    Object.keys(CONFIG.types).forEach(t => {
       if (!vars.types[CONFIG.types[t].model]) {
         vars.types[CONFIG.types[t].model] = [];
       }
@@ -297,14 +298,17 @@ class Header extends React.Component {
         style={{ backgroundColor: CONFIG.color, borderColor: CONFIG.colorObj.darken(15) }}>
         <div className="app__header__wrapper">
           <div className="logo">
-            <InlineSVG src="/media/colormeup.svg" uniquifyIDs={false} onLoad={this.svgLoaded} />
+            <InlineSVG src={require('../../media/colormeup.svg')} uniquifyIDs={false} onLoad={this.svgLoaded}>
+              <img src={require('../../media/colormeup.png')} alt="colormeup" />
+            </InlineSVG>
           </div>
 
           <div className="app__input">
             <div className="input-group input-group-lg">
-							<span className="input-group-btn">
+              <span className="input-group-btn">
                 <a
-                  href="#" className="btn btn-secondary random-color"
+                  href="#"
+                  className="btn btn-secondary random-color"
                   title="Randomize Color"
                   onClick={this.onClickRandomColor}>
                   <span className="fa fa-refresh" />
@@ -318,7 +322,8 @@ class Header extends React.Component {
                 onChange={this.onChangeColorInput} />
 							<span className="input-group-btn">
                 <a
-                  href="#" className="btn btn-secondary save-color"
+                  href="#"
+                  className="btn btn-secondary save-color"
                   title="Add to Favorites"
                   onClick={this.onClickSaveColor}>
                   <span className="fa fa-heart" />
@@ -336,67 +341,57 @@ class Header extends React.Component {
             </ul>
             <div className="app__sliders__list">
               {vars.sliders.map((slider, i) =>
-                (
-                  <div key={i} className="slider-wrapper">
-                    <span className="range-name">{slider.name}</span>
-                    <InputSlider
-                      className="slider"
-                      data-type={slider.key}
-                      x={slider.value}
-                      xmax={slider.max}
-                      onChange={this.onChangeRangeSlider} />
-                    <NumericInput
-                      name="range-input"
-                      className="form-control"
-                      min={0}
-                      max={slider.max}
-                      value={slider.value}
-                      data-type={slider.key}
-                      tabIndex={++this.tabIndex}
-                      onChange={this.onChangeRangeInput} />
-                  </div>
-                )
+                (<div key={i} className="slider-wrapper">
+                  <span className="range-name">{slider.name}</span>
+                  <InputSlider
+                    className="slider"
+                    data-type={slider.key}
+                    x={slider.value}
+                    xmax={slider.max}
+                    onChange={this.onChangeRangeSlider} />
+                  <NumericInput
+                    name="range-input"
+                    className="form-control"
+                    min={0}
+                    max={slider.max}
+                    value={slider.value}
+                    data-type={slider.key}
+                    tabIndex={++this.tabIndex}
+                    onChange={this.onChangeRangeInput} />
+                </div>)
               )}
             </div>
           </div>
 
           <div className="app__info">
             {Object.keys(vars.types).map((t, i) =>
-              (
-                <div key={i} className={t}>
-                  {vars.types[t].map((it, j) =>
-                    (
-                      <div key={j} className="color-value">
-                        <div
-                          className={`color-${it.key}`}>{Math.round(CONFIG.colorObj[it.name.toLowerCase()])}</div>
-                        {it.name.toLowerCase()}
-                      </div>
-                    )
-                  )}
-                </div>
-              )
+              (<div key={i} className={t}>
+                {vars.types[t].map((it, j) =>
+                  (<div key={j} className="color-value">
+                    <div
+                      className={`color-${it.key}`}>{Math.round(CONFIG.colorObj[it.name.toLowerCase()])}</div>
+                    {it.name.toLowerCase()}
+                  </div>)
+                )}
+              </div>)
             )}
           </div>
 
           <div className="app__type">
             {Object.keys(vars.types).map((t, i) =>
-              (
-                <div key={i} className={t}>
-                  <div className="btn-group" role="group" aria-label={t}>
-                    {vars.types[t].map((it, j) =>
-                      (
-                        <a
-                          key={j} href="#"
-                          className={`btn btn-${(CONFIG.type === it.key ? 'selected' : 'secondary')}`}
-                          data-type={it.key}
-                          onClick={this.onClickTypesMenu}>
-                          {it.name}
-                        </a>
-                      )
-                    )}
-                  </div>
+              (<div key={i} className={t}>
+                <div className="btn-group" role="group" aria-label={t}>
+                  {vars.types[t].map((it, j) =>
+                    (<a
+                      key={j} href="#"
+                      className={`btn btn-${(CONFIG.type === it.key ? 'selected' : 'secondary')}`}
+                      data-type={it.key}
+                      onClick={this.onClickTypesMenu}>
+                      {it.name}
+                    </a>)
+                  )}
                 </div>
-              )
+              </div>)
             )}
             <div className="steps">
               <span className="fa fa-th" />

@@ -3,10 +3,6 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import { autobind } from 'core-decorators';
 
 export default class Boxes extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   static contextTypes = {
     log: React.PropTypes.func,
     setHash: React.PropTypes.func
@@ -87,11 +83,14 @@ export default class Boxes extends React.Component {
     const textColor = this.textLightness(colors.hsl);
     return (
       <a
-        href="#" key={`${max}-${Math.random()}`} data-color={colors.hex}
-        style={{ backgroundColor: colors.hex }} onClick={this.onClickBox}>
-				<span className="app__box" style={{ color: textColor }}>
-					{colors.hex}
-				</span>
+        href="#"
+        key={`${max}-${Math.random()}`}
+        data-color={colors.hex}
+        style={{ backgroundColor: colors.hex }}
+        onClick={this.onClickBox}>
+        <span className="app__box" style={{ color: textColor }}>
+          {colors.hex}
+        </span>
       </a>
     );
   }

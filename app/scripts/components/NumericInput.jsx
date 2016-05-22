@@ -196,10 +196,10 @@ class NumericInput extends React.Component {
       e.preventDefault();
 
       if (e.keyCode === KEYCODE_UP) {
-        step = e.ctrlKey || e.metaKey ? 0.1 : e.shiftKey ? 10 : 1;
+        step = e.ctrlKey || e.metaKey ? 0.1 : (e.shiftKey ? 10 : 1);
       }
       else {
-        step = e.ctrlKey || e.metaKey ? -0.1 : e.shiftKey ? -10 : -1;
+        step = e.ctrlKey || e.metaKey ? -0.1 : (e.shiftKey ? -10 : -1);
       }
 
       if ((this.state.value > this.props.min || this.state.value < this.props.max) && this._timer === null) {
@@ -288,7 +288,6 @@ class NumericInput extends React.Component {
     const inputProps = {
       ref: 'input'
     };
-    let attrs;
 
     this.setCustomProps();
 
@@ -307,7 +306,7 @@ class NumericInput extends React.Component {
       inputProps.classNames.push(PROPS.className);
     }
 
-    attrs = {
+    const attrs = {
       wrap: {
         onMouseUp: this.stopTimer,
         onMouseOut: this.stopTimer,
@@ -359,10 +358,10 @@ class NumericInput extends React.Component {
 
     return (
       <span {...attrs.wrap}>
-                <input {...attrs.input} />
-                <a {...attrs.btnUp} />
-                <a {...attrs.btnDown} />
-            </span>
+        <input {...attrs.input} />
+        <a {...attrs.btnUp} />
+        <a {...attrs.btnDown} />
+      </span>
     );
   }
 }

@@ -1,6 +1,6 @@
-import _intersection from 'lodash/array/intersection';
-import _pick from 'lodash/object/pick';
-import _isEmpty from 'lodash/lang/isEmpty';
+import _intersection from 'lodash/intersection';
+import _pick from 'lodash/pick';
+import _isEmpty from 'lodash/isEmpty';
 import { expr } from './Math';
 
 /**

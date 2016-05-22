@@ -1,0 +1,22 @@
+{
+  "presets": [
+    "es2015-native-modules",
+    "react",
+    "stage-1"
+  ],
+  "plugins": [
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-runtime"
+      ]
+    },
+    "development": {
+      "plugins": [
+        "react-hot-loader/babel"
+      ]
+    }
+  }
+}

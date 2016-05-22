@@ -3,9 +3,6 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import classNames from 'classnames';
 import { autobind } from 'core-decorators';
 
-import $ from 'jquery';
-import ZeroClipboard from 'zeroclipboard';
-
 export default class Sidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -29,11 +26,8 @@ export default class Sidebar extends React.Component {
   shouldComponentUpdate = shouldPureComponentUpdate;
 
   componentDidMount() {
-    const clipboard = new ZeroClipboard(document.getElementsByClassName('copy-button'));
-
-    /* clipboard.on('aftercopy', (event) => {
-     console.log('aftercopy', event.data['text/plain']);
-     });*/
+    ZeroClipboard.config({ swfPath: require('zeroclipboard/dist/ZeroClipboard.swf') });
+    const client = new ZeroClipboard(document.getElementsByClassName('copy-button'));
   }
 
   @autobind
@@ -127,14 +121,12 @@ export default class Sidebar extends React.Component {
           </h3>
           <div className="items">{
             CONFIG.defaultColors.map((d, i) =>
-              (
-              <a
+              (<a
                 key={i}
                 href="#"
                 data-color={d}
                 style={{ backgroundColor: d }}
-                onClick={this.onClickColor} />
-              )
+                onClick={this.onClickColor} />)
             )
           }</div>
         </div>
@@ -152,11 +144,11 @@ export default class Sidebar extends React.Component {
 
     if (CONFIG.data.colors.length) {
       output.favorites = CONFIG.data.colors.map((d, i) =>
-        (
-          <a
-            key={i} href="#" data-color={d}
-            style={{ backgroundColor: d }} onClick={this.onClickColor} />
-        )
+        (<a
+          key={i} href="#"
+          data-color={d}
+          style={{ backgroundColor: d }}
+          onClick={this.onClickColor} />)
       );
     }
 
@@ -165,12 +157,12 @@ export default class Sidebar extends React.Component {
         <div className="app__sidebar__list favorites">
           <h3><span className="fa fa-heart" /> your favorites
             {CONFIG.data.colors.length ?
-             <a
+             (<a
                href="#" title="Erase your favorites" className="erase-favorites reset"
                onClick={this.onClickResetFavorites}>
                <span
                  className={classNames('fa', { 'fa-trash': !STATE.pendingReset, 'fa-check-circle': STATE.pendingReset })} />
-             </a> : undefined}
+             </a>) : undefined}
           </h3>
           <div className="items">{output.favorites}</div>
         </div>
