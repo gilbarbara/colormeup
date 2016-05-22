@@ -1,11 +1,12 @@
 /*eslint-disable no-var, one-var, func-names, indent, prefer-arrow-callback, object-shorthand, no-console, newline-per-chained-call, one-var-declaration-per-line, prefer-template, vars-on-top */
-var path         = require('path'),
-    autoprefixer = require('autoprefixer'),
-    webpack      = require('webpack'),
-    CleanPlugin  = require('clean-webpack-plugin'),
-    ExtractText  = require('extract-text-webpack-plugin'),
-    HtmlPlugin   = require('html-webpack-plugin'),
-    CopyPlugin   = require('copy-webpack-plugin');
+var path            = require('path'),
+    autoprefixer    = require('autoprefixer'),
+    webpack         = require('webpack'),
+    CleanPlugin     = require('clean-webpack-plugin'),
+    ExtractText     = require('extract-text-webpack-plugin'),
+    HtmlPlugin      = require('html-webpack-plugin'),
+    ScriptExtPlugin = require('script-ext-html-webpack-plugin'),
+    CopyPlugin      = require('copy-webpack-plugin');
 
 var build = process.env.NODE_ENV === 'production';
 var cssLoaders = 'css!postcss?pack=custom!sass';
@@ -133,6 +134,9 @@ if (build) {
       mobile: true,
       template: './index.ejs',
       title: 'ColorMeUp'
+    }),
+    new ScriptExtPlugin({
+      async: [/app/]
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')

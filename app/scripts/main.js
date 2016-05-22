@@ -28,6 +28,9 @@ const routes = (
   </Route>
 );
 
-document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<Router history={browserHistory}>{routes}</Router>, document.getElementById('react'));
-});
+ReactDOM.render(
+  <Router history={browserHistory}>
+    {routes}
+  </Router>,
+  document.getElementById('react')
+);
