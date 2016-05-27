@@ -34,7 +34,7 @@ function publish() {
 if (args[0] === 'deploy') {
   const start = Date.now();
   console.log('Bundling...');
-  exec('npm run build', {maxBuffer: 1024 * 500}, (errBuild) => {
+  exec('npm run build', { maxBuffer: 1024 * 500 }, (errBuild) => {
     if (errBuild) {
       console.log(errBuild);
       return;
