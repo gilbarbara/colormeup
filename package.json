@@ -36,7 +36,7 @@
     "react-pure-render": "^1.0",
     "react-router": "^2.4",
     "sass-mediaqueries": "^1.6",
-    "whatwg-fetch": "^1.0",
+    "whatwg-fetch": "^2.0",
     "zeroclipboard": "^2.2"
   },
   "devDependencies": {
