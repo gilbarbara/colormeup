@@ -20,7 +20,7 @@
     "bootstrap": "^4.0.0-alpha.2",
     "classlist-polyfill": "^1.0",
     "classnames": "^2.2",
-    "core-decorators": "^0.12",
+    "core-decorators": "^0.20",
     "core-js": "^2.4",
     "fbjs": "^0.8",
     "font-awesome": "^4.6",
