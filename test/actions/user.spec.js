@@ -4,7 +4,6 @@ import {
   saveColor,
   setUserOptions,
 } from 'actions/user';
-import { getUnixtime } from '../../app/scripts/modules/helpers';
 
 jest.mock('modules/helpers', () => ({
   getUnixtime: () => 1234567890,

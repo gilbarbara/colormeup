@@ -18,30 +18,33 @@ export default class Sliders extends React.PureComponent {
     dispatch(setOptions({ model: currentTarget.dataset.model }));
   };
 
-  getSliderValue(type) {
+  getSliderData(input) {
     const { color: { instance } } = this.props;
-    let value = '';
+    const output = {
+      ...input,
+      value: 0,
+    };
 
-    switch (type.key) {
+    switch (input.key) {
       case 'h': {
-        value = instance.lightness === 0 || instance.saturation === 0 ? 0 : instance.hue;
+        output.value = instance.lightness === 0 || instance.saturation === 0 ? 0 : instance.hue;
         break;
       }
       case 's': {
-        value = instance.lightness === 0 ? 0 : instance.saturation;
+        output.value = instance.lightness === 0 ? 0 : instance.saturation;
         break;
       }
       case 'l': {
-        value = instance.lightness;
+        output.value = instance.lightness;
         break;
       }
       default: {
-        value = instance[type.slug];
+        output.value = instance[input.slug];
         break;
       }
     }
 
-    return value;
+    return output;
   }
 
   render() {
@@ -63,7 +66,7 @@ export default class Sliders extends React.PureComponent {
             <Slider
               key={i}
               instance={instance}
-              data={{ ...d, value: this.getSliderValue(d) }}
+              data={this.getSliderData(d)}
               dispatch={dispatch}
             />
           ))}
