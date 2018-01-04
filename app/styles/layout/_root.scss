@@ -1,0 +1,126 @@
+html {
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.6rem;
+  min-height: 100%;
+}
+
+.browsehappy {
+  background: #f00;
+  color: #fff;
+  font-size: 2rem;
+  padding: 2rem 4rem;
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
+[type=email],
+[type=search],
+[type=tel],
+[type=text],
+textarea,
+select {
+  appearance: none;
+  border: 0;
+  box-shadow: none;
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-base;
+  line-height: 1;
+  outline: none;
+}
+
+select {
+  padding: 0.5rem 1.6rem;
+}
+
+button {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  display: inline-block;
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-base;
+  line-height: 1;
+  padding: 0;
+
+  &:active,
+  &:focus,
+  &:hover {
+    outline: none;
+  }
+}
+
+.btn-selected {
+  background-color: #767765;
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+  }
+}
+
+.input-group {
+  .input-group-btn .btn-secondary {
+    border: 0.1rem solid #ccc;
+  }
+
+  &-lg {
+    .input-group-btn > .btn {
+      padding: 1.15rem 1.4rem;
+    }
+  }
+
+  .btn {
+    outline: 0;
+  }
+}
+
+.isvg {
+  display: inline-block;
+
+  svg {
+    max-width: 100%;
+    width: auto;
+  }
+}
+
+.grow-element {
+  opacity: 1;
+  transform: scale(1);
+
+  &.grow {
+    animation: grow 0.8s;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    color: #f00;
+    opacity: 0;
+    transform: rotate(0deg) scale(3.5);
+  }
+}

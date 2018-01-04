@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Constants:AppConstants should match the snapshot 1`] = `
+Object {
+  "HIDE_ALERT": "HIDE_ALERT",
+  "SHOW_ALERT": "SHOW_ALERT",
+  "TOGGLE_SIDEBAR": "TOGGLE_SIDEBAR",
+}
+`;
+
+exports[`Constants:ColorConstants should match the snapshot 1`] = `
+Object {
+  "INITIALIZE": "INITIALIZE",
+  "SET_COLOR": "SET_COLOR",
+  "SET_OPTIONS": "SET_OPTIONS",
+}
+`;
+
+exports[`Constants:UserConstants should match the snapshot 1`] = `
+Object {
+  "REMOVE_COLOR": "REMOVE_COLOR",
+  "RESET_USER_DATA": "RESET_USER_DATA",
+  "SAVE_COLOR": "SAVE_COLOR",
+  "SET_USER_OPTIONS": "SET_USER_OPTIONS",
+}
+`;

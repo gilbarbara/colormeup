@@ -1,0 +1,8 @@
+.app {
+  @include striped-bg(#eee);
+  min-height: 100vh;
+  opacity: 1 !important;
+  padding-bottom: 5.4rem;
+  position: relative;
+  transition: opacity 0.5s;
+}

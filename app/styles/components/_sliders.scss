@@ -26,7 +26,7 @@
     li {
       background-color: rgba(#000, 0.1);
 
-      a {
+      button {
         align-items: center;
         color: $body-color;
         display: flex;
@@ -59,56 +59,51 @@
       width: 90%;
     }
   }
-
-  .slider-wrapper {
-    height: 3rem;
-    width: 100%;
-
-    .slider {
-      width: calc(100% - 12.5rem);
-    }
-
-    .range-name {
-      display: inline-block;
-      font-size: 1.3rem;
-      margin-right: 1.2rem;
-      min-width: 6rem;
-      text-align: right;
-    }
-
-    // Tooltip Tag
-    .range-input {
-      background: transparent;
-      border: 0;
-      color: $body-color;
-      display: inline-block;
-      font-size: 1.3rem;
-      margin-left: 1.2rem;
-      outline: none;
-      position: relative;
-      text-align: center;
-      width: 4rem;
-
-      &:focus {
-        font-weight: 700;
-      }
-
-      &-wrap {
-        a {
-          display: none;
-        }
-
-        .range-input {
-          padding-left: $grid-gutter-width / 6;
-          padding-right: $grid-gutter-width / 6;
-        }
-      }
-    }
-  }
 }
 
-// Firefox Overrides
+.app__slider {
+  height: 3rem;
+  width: 100%;
 
-input::-moz-focus-inner {
-  border: 0;
+  .slider {
+    width: calc(100% - 12.5rem);
+  }
+
+  .range-name {
+    display: inline-block;
+    font-size: 1.3rem;
+    margin-right: 1.2rem;
+    min-width: 6rem;
+    text-align: right;
+  }
+
+  .numeric-field-wrapper {
+    display: inline-block;
+    margin-left: 1.2rem;
+    position: relative;
+    width: 4rem;
+
+    button {
+      display: none;
+    }
+
+    .numeric-field-input {
+      padding-left: $grid-gutter-width / 6;
+      padding-right: $grid-gutter-width / 6;
+    }
+  }
+
+  .numeric-field-input {
+    background: transparent;
+    border: 0;
+    color: $body-color;
+    font-size: 1.3rem;
+    outline: none;
+    text-align: center;
+    width: 100%;
+
+    &:focus {
+      font-weight: 700;
+    }
+  }
 }

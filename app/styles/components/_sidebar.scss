@@ -45,7 +45,7 @@
       transition-delay: 0s;
     }
 
-    &::before {
+    &:before {
       top: 0;
     }
 
@@ -155,7 +155,7 @@
         display: none;
 
         @include md {
-          display: inline;
+          display: inline-block;
         }
 
         &:focus {
@@ -169,22 +169,22 @@
         border-radius: 0.4rem;
         color: #666;
         display: block;
-        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
         margin-top: 1.5rem;
         padding: ($grid-gutter-width / 3);
 
-        div {
+        > div {
           color: #666;
+          display: flex;
           font-size: 1.2rem;
+          justify-content: space-between;
 
           span {
-            float: left;
+            flex: 1;
           }
 
-          a {
+          button {
             color: #666;
-            float: right;
-            text-align: right;
           }
 
           + div {

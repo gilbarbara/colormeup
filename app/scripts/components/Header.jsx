@@ -1,234 +1,174 @@
 import React from 'react';
-import shouldPureComponentUpdate from 'react-pure-render/function';
-import { autobind } from 'core-decorators';
+import PropTypes from 'prop-types';
 import InlineSVG from 'react-inlinesvg';
-import InputSlider from 'react-input-slider';
-import NumericInput from 'components/NumericInput';
+import Clipboard from 'clipboard';
+import { validateHex } from 'colorizr';
+import { getColorModes, isNumber } from 'modules/helpers';
 
-import { isEqual } from 'utils/Extras';
+import { push, saveColor, setOptions, toggleSidebar } from 'actions';
+
+import NumericField from 'components/NumericField';
+import Sliders from 'components/Sliders';
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      color: props.config.color
-    };
-
     this.tabIndex = 1;
+    this.state = {
+      value: props.color.hex || '',
+    };
   }
 
-  static contextTypes = {
-    addToFavorites: React.PropTypes.func,
-    log: React.PropTypes.func,
-    setHash: React.PropTypes.func,
-    setOptions: React.PropTypes.func
-  };
-
   static propTypes = {
-    config: React.PropTypes.object.isRequired
+    app: PropTypes.object.isRequired,
+    color: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
-
-  shouldComponentUpdate = shouldPureComponentUpdate;
 
   componentDidMount() {
-    this.keyPressListener = (e) => {
-      if (e.target.tagName === 'BODY' && e.keyCode === 32) {
-        e.preventDefault();
-        document.querySelector('.random-color').click();
-      }
-    };
-
-    document.addEventListener('keypress', this.keyPressListener);
+    document.addEventListener('keypress', this.handleKeyPress);
+    this.clipboard = new Clipboard('.copy-button');
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps, this.props) && this.props.config.colorObj.parseHex(this.state.color) !== nextProps.config.color) {
-      this.setState({
-        color: nextProps.config.color
-      });
+    const { color } = this.props;
+
+    if (color.instance && color.hex !== nextProps.color.hex) {
+      this.updateColors(nextProps);
+      this.setState({ value: nextProps.color.hex });
     }
-    this.updateColors();
   }
 
   componentWillUnmount() {
-    document.body.removeEventListener('keypress', this.keyPressListener);
+    document.body.removeEventListener('keypress', this.handleKeyPress);
+    this.clipboard.destroy();
   }
 
-  /**
-   * @param {Object} opts
-   */
-  changeColor(opts = {}) {
-    // console.log('changeColor', opts);
-
-    this.context.setHash({
-      color: typeof opts.r === 'number' ? this.props.config.colorObj.rgb2hex(opts) : this.props.config.colorObj.hsl2hex(opts)
-    });
-  }
-
-  updateColors() {
-    const config = this.props.config;
-    const backupColor = config.colorObj.lightness < 30 ? '#FFF' : '#333';
+  updateColors(props = this.props) {
+    const { color: { instance } } = props;
+    const backupColor = instance.lightness < 30 ? '#FFF' : '#333';
 
     $('.logo svg')
       .find('#color')
       .css({
-        fill: (config.colorObj.saturation > 8 ? (
-          config.colorObj.hsl2hex({
-            h: (config.colorObj.hue + 90) % 360,
-            s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-            l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+        fill: (instance.saturation > 8 ? (
+          instance.hsl2hex({
+            h: (instance.hue + 90) % 360,
+            s: (instance.saturation < 30 ? Math.abs(instance.saturation + 30) : instance.saturation),
+            l: (instance.lightness < 35 ? instance.lightness + 20 : instance.lightness),
           })
         ) : backupColor),
-        fillOpacity: (config.colorObj.saturation < 10 ? 0.6 : 1)
+        fillOpacity: (instance.saturation < 10 ? 0.6 : 1),
       })
       .end()
       .find('#me')
       .css({
-        fill: (config.colorObj.saturation > 8 ? (
-          config.colorObj.hsl2hex({
-            h: (config.colorObj.hue + 180) % 360,
-            s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-            l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+        fill: (instance.saturation > 8 ? (
+          instance.hsl2hex({
+            h: (instance.hue + 180) % 360,
+            s: (instance.saturation < 30 ? Math.abs(instance.saturation + 30) : instance.saturation),
+            l: (instance.lightness < 35 ? instance.lightness + 20 : instance.lightness),
           })
         ) : backupColor),
-        fillOpacity: (config.colorObj.saturation < 10 ? 0.4 : 1)
+        fillOpacity: (instance.saturation < 10 ? 0.4 : 1),
       })
       .end()
       .find('#up')
       .css({
-        fill: (config.colorObj.saturation > 8 ? (
-          config.colorObj.hsl2hex({
-            h: (config.colorObj.hue + 270) % 360,
-            s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-            l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+        fill: (instance.saturation > 8 ? (
+          instance.hsl2hex({
+            h: (instance.hue + 270) % 360,
+            s: (instance.saturation < 30 ? Math.abs(instance.saturation + 30) : instance.saturation),
+            l: (instance.lightness < 35 ? instance.lightness + 20 : instance.lightness),
           })
         ) : backupColor),
-        fillOpacity: (config.colorObj.saturation < 10 ? 0.2 : 1)
+        fillOpacity: (instance.saturation < 10 ? 0.2 : 1),
       })
       .end();
 
     $('.navigation-toggle-icon').css({
-      color: (config.colorObj.saturation > 8 ? (
-        config.colorObj.hsl2hex({
-          h: (config.colorObj.hue + 90) % 360,
-          s: (config.colorObj.saturation < 30 ? Math.abs(config.colorObj.saturation + 30) : config.colorObj.saturation),
-          l: (config.colorObj.lightness < 35 ? config.colorObj.lightness + 20 : config.colorObj.lightness)
+      color: (instance.saturation > 8 ? (
+        instance.hsl2hex({
+          h: (instance.hue + 90) % 360,
+          s: (instance.saturation < 30 ? Math.abs(instance.saturation + 30) : instance.saturation),
+          l: (instance.lightness < 35 ? instance.lightness + 20 : instance.lightness),
         })
-      ) : backupColor)
+      ) : backupColor),
     });
   }
 
-  @autobind
-  svgLoaded() {
+  svgLoaded = () => {
+    const { color: { instance }, dispatch } = this.props;
+
     this.updateColors();
 
     $('#color').on('click', (e) => {
-      this.context.setHash({
-        color: this.props.config.colorObj.rgb2hex($(e.target).css('fill'))
-      });
+      dispatch(push(`/${instance.rgb2hex($(e.target).css('fill'))}`));
     });
 
     $('#me').on('click', (e) => {
-      this.context.setHash({
-        color: this.props.config.colorObj.rgb2hex($(e.target).css('fill'))
-      });
+      dispatch(push(`/${instance.rgb2hex($(e.target).css('fill'))}`));
     });
 
     $('#up').on('click', (e) => {
-      this.context.setHash({
-        color: this.props.config.colorObj.rgb2hex($(e.target).css('fill'))
-      });
+      dispatch(push(`/${instance.rgb2hex($(e.target).css('fill'))}`));
     });
-  }
+  };
 
-  @autobind
-  onClickToggleSidebar() {
-    $('.app__sidebar, .app-overlay').toggleClass('visible');
-  }
+  handleChangeColorInput = ({ target }) => {
+    const { dispatch } = this.props;
+    const value = target.value.replace(/[^#0-9A-F]/ig, '');
 
-  @autobind
-  onChangeColorInput(e) {
-    const CONFIG = this.props.config;
-    const value = e.target.value.replace(/[^0-9A-F]+/i, '');
+    if (value.length > 7) {
+      return;
+    }
+    this.setState({ value });
+
+
     const color = `#${value.replace(/[^0-9A-F]+/i, '').slice(-6)}`;
 
-    this.setState({
-      color
-    }, () => {
-      if (CONFIG.colorObj.validHex(this.state.color)) {
-        this.changeColor(CONFIG.colorObj.hex2hsl(CONFIG.colorObj.parseHex(this.state.color)));
-      }
-    });
-  }
-
-  @autobind
-  onChangeRangeSlider(pos, props) {
-    const value = ['r', 'g', 'b'].indexOf(props['data-type']) > -1 ? Math.round(pos.x) : pos.x;
-    const newValue = Math.round(pos.x);
-    const lastValue = this.state.lastSliderValue;
-    const lastSliderValue = lastValue !== newValue ? newValue : lastValue;
-    const color = this.props.config.colorObj.remix({ [props['data-type']]: value });
-
-    // console.log('onChangeRangeSlider', value, newValue, lastValue, color);
-
-    this.setState({
-      lastSliderValue: lastValue === undefined ? newValue : lastSliderValue
-    }, () => {
-      if (lastValue !== this.state.lastSliderValue) {
-        this.changeColor(color);
-      }
-    });
-  }
-
-  @autobind
-  onChangeRangeInput(value, props) {
-    const color = this.props.config.colorObj.remix({ [props['data-type']]: value });
-    // console.log('onChangeRangeInput', value, props, color);
-
-    this.changeColor(color);
-  }
-
-  @autobind
-  onClickSliderMenu(e) {
-    e.preventDefault();
-
-    this.context.setOptions({ slider: e.currentTarget.dataset.type });
-  }
-
-  @autobind
-  onChangeSteps(value) {
-    if (value) {
-      this.context.setOptions({ steps: value });
+    if (validateHex(color)) {
+      dispatch(push(`/${color}`));
     }
-  }
+  };
 
-  @autobind
-  onClickTypesMenu(e) {
+  handleChangeSteps = (data) => {
+    const { dispatch } = this.props;
+
+    if (isNumber(data.value) && data.value > 0) {
+      dispatch(setOptions({ [data.name]: data.value }));
+    }
+  };
+
+  handleClickToggleSidebar = () => {
+    const { app, dispatch } = this.props;
+
+    dispatch(toggleSidebar(!app.isSidebarActive));
+  };
+
+  handleClickTypesMenu = (e) => {
     e.preventDefault();
+    const { dispatch } = this.props;
 
-    this.context.setOptions({ type: e.currentTarget.dataset.type });
-  }
+    dispatch(setOptions({ type: e.currentTarget.dataset.type }));
+  };
 
-  @autobind
-  onClickRandomColor(e) {
-    e.preventDefault();
-    const el = e.currentTarget;
-    const randomColor = this.props.config.colorObj.random();
+  handleClickRandomColor = ({ currentTarget }) => {
+    const { color: { instance }, dispatch } = this.props;
+    const randomColor = instance.random();
 
-    $(el).addClass('rotate');
+    $(currentTarget).addClass('rotate');
     setTimeout(() => {
-      $(el).removeClass('rotate');
+      $(currentTarget).removeClass('rotate');
     }, 400);
 
-    this.changeColor(randomColor.hsl);
-  }
+    dispatch(push(instance.hsl2hex(randomColor.hsl)));
+  };
 
-  @autobind
-  onClickSaveColor(e) {
-    e.preventDefault();
-    const el = e.currentTarget;
-    const $icon = $(el).find('.fa-heart');
+  handleClickSaveColor = ({ currentTarget }) => {
+    const { color, dispatch } = this.props;
+    const $icon = $(currentTarget).find('.fa-heart');
     const offset = $icon.offset();
 
     $($icon.clone()
@@ -236,182 +176,154 @@ class Header extends React.Component {
         fontSize: $icon.css('font-size'),
         position: 'absolute',
         top: offset.top,
-        left: offset.left
+        left: offset.left,
       })
       .addClass('grow-element'))
       .appendTo('body');
 
     $('.grow-element').addClass('grow');
+
     setTimeout(() => {
       $('.grow-element').remove();
     }, 800);
 
-    this.context.addToFavorites();
+    dispatch(saveColor(color.hex));
+  };
+
+  handleKeyPress = (e) => {
+    if (e.target.tagName === 'BODY' && e.keyCode === 32) {
+      e.preventDefault();
+      document.querySelector('.random-color').click();
+    }
+  };
+
+  renderToggle() {
+    const { app: { isSidebarActive } } = this.props;
+
+    return (
+      <div className="app__toggle">
+        <input
+          id="navigation-checkbox"
+          className="navigation-checkbox"
+          type="checkbox"
+          checked={isSidebarActive}
+          onChange={this.handleClickToggleSidebar}
+        />
+        <label className="navigation-toggle" htmlFor="navigation-checkbox">
+          <span className="navigation-toggle-icon" />
+        </label>
+      </div>
+    );
+  }
+
+  renderInput() {
+    const { value } = this.state;
+    const { color: { hex } } = this.props;
+
+    return (
+      <div className="app__input">
+        <div className="input-group">
+          <span className="input-group-btn">
+            <button
+              className="btn btn-light random-color"
+              title="Randomize Color"
+              onClick={this.handleClickRandomColor}
+            >
+              <span className="fa fa-refresh" />
+            </button>
+          </span>
+          <input
+            type="text"
+            className="form-control input-color"
+            value={value}
+            tabIndex={-1}
+            onChange={this.handleChangeColorInput}
+          />
+          {Clipboard.isSupported() && (
+            <span className="input-group-btn">
+              <button
+                className="btn btn-light copy-button"
+                title="Copy to clipboard"
+                data-clipboard-text={hex}
+              >
+                <span className="fa fa-clipboard" />
+              </button>
+            </span>
+          )}
+          <span className="input-group-btn">
+            <button
+              className="btn btn-light save-color"
+              title="Add to Favorites"
+              onClick={this.handleClickSaveColor}
+            >
+              <span className="fa fa-heart" />
+            </button>
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  renderSelectors() {
+    const { color: { steps, type } } = this.props;
+
+    return (
+      <div className="app__type">
+        {getColorModes().map((d, i) => (
+          <div key={i} className={d.name}>
+            <div className="btn-group" role="group" aria-label={d.name}>
+              {d.types.map((m, j) => (
+                <a
+                  key={j} href="#"
+                  className={`btn ${(type === m.key ? 'btn-primary' : 'btn-light')}`}
+                  data-type={m.key}
+                  onClick={this.handleClickTypesMenu}
+                >
+                  {m.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div className="steps">
+          <span className="fa fa-th" />
+          <NumericField
+            name="steps"
+            className="form-control"
+            min={1}
+            max={64}
+            value={steps}
+            tabIndex={++this.tabIndex}
+            onChange={this.handleChangeSteps}
+          />
+        </div>
+      </div>
+    );
   }
 
   render() {
-    const CONFIG = this.props.config;
+    const { color, dispatch } = this.props;
+    const { hex, instance } = color;
 
-    const vars = {
-      keys: [
-        CONFIG.slider === 'hsl' ? 'h' : 'r',
-        CONFIG.slider === 'hsl' ? 's' : 'g',
-        CONFIG.slider === 'hsl' ? 'l' : 'b'
-      ],
-      types: {}
-    };
-
-    Object.keys(CONFIG.types).forEach(t => {
-      if (!vars.types[CONFIG.types[t].model]) {
-        vars.types[CONFIG.types[t].model] = [];
-      }
-      CONFIG.types[t].key = t;
-      vars.types[CONFIG.types[t].model].push(CONFIG.types[t]);
-    });
-
-    vars.sliders = [
-      {
-        name: CONFIG.slider === 'hsl' ? 'Hue' : 'Red',
-        key: vars.keys[0],
-        value: Math.round(CONFIG.slider === 'hsl' ? (CONFIG.colorObj.lightness === 0 || CONFIG.colorObj.saturation === 0 ? 0 : (this.state.lastSliderValue === 360 ? this.state.lastSliderValue : CONFIG.colorObj.hue)) : CONFIG.colorObj.red),
-        max: CONFIG.types[vars.keys[0]].max
-      },
-      {
-        name: CONFIG.slider === 'hsl' ? 'Saturation' : 'Green',
-        key: vars.keys[1],
-        value: Math.round(CONFIG.slider === 'hsl' ? (CONFIG.colorObj.lightness === 0 ? 0 : CONFIG.colorObj.saturation) : CONFIG.colorObj.green),
-        max: CONFIG.types[vars.keys[1]].max
-      },
-      {
-        name: CONFIG.slider === 'hsl' ? 'Lightness' : 'Blue',
-        key: vars.keys[2],
-        value: Math.round(CONFIG.slider === 'hsl' ? CONFIG.colorObj.lightness : CONFIG.colorObj.blue),
-        max: CONFIG.types[vars.keys[2]].max
-      }
-    ];
-
-    // console.log(CONFIG.colorObj.hue, CONFIG.colorObj.saturation, CONFIG.colorObj.lightness);
+    if (!instance) {
+      return null;
+    }
 
     return (
       <div
         className="app__header"
-        style={{ backgroundColor: CONFIG.color, borderColor: CONFIG.colorObj.darken(15) }}>
+        style={{ backgroundColor: hex, borderColor: instance.darken(15) }}
+      >
         <div className="app__header__wrapper">
           <div className="logo">
-            <InlineSVG src={require('../../media/colormeup.svg')} uniquifyIDs={false} onLoad={this.svgLoaded}>
-              <img src={require('../../media/colormeup.png')} alt="colormeup" />
+            <InlineSVG src={require('assets/media/brand/logo.svg')} uniquifyIDs={false} onLoad={this.svgLoaded}>
+              <img src={require('assets/media/brand/logo.png')} alt="colormeup" />
             </InlineSVG>
           </div>
-
-          <div className="app__input">
-            <div className="input-group input-group-lg">
-              <span className="input-group-btn">
-                <a
-                  href="#"
-                  className="btn btn-secondary random-color"
-                  title="Randomize Color"
-                  onClick={this.onClickRandomColor}>
-                  <span className="fa fa-refresh" />
-                </a>
-							</span>
-              <input
-                type="text"
-                className="form-control input-color"
-                value={this.state.color}
-                tabIndex={1}
-                onChange={this.onChangeColorInput} />
-							<span className="input-group-btn">
-                <a
-                  href="#"
-                  className="btn btn-secondary save-color"
-                  title="Add to Favorites"
-                  onClick={this.onClickSaveColor}>
-                  <span className="fa fa-heart" />
-                </a>
-							</span>
-            </div>
-          </div>
-          <div className="app__sliders">
-            <ul className="app__sliders__menu list-unstyled">
-              <li className={CONFIG.slider === 'hsl' ? 'active' : null}>
-                <a href="#" data-type="hsl" onClick={this.onClickSliderMenu}>HSL</a>
-              </li>
-              <li className={CONFIG.slider === 'rgb' ? 'active' : null}>
-                <a href="#" data-type="rgb" onClick={this.onClickSliderMenu}>RGB</a></li>
-            </ul>
-            <div className="app__sliders__list">
-              {vars.sliders.map((slider, i) =>
-                (<div key={i} className="slider-wrapper">
-                  <span className="range-name">{slider.name}</span>
-                  <InputSlider
-                    className="slider"
-                    data-type={slider.key}
-                    x={slider.value}
-                    xmax={slider.max}
-                    onChange={this.onChangeRangeSlider} />
-                  <NumericInput
-                    name="range-input"
-                    className="form-control"
-                    min={0}
-                    max={slider.max}
-                    value={slider.value}
-                    data-type={slider.key}
-                    tabIndex={++this.tabIndex}
-                    onChange={this.onChangeRangeInput} />
-                </div>)
-              )}
-            </div>
-          </div>
-
-          <div className="app__info">
-            {Object.keys(vars.types).map((t, i) =>
-              (<div key={i} className={t}>
-                {vars.types[t].map((it, j) =>
-                  (<div key={j} className="color-value">
-                    <div
-                      className={`color-${it.key}`}>{Math.round(CONFIG.colorObj[it.name.toLowerCase()])}</div>
-                    {it.name.toLowerCase()}
-                  </div>)
-                )}
-              </div>)
-            )}
-          </div>
-
-          <div className="app__type">
-            {Object.keys(vars.types).map((t, i) =>
-              (<div key={i} className={t}>
-                <div className="btn-group" role="group" aria-label={t}>
-                  {vars.types[t].map((it, j) =>
-                    (<a
-                      key={j} href="#"
-                      className={`btn btn-${(CONFIG.type === it.key ? 'selected' : 'secondary')}`}
-                      data-type={it.key}
-                      onClick={this.onClickTypesMenu}>
-                      {it.name}
-                    </a>)
-                  )}
-                </div>
-              </div>)
-            )}
-            <div className="steps">
-              <span className="fa fa-th" />
-              <NumericInput
-                className="form-control input-steps"
-                min={1}
-                max={64}
-                value={CONFIG.steps}
-                tabIndex={++this.tabIndex}
-                onChange={this.onChangeSteps} />
-            </div>
-          </div>
-          <div className="app__toggle">
-            <input
-              id="navigation-checkbox" className="navigation-checkbox" type="checkbox"
-              onChange={this.onClickToggleSidebar} />
-            <label className="navigation-toggle" htmlFor="navigation-checkbox">
-              <span className="navigation-toggle-icon" />
-            </label>
-          </div>
+          {this.renderInput()}
+          <Sliders color={color} dispatch={dispatch} />
+          {this.renderSelectors()}
+          {this.renderToggle()}
         </div>
       </div>
     );

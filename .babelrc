@@ -1,22 +1,43 @@
 {
   "presets": [
-    "es2015-native-modules",
+    [
+      "env", {
+      "targets": {
+        "browsers": ["last 2 versions", "safari >= 8", "ios > 8"]
+      },
+      "modules": false
+    }
+    ],
     "react",
     "stage-1"
   ],
   "plugins": [
-    "transform-decorators-legacy"
+    [
+      "transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }
+    ]
   ],
+  "compact": "true",
   "env": {
     "production": {
       "plugins": [
-        "transform-runtime"
+        "lodash",
+        "array-includes",
+        "transform-flow-strip-types"
       ]
     },
     "development": {
       "plugins": [
         "react-hot-loader/babel"
       ]
+    },
+    "test": {
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ],
+      "sourceMaps": "both"
     }
   }
 }

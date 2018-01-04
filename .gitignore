@@ -1,7 +1,6 @@
-bower_components
+coverage
 node_modules
 dist
-docs
 .tmp
 .sass-cache
 .publish

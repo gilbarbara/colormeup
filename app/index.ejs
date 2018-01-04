@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en" class="ie6" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="ie7" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="ie8" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="ie9" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>> <!--<![endif]-->
+<html lang="en" class="" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>>
 <head>
   <meta charset="utf-8">
   <title><%= htmlWebpackPlugin.options.title || 'Webpack App'%></title>
-
-  <% if (htmlWebpackPlugin.files.favicon) { %>
-  <link rel="shortcut icon" href="<%= htmlWebpackPlugin.files.favicon%>">
-  <% } %>
-  <% if (htmlWebpackPlugin.options.mobile) { %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <% } %>
   <meta property="og:title" content="colormeup - Know your colors" />
-  <meta property="og:url" content="http://colormeup.co" />
+  <meta property="og:url" content="https://colormeup.co" />
   <meta property="og:description" content="A tool to inspect colors and play with its many variations in HSL or RGB." />
-  <meta property="og:image" content="http://colormeup.co/media/og-image.png" />
-  <link rel="apple-touch-icon" href="<% - require('./media/icon-57x57.png') %>">
-  <link rel="apple-touch-icon" sizes="72x72" href="<%- require('./media/icon-72x72.png') %>">
-  <link rel="apple-touch-icon" sizes="76x76" href="<%- require('./media/icon-76x76.png') %>">
-  <link rel="apple-touch-icon" sizes="114x114" href="<%- require('./media/icon-57x57@2x.png') %>">
-  <link rel="apple-touch-icon" sizes="120x120" href="<%- require('./media/icon-60x60@2x.png') %>">
-  <link rel="apple-touch-icon" sizes="144x144" href="<%- require('./media/icon-72x72@2x.png') %>">
-  <link rel="apple-touch-icon" sizes="152x152" href="<%- require('./media/icon-76x76@2x.png') %>">
-  <link rel="apple-touch-icon" sizes="180x180" href="<%- require('./media/icon-60x60@3x.png') %>">
-  <link rel="apple-touch-icon" sizes="228x228" href="<%- require('./media/icon-57x57@4x.png') %>">
-  <link rel="icon" sizes="192x192" href="<%- require('./media/icon-192x192.png') %>">
-
+  <meta property="og:image" content="https://colormeup.co/media/og-image-v2.png" />
+  <link rel="shortcut icon" href="<%- require('assets/media/icons/favicon.ico') %>">
+  <link rel="icon" type="image/png" href="<%- require('assets/media/icons/favicon-16x16.png') %>" sizes="16x16">
+  <link rel="icon" type="image/png" href="<%- require('assets/media/icons/favicon-32x32.png') %>" sizes="32x32">
+  <link rel="apple-touch-icon" sizes="180x180" href="<%- require('assets/media/icons/apple-touch-icon.png') %>">
+  <link rel="manifest" href="/manifest.json">
+  <% require('assets/media/icons/icon-96x96.png') %>
+  <% require('assets/media/icons/icon-144x144.png') %>
+  <% require('assets/media/icons/icon-192x192.png') %>
+  <% require('assets/media/icons/icon-512x512.png') %>
+  <% require('assets/media/images/og-image-v1.png') %>
   <% for (var css in htmlWebpackPlugin.files.css) { %>
   <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
   <% } %>
@@ -50,15 +39,7 @@
 <![endif]-->
 <% } %>
 
-<% if (htmlWebpackPlugin.options.appMountId) { %>
-<div id="<%= htmlWebpackPlugin.options.appMountId%>"></div>
-<% } %>
-
-<% if (htmlWebpackPlugin.options.appMountIds && htmlWebpackPlugin.options.appMountIds.length > 0) { %>
-<% for (var index in htmlWebpackPlugin.options.appMountIds) { %>
-<div id="<%= htmlWebpackPlugin.options.appMountIds[index]%>"></div>
-<% } %>
-<% } %>
+<div id="react" style="min-height: 100vh;"></div>
 
 <% if (htmlWebpackPlugin.options.window) { %>
 <script>

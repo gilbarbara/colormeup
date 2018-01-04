@@ -1,0 +1,18 @@
+@mixin background-image-svg($name, $width, $height) {
+  background-image: url('#{$name}.png'); // IE8 & below
+  background-image: none, url('#{$name}.svg');
+  background-size: $width $height;
+}
+
+@mixin truncate($width: 100%) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: $width;
+}
+
+@mixin striped-bg($bg-color: #ccc, $darken-amount: 5%, $stripe-color: darken($bg-color, $darken-amount)) {
+  background: $bg-color linear-gradient(-45deg, $stripe-color 25%, transparent 25%, transparent 50%, $stripe-color 50%, $stripe-color 75%, transparent 75%, transparent);
+  background-size: 4rem 4rem;
+}
+

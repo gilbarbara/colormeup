@@ -1,0 +1,43 @@
+$grid-gutter-width: 3rem;
+
+/* stylelint-disable unit-blacklist */
+$grid-breakpoints: (
+  xs: 0,
+  ix: 400px,
+  sm: 576px,
+  md: 768px,
+  im: 880px,
+  lg: 1024px,
+  xl: 1280px
+);
+/* stylelint-enable */
+
+$container-max-widths: (
+  ix: 40rem,
+  sm: 56rem,
+  md: 72rem,
+  im: 80rem,
+  lg: 96rem,
+  xl: 114rem
+);
+
+$theme-colors: (
+  primary: #000,
+);
+
+$font-family-sans-serif: 'Lato', Helvetica, Arial, sans-serif;
+$headings-font-weight: 700;
+$font-size-base: 1.4rem;
+
+$btn-border-radius-sm: 0;
+$input-btn-padding-x-sm: 1.6rem;
+$input-btn-padding-y-sm: 0.8rem;
+
+$btn-border-radius: 0;
+$input-btn-padding-x: 2rem;
+$input-btn-padding-y: 1rem;
+
+$btn-border-radius-lg: 0;
+$input-btn-padding-x-lg: 2.4rem;
+$input-btn-padding-y-lg: 1.2rem;
+
