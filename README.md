@@ -1,8 +1,8 @@
 Color Me Up
 =================
 
-##### Know thy color!
+##### Know your colors!
 
-colormeup is a tool to inspect a color and play with its many variations in Hue (0-360), Saturation and Lightness (0-100) and also RGB (0-255).  
+colormeup is a tool to inspect a color and play with its many variations.
 
 See it live: <a href="http://colormeup.co" target="_blank">http://colormeup.co</a>
