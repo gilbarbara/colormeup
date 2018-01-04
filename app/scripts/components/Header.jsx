@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InlineSVG from 'react-inlinesvg';
-import Clipboard from 'clipboard';
 import { validateHex } from 'colorizr';
 import { getColorModes, isNumber } from 'modules/helpers';
 
 import { push, saveColor, setOptions, toggleSidebar } from 'actions';
 
+import CopyToClipboard from 'components/CopyToClipboard';
 import NumericField from 'components/NumericField';
 import Sliders from 'components/Sliders';
 
@@ -28,7 +28,6 @@ class Header extends React.Component {
 
   componentDidMount() {
     document.addEventListener('keypress', this.handleKeyPress);
-    this.clipboard = new Clipboard('.copy-button');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,7 +41,6 @@ class Header extends React.Component {
 
   componentWillUnmount() {
     document.body.removeEventListener('keypress', this.handleKeyPress);
-    this.clipboard.destroy();
   }
 
   updateColors(props = this.props) {
@@ -239,17 +237,9 @@ class Header extends React.Component {
             tabIndex={-1}
             onChange={this.handleChangeColorInput}
           />
-          {Clipboard.isSupported() && (
-            <span className="input-group-btn">
-              <button
-                className="btn btn-light copy-button"
-                title="Copy to clipboard"
-                data-clipboard-text={hex}
-              >
-                <span className="fa fa-clipboard" />
-              </button>
-            </span>
-          )}
+          <span className="input-group-btn">
+            <CopyToClipboard className="btn btn-light" text={hex} />
+          </span>
           <span className="input-group-btn">
             <button
               className="btn btn-light save-color"

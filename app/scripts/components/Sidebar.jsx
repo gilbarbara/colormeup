@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Clipboard from 'clipboard';
 import cx from 'classnames';
 
 import config from 'config';
 import { resetUserData, setUserOptions, toggleSidebar } from 'actions';
+import CopyToClipboard from './CopyToClipboard';
 
 export default class Sidebar extends React.Component {
   state = {
@@ -18,14 +18,6 @@ export default class Sidebar extends React.Component {
     dispatch: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
   };
-
-  componentDidMount() {
-    this.clipboard = new Clipboard('.copy-button');
-  }
-
-  componentWillUnmount() {
-    this.clipboard.destroy();
-  }
 
   handleClickResetFavorites = () => {
     const { confirmReset } = this.state;
@@ -186,36 +178,15 @@ export default class Sidebar extends React.Component {
           <div className="code">
             <div className="hex-copy clearfix">
               <span>{vars.hex}</span>
-              {Clipboard.isSupported() && (
-                <button
-                  className="copy-button"
-                  data-clipboard-text={vars.hex}
-                >
-                  <i className="fa fa-copy" />
-                </button>
-              )}
+              <CopyToClipboard text={vars.hex} />
             </div>
             <div className="rgb-copy clearfix">
               <span>{vars.rgb}</span>
-              {Clipboard.isSupported() && (
-                <button
-                  className="copy-button"
-                  data-clipboard-text={vars.rgb}
-                >
-                  <i className="fa fa-copy" />
-                </button>
-              )}
+              <CopyToClipboard text={vars.rgb} />
             </div>
             <div className="hsl-copy clearfix">
               <span>{vars.hsl}</span>
-              {Clipboard.isSupported() && (
-                <button
-                  className="copy-button"
-                  data-clipboard-text={vars.hsl}
-                >
-                  <i className="fa fa-copy" />
-                </button>
-              )}
+              <CopyToClipboard text={vars.hsl} />
             </div>
           </div>
         </div>
