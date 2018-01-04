@@ -2,11 +2,20 @@
 engines:
   eslint:
     enabled: true
-  scss-lint:
+    channel: "eslint-4"
+    config:
+      extensions:
+        - .js
+        - .jsx
+  stylelint:
     enabled: true
 ratings:
   paths:
   - "**.js"
+  - "**.jsx"
   - "**.scss"
 exclude_paths:
-- node_modules/**/*
+  - coverage/**/*
+  - dist/**/*
+  - node_modules/**/*
+  - test/**/*

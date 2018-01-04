@@ -39,20 +39,16 @@ const BrowserDetect = {
     { string: navigator.userAgent, subString: 'Opera', identity: 'Opera' },
     { string: navigator.userAgent, subString: 'OPR', identity: 'Opera' },
     { string: navigator.userAgent, subString: 'Chrome', identity: 'Chrome' },
-    { string: navigator.userAgent, subString: 'Safari', identity: 'Safari' }
-  ]
+    { string: navigator.userAgent, subString: 'Safari', identity: 'Safari' },
+  ],
 };
 
 BrowserDetect.init();
 
 Modernizr.addTest('ipad', Boolean(navigator.userAgent.match(/iPad/i)));
-
 Modernizr.addTest('iphone', Boolean(navigator.userAgent.match(/iPhone/i)));
-
 Modernizr.addTest('ipod', Boolean(navigator.userAgent.match(/iPod/i)));
-
 Modernizr.addTest('ios', (Modernizr.ipad || Modernizr.ipod || Modernizr.iphone));
-
 Modernizr.addTest('ie', Boolean(BrowserDetect.browser === 'Explorer'));
 
 require('expose?MobileDetect!mobile-detect');

@@ -1,168 +1,180 @@
 import React from 'react';
-import shouldPureComponentUpdate from 'react-pure-render/function';
-import classNames from 'classnames';
-import { autobind } from 'core-decorators';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import Clipboard from 'clipboard';
+import cx from 'classnames';
+
+import config from 'config';
+import { resetUserData, setUserOptions, toggleSidebar } from 'actions';
 
 export default class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      pendingReset: false
-    };
-  }
-
-  static contextTypes = {
-    hideSidebar: React.PropTypes.func,
-    log: React.PropTypes.func,
-    setHash: React.PropTypes.func,
-    updateData: React.PropTypes.func
+  state = {
+    confirmReset: false,
   };
 
   static propTypes = {
-    config: React.PropTypes.object.isRequired
+    app: PropTypes.object.isRequired,
+    color: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
   };
 
-  shouldComponentUpdate = shouldPureComponentUpdate;
-
   componentDidMount() {
-    ZeroClipboard.config({ swfPath: require('zeroclipboard/dist/ZeroClipboard.swf') });
-    const client = new ZeroClipboard(document.getElementsByClassName('copy-button'));
+    this.clipboard = new Clipboard('.copy-button');
   }
 
-  @autobind
-  onClickResetFavorites(e) {
-    e.preventDefault();
-
-    if (this.state.pendingReset) {
-      this.context.updateData('colors', []);
-    }
-    else {
-      this.setState({
-        pendingReset: true
-      }, () => {
-        setTimeout(() => {
-          this.setState({
-            pendingReset: false
-          });
-        }, 4000);
-      });
-    }
+  componentWillUnmount() {
+    this.clipboard.destroy();
   }
 
-  @autobind
-  onClickHelp(e) {
-    e.preventDefault();
-    this.context.updateData('help', !this.props.config.data.help);
+  handleClickResetFavorites = () => {
+    const { confirmReset } = this.state;
+    const { dispatch } = this.props;
+
+    if (confirmReset) {
+      dispatch(resetUserData());
+      return;
+    }
+
+    this.setState({
+      confirmReset: true,
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          confirmReset: false,
+        });
+      }, 4000);
+    });
+  };
+
+  handleClickHelp = () => {
+    const { dispatch, user } = this.props;
+
+    dispatch(setUserOptions({ showHelp: !user.showHelp }));
 
     $('.help .text').slideToggle();
-  }
+  };
 
-  @autobind
-  onClickHideStarter(e) {
-    e.preventDefault();
+  handleClickHideStarter = () => {
+    const { dispatch, user } = this.props;
 
-    this.context.updateData('starter', !this.props.config.data.starter);
-  }
+    dispatch(setUserOptions({ showStarterKit: !user.showStarterKit }));
+  };
 
-  @autobind
-  onClickRestore(e) {
-    e.preventDefault();
+  handleClickRestore = () => {
+    const { dispatch } = this.props;
 
-    this.context.updateData('starter', true);
-  }
+    dispatch(setUserOptions({ showStarterKit: true }));
+  };
 
-  @autobind
-  onClickColor(e) {
-    e.preventDefault();
+  handleClickColor = () => {
+    const { dispatch } = this.props;
 
-    this.context.hideSidebar();
-    this.context.setHash({
-      color: e.currentTarget.dataset.color
-    });
-  }
-
-  preventClick(e) {
-    e.preventDefault();
-  }
+    dispatch(toggleSidebar(false));
+  };
 
   render() {
-    const CONFIG = this.props.config;
-    const STATE = this.state;
+    const { confirmReset } = this.state;
+    const {
+      app: { isSidebarActive },
+      color: { hex, instance },
+      user: { colors, showHelp, showStarterKit },
+    } = this.props;
 
-    const currentColor = CONFIG.colorObj.hsl2hex({
-      h: (CONFIG.colorObj.hue + 90) % 360,
-      s: (CONFIG.colorObj.saturation < 30 ? Math.abs(CONFIG.colorObj.saturation + 30) : CONFIG.colorObj.saturation),
-      l: (CONFIG.colorObj.lightness < 35 ? CONFIG.colorObj.lightness + 20 : CONFIG.colorObj.lightness)
+    if (!instance) {
+      return null;
+    }
+
+    const currentColor = instance.hsl2hex({
+      h: (instance.hue + 90) % 360,
+      s: (instance.saturation < 30 ? Math.abs(instance.saturation + 30) : instance.saturation),
+      l: (instance.lightness < 35 ? instance.lightness + 20 : instance.lightness),
     });
-    const backupColor = CONFIG.colorObj.lightness < 30 ? '#FFF' : '#333';
+    const backupColor = instance.lightness < 30 ? '#FFF' : '#333';
 
     const vars = {
-      hex: CONFIG.color,
-      hsl: `hsl(${Math.round(CONFIG.colorObj.hue)}, ${Math.round(CONFIG.colorObj.saturation)}%,  ${Math.round(CONFIG.colorObj.lightness)}%)`,
-      rgb: `rgb(${CONFIG.colorObj.red}, ${CONFIG.colorObj.green}, ${CONFIG.colorObj.blue}')`,
-      currentColor: (CONFIG.colorObj.saturation > 8 ? currentColor : backupColor)
+      hex,
+      hsl: `hsl(${Math.round(instance.hue)}, ${Math.round(instance.saturation)}%,  ${Math.round(instance.lightness)}%)`,
+      rgb: `rgb(${instance.red}, ${instance.green}, ${instance.blue})`,
+      currentColor: (instance.saturation > 8 ? currentColor : backupColor),
     };
 
     const output = {
-      favorites: (<p>No favorites yet!</p>)
+      favorites: (<p>No favorites yet!</p>),
     };
 
-    if (CONFIG.data.starter) {
+    if (showStarterKit) {
       output.default = (
         <div className="app__sidebar__list default">
           <h3>
             <span className="fa fa-bolt" /> starter kit
-            <a
-              href="#" title="Hide this kit" className="hide-starter reset"
-              onClick={this.onClickHideStarter}>
+            <button
+              title="Hide this kit"
+              className="hide-starter reset"
+              onClick={this.handleClickHideStarter}
+            >
               <span className="fa fa-eye-slash" />
-            </a>
+            </button>
           </h3>
           <div className="items">{
-            CONFIG.defaultColors.map((d, i) =>
-              (<a
+            config.colors.map((d, i) =>
+              (<Link
                 key={i}
-                href="#"
-                data-color={d}
+                to={`/${d}`}
                 style={{ backgroundColor: d }}
-                onClick={this.onClickColor} />)
+                onClick={this.handleClickColor}
+              />)
             )
-          }</div>
+          }
+          </div>
         </div>
       );
     }
     else {
       output.restore = (
         <p className="restore-starter">
-          <a
-            href="#" className="btn btn-secondary btn-xs"
-            onClick={this.onClickRestore}>Restore starter kit</a>
+          <button
+            className="btn btn-secondary btn-xs"
+            onClick={this.handleClickRestore}
+          >Restore starter kit
+          </button>
         </p>
       );
     }
 
-    if (CONFIG.data.colors.length) {
-      output.favorites = CONFIG.data.colors.map((d, i) =>
-        (<a
-          key={i} href="#"
-          data-color={d}
+    if (colors.length) {
+      output.favorites = colors.map((d, i) =>
+        (<Link
+          to={`/${d}`}
+          key={i}
           style={{ backgroundColor: d }}
-          onClick={this.onClickColor} />)
+          onClick={this.handleClickColor}
+        />)
       );
     }
 
     return (
-      <div className="app__sidebar">
+      <div
+        className={cx('app__sidebar', {
+          visible: isSidebarActive,
+        })}
+      >
         <div className="app__sidebar__list favorites">
           <h3><span className="fa fa-heart" /> your favorites
-            {CONFIG.data.colors.length ?
-             (<a
-               href="#" title="Erase your favorites" className="erase-favorites reset"
-               onClick={this.onClickResetFavorites}>
-               <span
-                 className={classNames('fa', { 'fa-trash': !STATE.pendingReset, 'fa-check-circle': STATE.pendingReset })} />
-             </a>) : undefined}
+            {colors.length > 0 && (
+              <button
+                title="Erase your favorites"
+                className="erase-favorites reset"
+                onClick={this.handleClickResetFavorites}
+              >
+                <span
+                  className={cx('fa', {
+                    'fa-trash': !confirmReset,
+                    'fa-check-circle': confirmReset,
+                  })}
+                />
+              </button>
+            )}
           </h3>
           <div className="items">{output.favorites}</div>
         </div>
@@ -174,39 +186,48 @@ export default class Sidebar extends React.Component {
           <div className="code">
             <div className="hex-copy clearfix">
               <span>{vars.hex}</span>
-              <a
-                href="#" className="copy-button"
-                data-clipboard-text={vars.hex} onClick={this.preventClick}>
-                <i className="fa fa-copy" />
-              </a>
+              {Clipboard.isSupported() && (
+                <button
+                  className="copy-button"
+                  data-clipboard-text={vars.hex}
+                >
+                  <i className="fa fa-copy" />
+                </button>
+              )}
             </div>
             <div className="rgb-copy clearfix">
               <span>{vars.rgb}</span>
-              <a
-                href="#" className="copy-button" data-clipboard-text={vars.rgb}
-                onClick={this.preventClick}>
-                <i className="fa fa-copy" />
-              </a>
+              {Clipboard.isSupported() && (
+                <button
+                  className="copy-button"
+                  data-clipboard-text={vars.rgb}
+                >
+                  <i className="fa fa-copy" />
+                </button>
+              )}
             </div>
             <div className="hsl-copy clearfix">
               <span>{vars.hsl}</span>
-              <a
-                href="#" className="copy-button"
-                data-clipboard-text={vars.hsl} onClick={this.preventClick}>
-                <i className="fa fa-copy" />
-              </a>
+              {Clipboard.isSupported() && (
+                <button
+                  className="copy-button"
+                  data-clipboard-text={vars.hsl}
+                >
+                  <i className="fa fa-copy" />
+                </button>
+              )}
             </div>
           </div>
         </div>
 
         <div className="app__sidebar__list help">
           <h3>
-            <a href="#" className="toggle" onClick={this.onClickHelp}>
+            <button className="toggle" onClick={this.handleClickHelp}>
               <span className="fa fa-question-circle" /> Help
-            </a>
+            </button>
           </h3>
-          <div className={classNames('text', { hidden: !CONFIG.data.help })}>
-            <h5 style={{ color: CONFIG.colorObj.lightness < 20 ? '#fff' : CONFIG.color }}>Know thy color!</h5>
+          <div className={cx('text', { hidden: !showHelp })}>
+            <h5 style={{ color: instance.lightness < 20 ? '#fff' : hex }}>Know your colors!</h5>
             <p>colormeup is a tool to inspect colors and play with its many variations in HSL or RGB.
             </p>
             <ul className="list-unstyled">

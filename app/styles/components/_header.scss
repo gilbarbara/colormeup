@@ -5,19 +5,16 @@
   padding: ($grid-gutter-width / 2) ($grid-gutter-width / 2) $grid-gutter-width;
   position: relative;
   text-align: center;
-  width: 100%;
 
   &__wrapper {
     margin: 0 auto;
-
-    @include md {
-      width: 64rem;
-    }
+    max-width: 55rem;
+    width: 100%;
   }
 
   .logo {
-    height: 0;
-    padding-bottom: calc(80% / 5);
+    line-height: 1;
+    text-align: left;
     width: 80%;
 
     @include sm {
@@ -25,41 +22,47 @@
     }
 
     svg {
+      height: 4rem;
       pointer-events: none;
 
       @include md {
-        path {
-          cursor: pointer;
-          pointer-events: painted;
-        }
+        height: 7.4rem;
+      }
+
+      path {
+        cursor: pointer;
+        pointer-events: painted;
       }
     }
   }
 }
 
 .app__input {
-  margin-top: 3rem;
+  margin-top: $grid-gutter-width / 3;
   position: relative;
+
+  @include ix {
+    margin-top: $grid-gutter-width;
+  }
 
   .input-group {
     opacity: 0.8;
     position: relative;
 
     .fa {
-      font-size: 2.4rem;
+      font-size: 1.6rem;
     }
 
-    &-addon {
-      a {
-        color: $body-color;
-        display: inline-block;
-        width: 2.4rem;
+    &-btn {
+      button {
+        background-color: rgba($white, 0.8);
+        padding: 1.4rem;
       }
     }
   }
 
   .form-control {
-    -webkit-appearance: none;
+    appearance: none;
     border-width: 0.1rem;
     font-size: 2.4rem;
 
@@ -77,79 +80,6 @@
     &.rotate {
       .fa-refresh {
         animation: rotate 0.4s;
-      }
-    }
-  }
-}
-
-.app__info {
-  display: none;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  margin-top: ($grid-gutter-width / 1.5);
-  min-height: 3.2rem;
-
-  > div {
-    background-color: rgba(#fff, 0.4);
-    border-radius: 0.4rem;
-    flex: 1 100%;
-    font-size: 0;
-    padding: 0.8rem;
-
-    @include sm {
-      flex: 1 1 auto;
-    }
-
-    @include md {
-      padding: 1.2rem;
-    }
-
-    &:nth-child(1) {
-      @include sm {
-        margin-right: 1rem;
-      }
-
-      @include md {
-        margin-right: 2rem;
-      }
-    }
-
-    &:nth-child(2) {
-      margin-top: ($grid-gutter-width / 2);
-
-      @include sm {
-        margin-left: 1rem;
-        margin-top: 0;
-      }
-
-      @include md {
-        margin-left: 2rem;
-      }
-    }
-  }
-
-  .color-value {
-    display: inline-block;
-    font-size: 1.4rem;
-    line-height: 1;
-    width: (100% / 3);
-
-    &:nth-child(1n+2) {
-      border-left: 0.1rem solid rgba(#000, 0.2);
-    }
-
-    div {
-      font-family: Montserrat, sans-serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      min-height: 2.2rem;
-    }
-
-    &:nth-child(1n+4) {
-      margin-top: 1.2rem;
-
-      @include md {
-        margin-top: 0;
       }
     }
   }
@@ -177,7 +107,9 @@
   }
 
   .btn {
+    box-shadow: none;
     line-height: 1;
+    outline: none;
     padding: 0.8rem 1rem;
   }
 
@@ -197,7 +129,7 @@
       margin: 0 auto;
     }
 
-    @include is {
+    @include sm {
       margin: 0;
     }
 
@@ -219,7 +151,7 @@
       top: 0.65rem;
       z-index: 2;
 
-      @include is-only {
+      @include sm-only {
         display: none;
       }
     }
@@ -228,5 +160,4 @@
   a.active {
     font-weight: 700;
   }
-
 }

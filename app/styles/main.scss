@@ -2,87 +2,31 @@
 @import url('//fonts.googleapis.com/css?family=Lato:400,700|Montserrat:700');
 
 // *** Variable
-@import 'base/variables';
+@import 'variables/app';
+@import 'variables/bootstrap';
 
 // *** Libs
-@import 'font-awesome/scss/font-awesome';
-@import 'sass-mediaqueries/media-queries';
+@import '~font-awesome/scss/font-awesome';
+@import '~sass-mediaqueries/media-queries';
 
-// *** Base
-@import 'base/utils';
-@import 'base/bootstrap';
-@import 'base/bootstrap-theme';
+// *** Utils
+@import 'utilities/functions';
+@import 'utilities/mixins';
+@import 'utilities/grid';
 
-// *** Elements
-@import 'elements/loader';
-@import 'elements/input-slider';
-@import 'elements/input-numeric';
+// *** Vendor
+@import 'vendor/bootstrap';
+@import 'vendor/input-slider';
+
+@import 'layout/root';
+@import 'layout/app';
 
 // *** Components
-@import 'components/app';
-@import 'components/header';
-@import 'components/sliders';
-@import 'components/sidebar';
 @import 'components/boxes';
-
-html {
-  font-size: 62.5%;
-  height: 100%;
-}
-
-body {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.6rem;
-  min-height: 100%;
-}
-
-.browsehappy {
-  background: #f00;
-  color: #fff;
-  font-size: 2rem;
-  padding: 2rem 4rem;
-
-  a {
-    color: #fff;
-    text-decoration: underline;
-  }
-}
-
-.inlinesvg {
-  .app__header {
-    .logo img {
-      display: none;
-    }
-  }
-}
-
-.grow-element {
-  opacity: 1;
-  transform: scale(1);
-
-  &.grow {
-    animation: grow 0.8s;
-  }
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes grow {
-  0% {
-    transform: scale(1);
-  }
-
-  100% {
-    color: #f00;
-    opacity: 0;
-    transform: rotate(0deg) scale(3.5);
-  }
-}
+@import 'components/footer';
+@import 'components/header';
+@import 'components/loader';
+@import 'components/numeric-field';
+@import 'components/overlay';
+@import 'components/sidebar';
+@import 'components/sliders';
