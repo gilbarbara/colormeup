@@ -37,6 +37,7 @@ const cssLoaders = [
   {
     loader: 'sass',
     options: {
+      includePaths: ['node_modules'],
       sourceMap: true,
       outputStyle: 'compact',
     },

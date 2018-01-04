@@ -32,6 +32,7 @@
     "lodash": "^4.17.4",
     "mobile-detect": "^1.4.1",
     "modernizr": "^3.5.0",
+    "primer-tooltips": "^1.5.1",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^16.2.0",

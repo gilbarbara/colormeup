@@ -6,6 +6,7 @@
 @import 'variables/bootstrap';
 
 // *** Libs
+@import '~primer-tooltips/index';
 @import '~font-awesome/scss/font-awesome';
 @import '~sass-mediaqueries/media-queries';
 
@@ -18,6 +19,7 @@
 @import 'vendor/bootstrap';
 @import 'vendor/input-slider';
 
+// *** Layout
 @import 'layout/root';
 @import 'layout/app';
 
