@@ -35,7 +35,7 @@ module.exports = merge.smart(webpackConfig, {
     new CleanPlugin(['dist'], { root: path.join(__dirname, '../') }),
     new CopyPlugin([
       { from: '../assets/manifest.json' },
-      { from: '../assets/404.html' },
+      { from: '../app/.htaccess' },
     ]),
     new ExtractText('styles/app.[git-hash].css'),
     new HtmlPlugin({

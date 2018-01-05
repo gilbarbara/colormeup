@@ -1,23 +1,22 @@
 /*eslint-disable no-var, vars-on-top, no-console */
-const path = require('path');
 const { promisify } = require('util');
 const { exec } = require('child_process');
-
 const chalk = require('chalk');
 const Rsync = require('rsync');
 const yargs = require('yargs');
+
+const paths = require('../config/paths');
 
 const run = promisify(exec);
 
 function publish() {
   console.log(chalk.blue('Publishing...'));
-  const rsync = Rsync.build({
-    exclude: ['.DS_Store'],
-    progress: true,
-    source: path.join(__dirname, 'dist/'),
-    flags: 'avz',
-    destination: 'colormeup@colormeup.co:/home/colormeup/public_html',
-  });
+  const rsync = new Rsync()
+    .shell('ssh')
+    .exclude('.DS_Store')
+    .flags('az')
+    .source(`${paths.destination}/`)
+    .destination('colormeup@colormeup.co:/home/colormeup/public_html');
 
   rsync.execute((error) => {
     if (error) {
