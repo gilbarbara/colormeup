@@ -18,10 +18,13 @@ function publish() {
     .source(`${paths.destination}/`)
     .destination('colormeup@colormeup.co:/home/colormeup/public_html');
 
-  rsync.execute((error) => {
+  rsync.execute((error, code, cmd) => {
     if (error) {
-      console.log(error);
+      console.log(chalk.red('Something went wrong...', error, code, cmd));
+      process.exit(1);
     }
+    
+    console.log(chalk.green('Published'));
   });
 }
 

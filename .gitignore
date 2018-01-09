@@ -1,6 +1,7 @@
 coverage
-node_modules
 dist
+node_modules
+webpack.stats.json
 .tmp
 .sass-cache
 .publish

@@ -26,14 +26,18 @@ class Color extends React.Component {
     const { color, dispatch, router: { location } } = this.props;
     const { router: { location: nextLocation } } = nextProps;
 
-    if (location.hash !== nextLocation.hash && validateHex(nextLocation.hash)) {
-      if (!color.instance) {
-        this.initialize();
+    if (location.hash !== nextLocation.hash) {
+      if (validateHex(nextLocation.hash)) {
+        if (!color.instance) {
+          this.initialize();
+        }
+        else {
+          color.instance.setColor(nextLocation.hash);
+          dispatch(setColor(nextLocation.hash));
+        }
       }
-      else {
-        color.instance.setColor(nextLocation.hash);
-        dispatch(setColor(nextLocation.hash));
-      }
+
+      document.title = `${nextLocation.hash ? `${nextLocation.hash} @ ` : ''}colormeup`;
     }
   }
 

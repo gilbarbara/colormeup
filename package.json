@@ -46,8 +46,7 @@
     "redux": "^3.7.2",
     "redux-persist": "^5.4.0",
     "sass-mediaqueries": "^1.6.1",
-    "uuid": "^3.1.0",
-    "zeroclipboard": "^2.3.0"
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.4",

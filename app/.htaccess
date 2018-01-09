@@ -355,16 +355,6 @@ AddDefaultCharset utf-8
 
 </IfModule>
 
-# html5 pushstate (history) support:
-<ifModule mod_rewrite.c>
-	Options +FollowSymLinks
-	IndexIgnore */*
-	RewriteEngine On
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule (.*) index.html
-</ifModule>
-
 # ----------------------------------------------------------------------
 # | Forcing `https://`                                                 |
 # ----------------------------------------------------------------------
@@ -372,11 +362,11 @@ AddDefaultCharset utf-8
 # Redirect from the `http://` to the `https://` version of the URL.
 # https://wiki.apache.org/httpd/RewriteHTTPToHTTPS
 
- <IfModule mod_rewrite.c>
+<IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{HTTPS} !=on
     RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
- </IfModule>
+</IfModule>
 
 # ----------------------------------------------------------------------
 # | Suppressing / Forcing the `www.` at the beginning of URLs          |
@@ -402,9 +392,8 @@ AddDefaultCharset utf-8
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteCond %{HTTPS} !=on
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+    RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 </IfModule>
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -422,6 +411,16 @@ AddDefaultCharset utf-8
 #     RewriteCond %{SERVER_ADDR} !=::1
 #     RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 # </IfModule>
+
+# html5 pushstate (history) support:
+<ifModule mod_rewrite.c>
+	Options +FollowSymLinks
+	IndexIgnore */*
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule (.*) index.html
+</ifModule>
 
 
 # ######################################################################
@@ -595,9 +594,9 @@ AddDefaultCharset utf-8
 # https://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-14#section-6.1
 # http://blogs.msdn.com/b/ieinternals/archive/2014/08/18/hsts-strict-transport-security-attacks-mitigations-deployment-https.aspx
 
-# <IfModule mod_headers.c>
-#     Header set Strict-Transport-Security "max-age=16070400; includeSubDomains"
-# </IfModule>
+ <IfModule mod_headers.c>
+     Header set Strict-Transport-Security "max-age=16070400; includeSubDomains"
+ </IfModule>
 
 # ----------------------------------------------------------------------
 # | Reducing MIME type security risks                                  |
@@ -893,6 +892,21 @@ FileETag None
     ExpiresByType text/x-cross-domain-policy            "access plus 1 week"
 
 </IfModule>
+
+# ----------------------------------------------------------------------
+# | Disable cache for SW / Appcache                                    |
+# ----------------------------------------------------------------------
+
+<filesMatch "(^sw\.js|manifest\..*)$">
+    FileETag None
+    <ifModule mod_headers.c>
+       Header unset ETag
+       Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+       Header set Pragma "no-cache"
+       Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+    </ifModule>
+</filesMatch>
+
 
 # ----------------------------------------------------------------------
 # | File concatenation                                                 |

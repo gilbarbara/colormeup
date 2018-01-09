@@ -11,8 +11,6 @@ const OfflinePlugin = require('offline-plugin');
 const paths = require('./paths');
 const webpackConfig = require('./webpack.config.base');
 
-const NPMPackage = require(paths.packageJson);
-
 let GITHASH = '';
 const definePlugin = webpackConfig.plugins.find(d => d.constructor.name === 'DefinePlugin');
 if (definePlugin) {
@@ -46,7 +44,7 @@ module.exports = merge.smart(webpackConfig, {
         collapseWhitespace: true,
       },
       template: './index.ejs',
-      title: NPMPackage.title,
+      title: 'colormeup',
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
