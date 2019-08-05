@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore, compose } from 'redux';
-import { routerReducer, routerMiddleware } from 'react-router-redux';
+import { connectRouter, routerMiddleware } from 'simple-react-router-redux';
 
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -15,13 +15,11 @@ const reducer = persistCombineReducers(
   },
   {
     ...rootReducer,
-    router: routerReducer,
-  }
+    router: connectRouter(history),
+  },
 );
 
-const middleware = [
-  routerMiddleware(history),
-];
+const middleware = [routerMiddleware(history)];
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === 'development') {

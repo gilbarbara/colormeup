@@ -1,8 +1,3 @@
-// Polyfills
-import 'core-js/shim';
-import 'isomorphic-fetch';
-import 'classlist-polyfill';
-
 import 'expose?$!expose?jQuery!jquery';
 
 import React from 'react';
@@ -11,8 +6,8 @@ import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
-import { store, persistor } from 'app-store';
 import { showAlert } from 'actions';
+import { store, persistor } from 'store';
 
 import App from 'containers/App';
 import Loader from 'components/Loader';
@@ -32,8 +27,7 @@ export const init = {
     this.initOfflinePlugin();
 
     /* istanbul ignore next */
-    return Promise
-      .all([this.loadCSS()])
+    return Promise.all([this.loadCSS()])
       .then(() => this.render(App))
       .catch(reason => {
         if (this.fetchRetries < 3) {
@@ -49,8 +43,7 @@ export const init = {
       this.retryCSS = () => {
         if (this.isCSSLoaded() || this.cssRetries > 2) {
           resolve();
-        }
-        else {
+        } else {
           this.cssRetries++;
           setTimeout(() => {
             this.retryCSS();
@@ -70,14 +63,21 @@ export const init = {
         OfflinePlugin.applyUpdate();
       },
       onUpdated: () => {
-        store.dispatch(showAlert((
-          <div className="app__cache-reload">
-            <p>There's a new version of this app!</p>
-            <button className="btn btn-sm btn-outline-primary" onClick={() => window.location.reload()}>
-              Reload
-            </button>
-          </div>
-        ), { id: 'sw-update', type: 'primary', icon: 'i-flash', timeout: 0 }));
+        store.dispatch(
+          showAlert(
+            <div className="app__cache-reload">
+              <p>There's a new version of this app!</p>
+              <button
+                className="btn btn-sm btn-outline-primary"
+                onClick={() => window.location.reload()}
+                type="button"
+              >
+                Reload
+              </button>
+            </div>,
+            { id: 'sw-update', type: 'primary', icon: 'i-flash', timeout: 0 },
+          ),
+        );
       },
     });
   },
@@ -93,8 +93,7 @@ export const init = {
           }
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       // error
     }
 
@@ -108,15 +107,12 @@ export const init = {
       ReactDOM.render(
         <AppContainer>
           <Provider store={store}>
-            <PersistGate
-              loading={<Loader />}
-              persistor={persistor}
-            >
+            <PersistGate loading={<Loader />} persistor={persistor}>
               <Component />
             </PersistGate>
           </Provider>
         </AppContainer>,
-        root
+        root,
       );
     }
   },
@@ -126,8 +122,5 @@ init.run();
 
 /* istanbul ignore next  */
 if (module.hot) {
-  module.hot.accept(
-    'containers/App',
-    () => init.render(App)
-  );
+  module.hot.accept('containers/App', () => init.render(App));
 }

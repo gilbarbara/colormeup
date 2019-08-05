@@ -5,7 +5,7 @@ const paths = require('./paths');
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')];
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV = 'development' } = process.env;
 if (!NODE_ENV) {
   throw new Error('The NODE_ENV environment variable is required but was not specified.');
 }
@@ -70,7 +70,7 @@ function getClientEnvironment(publicUrl) {
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
-      }
+      },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
   const stringified = {
