@@ -1,21 +1,31 @@
----
-engines:
-  eslint:
-    enabled: true
-    channel: "eslint-4"
+version: '2'
+checks:
+  argument-count:
     config:
-      extensions:
-        - .js
-        - .jsx
-  stylelint:
-    enabled: true
-ratings:
-  paths:
-  - "**.js"
-  - "**.jsx"
-  - "**.scss"
-exclude_paths:
+      threshold: 4
+  complex-logic:
+    config:
+      threshold: 4
+  file-lines:
+    config:
+      threshold: 500
+  identical-code:
+    config:
+      threshold: 50
+  method-complexity:
+    config:
+      threshold: 20
+  method-count:
+    config:
+      threshold: 20
+  method-lines:
+    config:
+      threshold: 50
+  similar-code:
+    config:
+      threshold: 100
+exclude_patterns:
   - coverage/**/*
-  - dist/**/*
+  - build/**/*
   - node_modules/**/*
   - test/**/*

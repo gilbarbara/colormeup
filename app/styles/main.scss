@@ -5,6 +5,10 @@
 @import 'variables/app';
 @import 'variables/bootstrap';
 
+// *** Vendor
+@import 'vendor/bootstrap';
+@import 'vendor/input-slider';
+
 // *** Libs
 @import '~primer-tooltips/index';
 @import '~font-awesome/scss/font-awesome';
@@ -14,10 +18,6 @@
 @import 'utilities/functions';
 @import 'utilities/mixins';
 @import 'utilities/grid';
-
-// *** Vendor
-@import 'vendor/bootstrap';
-@import 'vendor/input-slider';
 
 // *** Layout
 @import 'layout/root';

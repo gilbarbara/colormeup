@@ -1,4 +1,9 @@
+// Bootstrap 4
+$enable-flex: true;
+$enable-transitions: true;
 $grid-gutter-width: 3rem;
+
+$body-bg: #fff;
 
 /* stylelint-disable unit-blacklist */
 $grid-breakpoints: (
@@ -8,7 +13,7 @@ $grid-breakpoints: (
   md: 768px,
   im: 880px,
   lg: 1024px,
-  xl: 1280px
+  xl: 1280px,
 );
 /* stylelint-enable */
 
@@ -18,7 +23,7 @@ $container-max-widths: (
   md: 72rem,
   im: 80rem,
   lg: 96rem,
-  xl: 114rem
+  xl: 114rem,
 );
 
 $theme-colors: (
@@ -40,4 +45,3 @@ $input-btn-padding-y: 1rem;
 $btn-border-radius-lg: 0;
 $input-btn-padding-x-lg: 2.4rem;
 $input-btn-padding-y-lg: 1.2rem;
-

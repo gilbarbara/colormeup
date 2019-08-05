@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`store should have a store 1`] = `
+Object {
+  "_persist": Object {
+    "rehydrated": true,
+    "version": -1,
+  },
+  "app": Object {
+    "alerts": Array [],
+    "isSidebarActive": false,
+    "version": 3,
+  },
+  "color": Object {
+    "hex": "",
+    "instance": null,
+    "model": "hsl",
+    "steps": 24,
+    "type": "h",
+  },
+  "router": Object {
+    "action": "POP",
+    "location": Object {
+      "hash": "",
+      "pathname": "/",
+      "query": Object {},
+      "search": "",
+      "state": Object {},
+    },
+  },
+  "user": Object {
+    "colors": Array [],
+    "createdAt": 1234567890,
+    "showHelp": true,
+    "showStarterKit": true,
+    "updatedAt": 1234567890,
+  },
+}
+`;

@@ -1,4 +1,4 @@
-/*eslint-disable no-var, vars-on-top, no-console */
+/*eslint-disable no-console */
 const { promisify } = require('util');
 const { exec } = require('child_process');
 const chalk = require('chalk');
@@ -15,7 +15,7 @@ function publish() {
     .shell('ssh')
     .exclude('.DS_Store')
     .flags('az')
-    .source(`${paths.destination}/`)
+    .source(`${paths.appBuild}/`)
     .destination('colormeup@colormeup.co:/home/colormeup/public_html');
 
   rsync.execute((error, code, cmd) => {
@@ -23,14 +23,14 @@ function publish() {
       console.log(chalk.red('Something went wrong...', error, code, cmd));
       process.exit(1);
     }
-    
+
     console.log(chalk.green('Published'));
   });
 }
 
 function deploy() {
   const start = Date.now();
-  console.log(chalk.green('Bundling...'));
+  console.log(chalk.blue('Bundling...'));
 
   return exec('npm run build', errBuild => {
     if (errBuild) {
@@ -45,18 +45,23 @@ function deploy() {
 }
 
 function updateDependencies() {
-  return run('git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD')
-    .then(({ stdout }) => {
-      if (stdout.match('package.json')) {
-        console.log(chalk.yellow('▼ Updating...'));
-        exec('npm update').stdout.pipe(process.stdout);
-      }
-      else {
-        console.log(chalk.green('✔ Nothing to update'));
-      }
-    })
-    .catch(err => {
-      throw new Error(err);
+  return run('git rev-parse --is-inside-work-tree')
+    .then(() =>
+      run('git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD')
+        .then(({ stdout }) => {
+          if (stdout.match('package.json')) {
+            console.log(chalk.yellow('▼ Updating...'));
+            exec('npm update').stdout.pipe(process.stdout);
+          } else {
+            console.log(chalk.green('✔ Nothing to update'));
+          }
+        })
+        .catch(err => {
+          throw new Error(err);
+        }),
+    )
+    .catch(() => {
+      console.log('not under git');
     });
 }
 
@@ -70,15 +75,10 @@ function checkUpstream() {
             run('git rev-parse @{u}'),
             run('git merge-base @ @{u}'),
           ])
-            .then(([
-              { stdout: $local },
-              { stdout: $remote },
-              { stdout: $base },
-            ]) => {
+            .then(([{ stdout: $local }, { stdout: $remote }, { stdout: $base }]) => {
               if ($local === $remote) {
                 console.log(chalk.green('✔ Repo is up-to-date!'));
-              }
-              else if ($local === $base) {
+              } else if ($local === $base) {
                 console.log(chalk.red('⊘ Error'), 'You need to pull, there are new commits.');
                 process.exit(1);
               }
@@ -94,7 +94,7 @@ function checkUpstream() {
         })
         .catch(err => {
           throw new Error(err);
-        })
+        }),
     )
     .catch(() => {
       console.log('not under git');
@@ -104,12 +104,12 @@ function checkUpstream() {
 module.exports = yargs
   .command({
     command: 'publish',
-    desc: 'publish last build to pages',
+    desc: 'publish last build',
     handler: publish,
   })
   .command({
     command: 'deploy',
-    desc: 'build and publish to pages',
+    desc: 'build and publish',
     handler: deploy,
   })
   .command({
@@ -118,7 +118,7 @@ module.exports = yargs
     handler: checkUpstream,
   })
   .command({
-    command: 'dependencies',
+    command: 'update',
     desc: 'run `npm update` if package.json has changed',
     handler: updateDependencies,
   })
@@ -136,5 +136,4 @@ module.exports = yargs
     `);
     console.log(instance.help());
     process.exit(1);
-  })
-  .argv;
+  }).argv;

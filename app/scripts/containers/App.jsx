@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'simple-react-router-redux';
 import history from 'modules/history';
 import cx from 'classnames';
 
@@ -37,19 +37,8 @@ export class App extends React.Component {
     return (
       <ConnectedRouter history={history}>
         <div key="App" className="app">
-          <Header
-            app={app}
-            color={color}
-            dispatch={dispatch}
-            router={router}
-          />
-          <Sidebar
-            app={app}
-            color={color}
-            dispatch={dispatch}
-            router={router}
-            user={user}
-          />
+          <Header app={app} color={color} dispatch={dispatch} router={router} />
+          <Sidebar app={app} color={color} dispatch={dispatch} router={router} user={user} />
           <main className="app__main">
             <Switch>
               <Route path="/" component={Home} />

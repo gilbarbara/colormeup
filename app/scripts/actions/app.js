@@ -2,7 +2,7 @@
  * @module Actions/App
  * @desc App Actions
  */
-import { push, replace, go } from 'react-router-redux';
+import { push, replace, go } from 'simple-react-router-redux';
 import uuid from 'uuid/v4';
 
 import { AppConstants } from 'constants/index';

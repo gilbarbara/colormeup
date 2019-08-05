@@ -1,13 +1,13 @@
 // @flow
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import qs from 'qs';
 
-const history = createHistory();
+const history = createBrowserHistory();
 
 history.location = {
   ...history.location,
   query: qs.parse(history.location.search.substr(1)),
-  state: { modal: false, scroll: false },
+  state: {},
 };
 
 /* istanbul ignore next */
@@ -19,4 +19,7 @@ history.listen(() => {
   };
 });
 
+const { go, goBack, push, replace } = history;
+
+export { go, goBack, push, replace };
 export default history;
