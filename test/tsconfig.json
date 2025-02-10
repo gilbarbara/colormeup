@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noImplicitAny": false,
+    "module": "ESNext"
+  },
+  "include": ["node_modules/vite-plugin-pwa/client.d.ts", "../src/types/**/*", "**/*"]
+}

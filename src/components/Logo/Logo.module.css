@@ -1,0 +1,22 @@
+.main {
+  width: 80%;
+
+  @media (width >= 400px) {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  & svg {
+    height: 40px;
+    pointer-events: none;
+
+    @media (width >= 768px) {
+      height: 74px;
+    }
+
+    & path {
+      cursor: pointer;
+      pointer-events: painted;
+    }
+  }
+}
