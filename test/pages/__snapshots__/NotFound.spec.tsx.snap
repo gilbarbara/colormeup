@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NotFound > should render properly 1`] = `
+<div
+  class="css-6nmq0b"
+  data-component-name="NotFound"
+>
+  <div
+    class="css-91o5wy"
+    data-component-name="NonIdealState"
+  >
+    <div
+      class="css-z5ifs4"
+      data-component-name="Flex"
+    >
+      <span
+        class="css-1l1reyq"
+        data-component-name="Icon"
+        name="paintbrush"
+      />
+    </div>
+    <div
+      class="css-q34js2"
+      data-component-name="Box"
+    >
+      <h2
+        class="css-knznkd"
+        data-component-name="H2"
+      >
+        Page not found
+      </h2>
+      <p
+        class="css-1g18taf"
+        data-component-name="Paragraph"
+      >
+        <span
+          class="css-onif9v"
+          data-component-name="Text"
+        >
+          We are sorry, but the page you requested doesn't exist.
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+`;

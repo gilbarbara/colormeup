@@ -1,0 +1,36 @@
+.main {
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  height: 24px;
+  padding: var(--spacing-xxxs);
+}
+
+.input {
+  appearance: none;
+  border: 1px solid #fff;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 0 var(--spacing-xxxs);
+  position: relative;
+  width: 32px;
+
+  &:focus {
+    border: 1px solid #999;
+    outline: 0;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: var(--spacing-xxs);
+}
+
+.button {
+  background-color: var(--gray-40);
+  height: 10px;
+  overflow: hidden;
+  width: 16px;
+}

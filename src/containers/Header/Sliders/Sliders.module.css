@@ -1,0 +1,40 @@
+.main {
+  background-color: rgba(255 255 255 / 80%);
+  display: flex;
+  padding: var(--spacing-sm);
+}
+
+.models {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modelBtn {
+  background-color: rgba(0 0 0 / 10%);
+  font-size: 16px;
+  height: 40px;
+  justify-content: center;
+  width: 60px;
+
+  &.active {
+    background-color: rgba(0 0 0 / 20%);
+  }
+}
+
+.sliders {
+  flex: 1;
+}
+
+.sliderMain {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: 2px;
+  margin-left: var(--spacing-xs);
+}
+
+.sliderName {
+  flex: 1 0 auto;
+  text-align: right;
+  width: 80px;
+}

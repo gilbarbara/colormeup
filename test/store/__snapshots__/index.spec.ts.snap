@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`store > should have a store 1`] = `
+{
+  "_persist": {
+    "rehydrated": true,
+    "version": 1,
+  },
+  "alerts": {
+    "data": [],
+  },
+  "app": {
+    "isSidebarOpen": false,
+  },
+  "color": {
+    "hex": "#ff0044",
+    "model": "hsl",
+    "steps": 16,
+    "type": "h",
+  },
+  "user": {
+    "colors": [],
+    "createdAt": 1234567890,
+    "showHelp": true,
+    "showStarterKit": true,
+    "updatedAt": 1234567890,
+  },
+}
+`;

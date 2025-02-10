@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`modules/helpers > getColorModes > should return an array with the color modes 1`] = `
+[
+  {
+    "name": "hsl",
+    "types": [
+      {
+        "key": "h",
+        "max": 360,
+        "name": "Hue",
+        "slug": "hue",
+      },
+      {
+        "key": "s",
+        "max": 100,
+        "name": "Saturation",
+        "slug": "saturation",
+      },
+      {
+        "key": "l",
+        "max": 100,
+        "name": "Lightness",
+        "slug": "lightness",
+      },
+    ],
+  },
+  {
+    "name": "rgb",
+    "types": [
+      {
+        "key": "r",
+        "max": 255,
+        "name": "Red",
+        "slug": "red",
+      },
+      {
+        "key": "g",
+        "max": 255,
+        "name": "Green",
+        "slug": "green",
+      },
+      {
+        "key": "b",
+        "max": 255,
+        "name": "Blue",
+        "slug": "blue",
+      },
+    ],
+  },
+]
+`;
