@@ -1,7 +1,5 @@
-/build
-/coverage
-/node_modules
-webpack.stats.json
 .tmp
-.sass-cache
-.publish
+/coverage
+/dist
+/node_modules
+
