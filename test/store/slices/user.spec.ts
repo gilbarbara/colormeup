@@ -44,9 +44,9 @@ describe('slices/user', () => {
     });
 
     it(`${setUserOptions.type} should return properly`, () => {
-      expect(setUserOptions({ showStarterKit: false })).toEqual({
+      expect(setUserOptions({ showHelp: false })).toEqual({
         type: setUserOptions.type,
-        payload: { showStarterKit: false, updatedAt: 1234567890 },
+        payload: { showHelp: false, updatedAt: 1234567890 },
       });
     });
   });
@@ -65,8 +65,8 @@ describe('slices/user', () => {
     });
 
     it(`should handle ${setUserOptions.type} action`, () => {
-      user = reducer(user, setUserOptions({ showStarterKit: false }));
-      expect(user).toEqual({ ...userState, showStarterKit: false });
+      user = reducer(user, setUserOptions({ showHelp: false }));
+      expect(user).toEqual({ ...userState, showHelp: false });
     });
 
     it(`should handle ${resetUserData.type} action`, () => {
@@ -83,7 +83,6 @@ describe('slices/user', () => {
         colors: [],
         createdAt: 1234567890,
         showHelp: true,
-        showStarterKit: true,
         updatedAt: 1234567890,
       });
     });

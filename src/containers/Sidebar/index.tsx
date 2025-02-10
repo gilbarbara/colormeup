@@ -10,7 +10,6 @@ import { selectApp, selectColor } from '~/store/selectors';
 import Favorites from './Favorites';
 import Help from './Help';
 import Info from './Info';
-import StarterKit from './StarterKit';
 
 import styles from './Sidebar.module.css';
 
@@ -57,7 +56,6 @@ function Sidebar() {
     >
       <Info data={data} />
       <Favorites onClickColor={handleClickColor} />
-      <StarterKit onClickColor={handleClickColor} />
       <Help color={instance.lightness < 20 ? '#fff' : hex} />
     </Flex>
   );
