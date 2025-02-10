@@ -22,7 +22,6 @@ exports[`store > should have a store 1`] = `
     "colors": [],
     "createdAt": 1234567890,
     "showHelp": true,
-    "showStarterKit": true,
     "updatedAt": 1234567890,
   },
 }

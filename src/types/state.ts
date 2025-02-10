@@ -28,6 +28,5 @@ export interface UserState {
   colors: string[];
   createdAt: number;
   showHelp: boolean;
-  showStarterKit: boolean;
   updatedAt: number;
 }

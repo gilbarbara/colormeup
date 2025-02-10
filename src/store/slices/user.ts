@@ -9,7 +9,6 @@ export const userState: UserState = {
   colors: [],
   createdAt: now(),
   showHelp: true,
-  showStarterKit: true,
   updatedAt: now(),
 };
 
