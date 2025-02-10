@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 import { Flex } from '@gilbarbara/components';
 import clsx from 'clsx';
-import Colorizr, { hsl2hex } from 'colorizr';
+import Colorizr, { formatCSS, hex2hsl, hsl2hex } from 'colorizr';
 
 import { useAppDispatch, useAppSelector } from '~/modules/hooks';
 import { toggleSidebar } from '~/store/actions';
@@ -47,6 +47,7 @@ function Sidebar() {
 
   return (
     <Flex
+      bg={formatCSS({ ...hex2hsl(hex), l: 10 })}
       className={clsx(styles.main, {
         [styles.mainOpen]: isSidebarOpen,
       })}
@@ -55,7 +56,7 @@ function Sidebar() {
       gap="xl"
     >
       <Info data={data} />
-      <Favorites onClickColor={handleClickColor} />
+      <Favorites hex={hex} onClickColor={handleClickColor} />
       <Help color={instance.lightness < 20 ? '#fff' : hex} />
     </Flex>
   );

@@ -1,21 +1,23 @@
 /* eslint-disable react/no-array-index-key */
 import { ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ButtonUnstyled, Flex, FlexCenter, Icon, Paragraph, Text } from '@gilbarbara/components';
+import { ButtonUnstyled, Flex, FlexCenter, Icon, Paragraph } from '@gilbarbara/components';
 
 import { useAppDispatch, useAppSelector } from '~/modules/hooks';
-import { resetUserData } from '~/store/actions';
+import { resetUserData, saveColor } from '~/store/actions';
 import { selectUser } from '~/store/selectors';
 
-interface LinkProps {
+interface FavoritesProps {
+  hex: string;
   onClickColor: () => void;
 }
 
-export default function Favorites({ onClickColor }: LinkProps) {
+export default function Favorites({ hex, onClickColor }: FavoritesProps) {
   const dispatch = useAppDispatch();
 
   const { colors } = useAppSelector(selectUser);
   const [confirmReset, setConfirmReset] = useState(false);
+  const isFavorite = colors.includes(hex);
 
   const handleClickResetFavorites = () => {
     if (confirmReset) {
@@ -30,6 +32,10 @@ export default function Favorites({ onClickColor }: LinkProps) {
     }, 4000);
   };
 
+  const handleClickAddToFavorites = () => {
+    dispatch(saveColor(hex));
+  };
+
   const content: Record<string, ReactNode> = {
     main: (
       <Flex color="gray" mt="xs">
@@ -38,20 +44,40 @@ export default function Favorites({ onClickColor }: LinkProps) {
     ),
   };
 
-  if (colors.length) {
-    content.reset = (
-      <Flex mt="xs">
-        <ButtonUnstyled onClick={handleClickResetFavorites} size="xs">
+  content.options = (
+    <Flex direction="column" gap="xxs" mt="sm">
+      <ButtonUnstyled
+        color="white"
+        disabled={isFavorite}
+        onClick={handleClickAddToFavorites}
+        size="xs"
+      >
+        <Icon mr="xxs" name="heart" />
+        Add to favorites
+      </ButtonUnstyled>
+      {!!colors.length && (
+        <ButtonUnstyled
+          color={confirmReset ? 'red' : undefined}
+          onClick={handleClickResetFavorites}
+          size="xs"
+        >
           {confirmReset ? (
-            <Text color="red" size="xs">
+            <>
+              <Icon mr="xxs" name="check" />
               Are you sure?
-            </Text>
+            </>
           ) : (
-            'Reset favorites'
+            <>
+              <Icon mr="xxs" name="trash" />
+              Erase favorites
+            </>
           )}
         </ButtonUnstyled>
-      </Flex>
-    );
+      )}
+    </Flex>
+  );
+
+  if (colors.length) {
     content.main = (
       <Flex gap="xs" mt="md" wrap="wrap">
         {colors.map((d, index) => (
@@ -69,7 +95,7 @@ export default function Favorites({ onClickColor }: LinkProps) {
         <Icon mr="xxs" name="heart" /> favorites
       </Paragraph>
       {content.main}
-      {content.reset}
+      {content.options}
     </div>
   );
 }

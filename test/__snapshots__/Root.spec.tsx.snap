@@ -7,7 +7,7 @@ exports[`Root > should render properly 1`] = `
 >
   <div />
   <div
-    class="_main_75e16f css-x0gcdx"
+    class="_main_75e16f css-kp50o7"
     data-component-name="Sidebar"
   >
     <div
@@ -184,6 +184,23 @@ exports[`Root > should render properly 1`] = `
         data-component-name="Flex"
       >
         No favorites yet!
+      </div>
+      <div
+        class="css-a15blc"
+        data-component-name="Flex"
+      >
+        <button
+          class="css-1wg42ue"
+          data-component-name="ButtonUnstyled"
+          type="button"
+        >
+          <span
+            class="css-11ckkx5"
+            data-component-name="Icon"
+            name="heart"
+          />
+          Add to favorites
+        </button>
       </div>
     </div>
     <div
