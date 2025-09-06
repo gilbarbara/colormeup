@@ -15,6 +15,7 @@
   ],
   "bugs": "https://github.com/gilbarbara/colormeup/issues",
   "license": "MIT",
+  "packageManager": "pnpm@10.15.1",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
