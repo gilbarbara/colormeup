@@ -7,7 +7,7 @@ exports[`Root > should render properly 1`] = `
 >
   <div />
   <div
-    class="_main_75e16f css-kp50o7"
+    class="_main_3aba53 css-kp50o7"
     data-component-name="Sidebar"
   >
     <div
@@ -164,7 +164,7 @@ exports[`Root > should render properly 1`] = `
     </div>
     <div>
       <p
-        class="css-maf0tk"
+        class="css-9iuwsd"
         data-component-name="Paragraph"
       >
         <span
@@ -204,7 +204,7 @@ exports[`Root > should render properly 1`] = `
       </div>
     </div>
     <div
-      class="_help_75e16f"
+      class="_help_3aba53"
     >
       <button
         class="css-1y6ob7l"
@@ -228,7 +228,7 @@ exports[`Root > should render properly 1`] = `
         data-component-name="Flex"
       >
         <p
-          class="css-1xr4sq5"
+          class="css-nxms4g"
           data-component-name="Paragraph"
         >
           <span
@@ -239,7 +239,7 @@ exports[`Root > should render properly 1`] = `
           </span>
         </p>
         <p
-          class="css-1d6m1sj"
+          class="css-1qjkp9u"
           data-component-name="Paragraph"
         >
           <span
@@ -286,15 +286,15 @@ exports[`Root > should render properly 1`] = `
     </div>
   </div>
   <div
-    class="_main_053da1"
+    class="_main_002aba"
     data-component-name="Header"
     style="background-color: rgb(255, 0, 68); border-color: #b30030;"
   >
     <div
-      class="_content_053da1"
+      class="_content_002aba"
     >
       <div
-        class="_main_16f863"
+        class="_main_5f9bbe"
         data-component-name="Logo"
       >
         <svg
@@ -326,11 +326,11 @@ exports[`Root > should render properly 1`] = `
         data-component-name="Flex"
       >
         <div
-          class="_options_053da1"
+          class="_options_002aba"
           data-component-name="HeaderOptions"
         >
           <div
-            class="_optionsGroup_053da1"
+            class="_optionsGroup_002aba"
             data-component-name="HeaderOptionsGroup"
           >
             <span>
@@ -389,22 +389,22 @@ exports[`Root > should render properly 1`] = `
           </div>
         </div>
         <div
-          class="_main_d90600"
+          class="_main_91b634"
           data-component-name="Sliders"
         >
           <div
-            class="_models_d90600"
+            class="_models_91b634"
             data-component-name="SlidersModels"
           >
             <button
-              class="_modelBtn_d90600 _active_d90600"
+              class="_modelBtn_91b634 _active_91b634"
               data-model="hsl"
               type="button"
             >
               HSL
             </button>
             <button
-              class="_modelBtn_d90600"
+              class="_modelBtn_91b634"
               data-model="rgb"
               type="button"
             >
@@ -412,14 +412,14 @@ exports[`Root > should render properly 1`] = `
             </button>
           </div>
           <div
-            class="_sliders_d90600"
+            class="_sliders_91b634"
           >
             <div
-              class="_sliderMain_d90600"
+              class="_sliderMain_91b634"
               data-component-name="Slider"
             >
               <div
-                class="_sliderName_d90600"
+                class="_sliderName_91b634"
               >
                 Hue
               </div>
@@ -452,20 +452,20 @@ exports[`Root > should render properly 1`] = `
                 </div>
               </div>
               <div
-                class="_main_c9ae10"
+                class="_main_2228b4"
                 role="presentation"
               >
                 <input
-                  class="_input_c9ae10"
+                  class="_input_2228b4"
                   name="h"
                   type="text"
                   value="344"
                 />
                 <div
-                  class="_buttons_c9ae10"
+                  class="_buttons_2228b4"
                 >
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="up"
                     type="button"
                   >
@@ -476,7 +476,7 @@ exports[`Root > should render properly 1`] = `
                     />
                   </button>
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="down"
                     type="button"
                   >
@@ -490,11 +490,11 @@ exports[`Root > should render properly 1`] = `
               </div>
             </div>
             <div
-              class="_sliderMain_d90600"
+              class="_sliderMain_91b634"
               data-component-name="Slider"
             >
               <div
-                class="_sliderName_d90600"
+                class="_sliderName_91b634"
               >
                 Saturation
               </div>
@@ -527,20 +527,20 @@ exports[`Root > should render properly 1`] = `
                 </div>
               </div>
               <div
-                class="_main_c9ae10"
+                class="_main_2228b4"
                 role="presentation"
               >
                 <input
-                  class="_input_c9ae10"
+                  class="_input_2228b4"
                   name="s"
                   type="text"
                   value="100"
                 />
                 <div
-                  class="_buttons_c9ae10"
+                  class="_buttons_2228b4"
                 >
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="up"
                     type="button"
                   >
@@ -551,7 +551,7 @@ exports[`Root > should render properly 1`] = `
                     />
                   </button>
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="down"
                     type="button"
                   >
@@ -565,11 +565,11 @@ exports[`Root > should render properly 1`] = `
               </div>
             </div>
             <div
-              class="_sliderMain_d90600"
+              class="_sliderMain_91b634"
               data-component-name="Slider"
             >
               <div
-                class="_sliderName_d90600"
+                class="_sliderName_91b634"
               >
                 Lightness
               </div>
@@ -602,20 +602,20 @@ exports[`Root > should render properly 1`] = `
                 </div>
               </div>
               <div
-                class="_main_c9ae10"
+                class="_main_2228b4"
                 role="presentation"
               >
                 <input
-                  class="_input_c9ae10"
+                  class="_input_2228b4"
                   name="l"
                   type="text"
                   value="50"
                 />
                 <div
-                  class="_buttons_c9ae10"
+                  class="_buttons_2228b4"
                 >
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="up"
                     type="button"
                   >
@@ -626,7 +626,7 @@ exports[`Root > should render properly 1`] = `
                     />
                   </button>
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="down"
                     type="button"
                   >
@@ -642,11 +642,11 @@ exports[`Root > should render properly 1`] = `
           </div>
         </div>
         <div
-          class="_selectors_053da1 css-18lcn0u"
+          class="_selectors_002aba css-18lcn0u"
           data-component-name="HeaderSelectors"
         >
           <div
-            class="_selectors_053da1 css-1d5bbv1"
+            class="_selectors_002aba css-1d5bbv1"
             data-component-name="SpacerItem"
           >
             <div
@@ -684,7 +684,7 @@ exports[`Root > should render properly 1`] = `
             </div>
           </div>
           <div
-            class="_selectors_053da1 css-1d5bbv1"
+            class="_selectors_002aba css-1d5bbv1"
             data-component-name="SpacerItem"
           >
             <div
@@ -722,7 +722,7 @@ exports[`Root > should render properly 1`] = `
             </div>
           </div>
           <div
-            class="_selectors_053da1 css-1d5bbv1"
+            class="_selectors_002aba css-1d5bbv1"
             data-component-name="SpacerItem"
           >
             <div
@@ -735,20 +735,20 @@ exports[`Root > should render properly 1`] = `
                 name="layout-grid"
               />
               <div
-                class="_main_c9ae10"
+                class="_main_2228b4"
                 role="presentation"
               >
                 <input
-                  class="_input_c9ae10"
+                  class="_input_2228b4"
                   name="steps"
                   type="text"
                   value="16"
                 />
                 <div
-                  class="_buttons_c9ae10"
+                  class="_buttons_2228b4"
                 >
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="up"
                     type="button"
                   >
@@ -759,7 +759,7 @@ exports[`Root > should render properly 1`] = `
                     />
                   </button>
                   <button
-                    class="_button_c9ae10"
+                    class="_button_2228b4"
                     data-direction="down"
                     type="button"
                   >
@@ -776,7 +776,7 @@ exports[`Root > should render properly 1`] = `
         </div>
       </div>
       <div
-        class="_toggle_053da1"
+        class="_toggle_002aba"
         data-component-name="HeaderToggle"
       >
         <label
@@ -795,21 +795,21 @@ exports[`Root > should render properly 1`] = `
     </div>
   </div>
   <div
-    class="_main_7a9327"
+    class="_main_ec1f61"
     data-component-name="Color"
   >
     <div
-      class="_boxes_7a9327"
+      class="_boxes_ec1f61"
       data-component-name="ColorBoxes"
     >
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#ff0044"
         style="background-color: rgb(255, 0, 68);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: bold;"
         >
@@ -817,13 +817,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#ff1c00"
         style="background-color: rgb(255, 28, 0);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -831,13 +831,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#ff7b00"
         style="background-color: rgb(255, 123, 0);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -845,13 +845,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#ffdb00"
         style="background-color: rgb(255, 219, 0);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -859,13 +859,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#c4ff00"
         style="background-color: rgb(196, 255, 0);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -873,13 +873,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#64ff00"
         style="background-color: rgb(100, 255, 0);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -887,13 +887,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#04ff00"
         style="background-color: rgb(4, 255, 0);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -901,13 +901,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#00ff5b"
         style="background-color: rgb(0, 255, 91);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -915,13 +915,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#00ffbb"
         style="background-color: rgb(0, 255, 187);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -929,13 +929,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#00e3ff"
         style="background-color: rgb(0, 227, 255);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(0, 0, 0); font-weight: normal;"
         >
@@ -943,13 +943,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#0084ff"
         style="background-color: rgb(0, 132, 255);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -957,13 +957,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#0024ff"
         style="background-color: rgb(0, 36, 255);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -971,13 +971,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#3b00ff"
         style="background-color: rgb(59, 0, 255);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -985,13 +985,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#9b00ff"
         style="background-color: rgb(155, 0, 255);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -999,13 +999,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#fb00ff"
         style="background-color: rgb(251, 0, 255);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -1013,13 +1013,13 @@ exports[`Root > should render properly 1`] = `
         </div>
       </a>
       <a
-        class="_colorLink_7a9327"
+        class="_colorLink_ec1f61"
         data-discover="true"
         href="/#ff00a4"
         style="background-color: rgb(255, 0, 164);"
       >
         <div
-          class="_colorBox_7a9327"
+          class="_colorBox_ec1f61"
           data-component-name="ColorBox"
           style="color: rgb(255, 255, 255); font-weight: normal;"
         >
@@ -1033,7 +1033,7 @@ exports[`Root > should render properly 1`] = `
     data-component-name="Footer"
   >
     <p
-      class="css-1d6m1sj"
+      class="css-1qjkp9u"
       data-component-name="Paragraph"
     >
       <span

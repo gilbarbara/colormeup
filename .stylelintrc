@@ -26,6 +26,7 @@
     "keyframes-name-pattern": null,
     "max-nesting-depth": 5,
     "media-query-no-invalid": null,
+    "nesting-selector-no-missing-scoping-root": null,
     "no-descending-specificity": null,
     "no-duplicate-selectors": true,
     "number-max-precision": 4,

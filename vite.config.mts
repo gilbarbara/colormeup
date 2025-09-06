@@ -1,5 +1,5 @@
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import environmentPlugin from 'vite-plugin-environment';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -7,7 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   define: {
-    'process.env': process.env,
+    'process.env.NODE_ENV': process.env.NODE_ENV,
   },
   build: {
     sourcemap: true,

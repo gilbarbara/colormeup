@@ -30,7 +30,7 @@ exports[`NotFound > should render properly 1`] = `
         Page not found
       </h2>
       <p
-        class="css-1g18taf"
+        class="css-xgnf5l"
         data-component-name="Paragraph"
       >
         <span
